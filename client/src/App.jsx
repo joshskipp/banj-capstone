@@ -14,6 +14,7 @@ function App() {
 
   return (
     <>
+      <h1>Welcome!</h1>
       <p><strong>List of Posts</strong></p>
       {listOfPosts.map( (value, key) => {
         return <div className="post">
