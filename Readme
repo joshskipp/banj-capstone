@@ -1,0 +1,3 @@
+# Base Complete
+Known issues:
+- When building for the first time, the API will error out, as it requires the database to finish its statup script. Once the Database is finished, stop and start the API container again.
