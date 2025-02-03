@@ -13,9 +13,12 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - .:/app
+      - ./:/app:delegated
       - /app/node_modules
     environment:
       - NODE_ENV=development
       # Required for Vite to accept connections
       - VITE_HOST=0.0.0.0
+      
+      # Required for hot-reloading
+      - CHOKIDAR_USEPOLLING=true
