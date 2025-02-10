@@ -30,7 +30,7 @@ async function startServer(retries = MAX_RETRIES) {
                 // Run when server launches:
                 console.log("BANJ - Server: DEVELOPMENT MODE")
                 console.log(`Server running on port ${PORT}`);
-                console.log(` in development mode, not for production`)
+                console.log(`This is in development mode, not for production`)
             })
         })
     } catch (error) {
