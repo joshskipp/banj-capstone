@@ -28,7 +28,7 @@ async function startServer(retries = MAX_RETRIES) {
                 
             app.listen(PORT, () => { //Anonymous function:
                 // Run when server launches:
-                console.log("BANJ - Server: DEVELOPMENT MODE")
+                console.log("BANJ - Server: DEVELOPMENT MODE - change?")
                 console.log(`Server running on port ${PORT}`);
                 console.log(`This is in development mode, not for production`)
             })
