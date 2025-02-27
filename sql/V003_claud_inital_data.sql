@@ -28,27 +28,32 @@ VALUES
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Golden Valley'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Gold'),
      TRUE, FALSE),
-    
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Golden Valley'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Silver'),
      FALSE, TRUE),
-    
     -- Silver Creek primarily produces silver
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Silver Creek'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Silver'),
      TRUE, FALSE),
-    
     -- Copper Hills primarily produces copper
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Copper Hills'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Copper'),
      TRUE, FALSE),
-    
     -- Iron Ridge primarily produces iron
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Iron Ridge'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Iron'),
      TRUE, FALSE),
-    
     -- Lithium Lakes primarily produces lithium
+    ((SELECT project_id FROM prospector.projects WHERE project_name = 'Lithium Lakes'),
+     (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Lithium'),
+     TRUE, FALSE);
+
+INSERT INTO prospector.project_commodities (project_id, commodity_id, isPrimary, isSecondary)
+VALUES 
+    -- Golden Valley primarily produces gold, with silver as secondary
+    ((SELECT project_id FROM prospector.projects WHERE project_name = 'Iron Ridge'),
+     (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Iron'),
+     TRUE, FALSE),
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Lithium Lakes'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Lithium'),
      TRUE, FALSE);
@@ -79,15 +84,12 @@ VALUES
     
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Lithium Lakes'),
      (SELECT company_id FROM prospector.companies WHERE company_name = 'Mineral Resources Ltd')),
-    
     -- Gold Fields Australia operates Golden Valley
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Golden Valley'),
      (SELECT company_id FROM prospector.companies WHERE company_name = 'Gold Fields Australia')),
-    
     -- Copper Mountain Mining operates Copper Hills
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Copper Hills'),
      (SELECT company_id FROM prospector.companies WHERE company_name = 'Copper Mountain Mining')),
-    
     -- Australian Mining Group operates Silver Creek
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Silver Creek'),
      (SELECT company_id FROM prospector.companies WHERE company_name = 'Australian Mining Group'));
@@ -117,17 +119,14 @@ VALUES
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Golden Valley'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Gold'),
      '2.5 million', 'tonnes', '3.2 g/t', '2023-09-15', 'JORC compliant estimate', 'data_migration', 'approved'),
-    
     -- Silver Creek silver reserves
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Silver Creek'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Silver'),
      '4.8 million', 'tonnes', '125 g/t', '2023-11-20', 'Updated after recent exploration', 'data_migration', 'approved'),
-    
     -- Copper Hills copper reserves
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Copper Hills'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Copper'),
      '35 million', 'tonnes', '0.8%', '2024-01-10', 'Includes measured and indicated resources', 'data_migration', 'approved'),
-    
     -- Iron Ridge iron reserves
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Iron Ridge'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Iron'),
@@ -140,7 +139,6 @@ VALUES
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Golden Valley'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Gold'),
      '250,000', 'tonnes', '2023-01-01', '2023-12-31', 'Annual production for 2023', 'data_migration', 'approved'),
-    
     -- Silver Creek silver production
     ((SELECT project_id FROM prospector.projects WHERE project_name = 'Silver Creek'),
      (SELECT commodity_id FROM prospector.commodities WHERE commodity_name = 'Silver'),
