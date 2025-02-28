@@ -1,5 +1,15 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
 // https://nextjs.org/learn/dashboard-app/fetching-data
+
+const companies = [
+  {
+    company_id: 'CC27C14A-0ACF-4F4A-A6C9-D45682C144B9'
+  }
+]
+
+export { companies };
+
+/* 
 const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
@@ -145,3 +155,4 @@ const revenue = [
 ];
 
 export { users, customers, invoices, revenue };
+*/
