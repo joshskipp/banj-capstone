@@ -1,12 +1,13 @@
 import './App.css';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ClientSideRowModelModule } from 'ag-grid-community';
 import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { useNavigate } from 'react-router-dom';
+import Papa from 'papaparse';
 
 // Register the module explicitly
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
@@ -21,7 +22,8 @@ export default function App() {
     username: '',
   });
   const navigate = useNavigate();
-
+  const gridRef = useRef(); // Reference to the AG Grid instance for papaParse to use
+  
   // Fetch posts on component mount
   useEffect(() => {
     axios.get("http://localhost:3001/posts")
@@ -61,6 +63,35 @@ export default function App() {
     }
   };
 
+  // Handle CSV export - Final solution utilysed copilot code
+  const handleExport = () => {
+    // Check if there is data in the projects state
+    if (projects.length === 0) {
+      console.error("No data found in the grid.");
+      return;
+    }
+  
+    // Log the projects data
+    console.log("Projects data:", projects);
+  
+    // Convert projects data to CSV
+    const csv = Papa.unparse(projects, {
+      header: true, // Include headers in the CSV
+    });
+  
+    // Log the generated CSV
+    console.log("Generated CSV:", csv);
+  
+    // Create a downloadable CSV file
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    const dateTime = new Date().toISOString().slice(0, 19).replace(/:/g, "-");
+    link.download = (dateTime + 'posts.csv'); // File name
+    link.click(); // Trigger the download
+    URL.revokeObjectURL(link.href); //
+  };
+
   const columnDefs = [
     { headerName: "Project", field: "title" },
     { headerName: "Description", field: "postText" },
@@ -74,6 +105,11 @@ export default function App() {
       {/* Button to show the new post form */}
       <button onClick={() => setShowForm(!showForm)}>
         {showForm ? 'Cancel' : 'Add New Post'}
+      </button>
+
+      {/* Button to export data to CSV */}
+      <button onClick={handleExport} style={{ marginLeft: '10px' }}>
+        Export to CSV
       </button>
 
       {/* New post form */}
@@ -113,30 +149,31 @@ export default function App() {
         </form>
       )}
 
-
       {/* AG Grid */}
       <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
         <AgGridReact
+          ref={gridRef} // Assign the gridRef here
           columnDefs={columnDefs}
           rowData={projects}
           onRowClicked={(row) => navigate(`/posts/${row.data.id}`)}
-          />
+        />
       </div>
-          {/* Display posts */}
-          <h2>Debugging Raw Data</h2>
-          <pre>{JSON.stringify(listOfPosts, null, 2)}</pre>
-    
-          {listOfPosts.length > 0 ? (
-            listOfPosts.map((value) => (
-              <div key={value.id} className="post">
-                <div className="title">{value.title}</div>
-                <div className="body">{value.postText}</div>
-                <div className="footer">{value.username}</div>
-              </div>
-            ))
-          ) : (
-            <p>Loading posts...</p>
-          )}
+          
+      {/* Display posts in raw JSON for debug */}
+      <h2>Debugging Raw Data</h2>
+      <pre>{JSON.stringify(listOfPosts, null, 2)}</pre>
     </>
   );
 }
+
+// {listOfPosts.length > 0 ? (
+//   listOfPosts.map((value) => (
+//     <div key={value.id} className="post">
+//       <div className="title">{value.title}</div>
+//       <div className="body">{value.postText}</div>
+//       <div className="footer">{value.username}</div>
+//     </div>
+//   ))
+// ) : (
+//   <p>Loading posts...</p>
+// )}

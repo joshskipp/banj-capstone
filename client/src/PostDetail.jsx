@@ -8,6 +8,7 @@ export default function PostDetail() {
   const [post, setPost] = useState(null); // Change from project to post
   // Updatepost
   const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
+  // set edited post state to update the post with new data 
   const [editedPost, setEditedPost] = useState({
     title: '',
     postText: '',
@@ -48,7 +49,7 @@ export default function PostDetail() {
 
   // Handle form submission to update the post
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submit behavior to avoid a page refresh since we're using React Router
     try {
       const response = await axios.put(`http://localhost:3001/posts/${id}`, editedPost);
       console.log("Post updated successfully:", response.data);
