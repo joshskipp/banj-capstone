@@ -1,3 +1,0 @@
-include:
-  - client/compose.yaml # declare service-1
-  - server/compose.yaml # declare service-2
