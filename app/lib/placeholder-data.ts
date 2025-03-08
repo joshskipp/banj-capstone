@@ -9,16 +9,18 @@ const companies = [
 
 export { companies };
 
-/* 
+ 
 const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
     name: 'User',
-    email: 'user@nextmail.com',
+    email: 'user@email.com',
     password: '123456',
   },
 ];
 
+export { users }; 
+/*
 const customers = [
   {
     id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81aa',
