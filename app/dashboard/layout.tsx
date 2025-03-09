@@ -3,19 +3,20 @@
 import { PowerIcon } from '@heroicons/react/24/outline';
 import { signOut } from '@/auth';
 import Link from 'next/link'
+import CurrentUser from "@/app/ui/settings/current-user";
 
-
-export default function Layout({ children }: { children: React.ReactNode }) {
-
+export default async function Layout({ children }: { children: React.ReactNode }) {
+    const user = await CurrentUser();
   return (
     <div className="flex h-screen bg-[#f8f5f6]">
-      <div className="flex flex-col flex-1 w-full">
+      <div className="flex flex-col  w-full">
         <main className="h-full overflow-y-auto">
           <div className="bg-[#1f4656] text-white text-xs">
             <div className="container flex justify-between items-center mx-auto">
-            <div></div>
+            <div>qld.edu.au</div>
             
-            <div>
+            <div className="flex items-center gap-2">
+                Hello <strong>{user?.name}</strong>
               <form action={
                 async () => {
                   'use server';
@@ -56,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
  
           <footer className="bg-[#1f4656] text-white min-h-48 border-t-[#7a232a] border-t-8">
-            <div className="container mx-auto px-4 py-1">
+            <div className="container px-4 py-1">
             qld.gov.au
             </div>
           </footer>

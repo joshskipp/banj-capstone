@@ -1,14 +1,19 @@
 import {fetchAllUsers, fetchUserCount} from "@/app/lib/data";
 import { CommandLineIcon } from '@heroicons/react/24/outline';
 import NewUserForm from '@/app/ui/settings/new-user-form';
+import CurrentUser from '@/app/ui/settings/current-user';
 
 export default async function Page() {
     const allUsers = await fetchAllUsers();
     const userCount = await fetchUserCount();
+
+    const user = await CurrentUser();
+
     return (
         <div className="flex flex-col gap-10">
 
             <div>
+                <p>Hello <strong>{user?.name}</strong></p>
             <h2>Settings</h2>
             <p>Regular settings goes here</p>
             </div>

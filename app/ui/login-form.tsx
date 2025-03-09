@@ -26,6 +26,7 @@ export default function LoginForm() {
                 <h1 className={`${fira_sans.className} mb-3 text-2xl`}>
                     Login to continue.
                 </h1>
+                <p className="text-red-600">This is <strong><u>not</u></strong> your Microsoft ID. Please use your specific account for this tool.</p>
                 <div className="w-full">
                     <div>
                         <label
