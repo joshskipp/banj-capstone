@@ -6,7 +6,8 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function fetchAllProjects() {
   try{
-    const data = await sql`
+    const
+        data = await sql`
       SELECT * FROM projects`
     return data;
   } catch (error) {
@@ -49,6 +50,28 @@ export async function fetchCommodityById(id: string) {
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error(`Failed to fetch commodity with id ${id}.`);
+    }
+}
+
+export async function fetchAllUsers() {
+    try {
+        const data = await sql`
+        SELECT * FROM users`
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch all users.');
+    }
+}
+
+export async function fetchUserCount() {
+    try {
+        const data = await sql`
+        SELECT COUNT(*) FROM users`
+        return Number(data[0].count ?? '0');
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch user count.');
     }
 }
 
