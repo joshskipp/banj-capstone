@@ -1,26 +1,38 @@
-// import postgres from 'postgres';
+import postgres from 'postgres';
 
-// const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-// async function listInvoices() {
-// 	const data = await sql`
-//     SELECT invoices.amount, customers.name
-//     FROM invoices
-//     JOIN customers ON invoices.customer_id = customers.id
-//     WHERE invoices.amount = 666;
-//   `;
-
-// 	return data;
-// }
-
+// GET: Fetch all projects
 export async function GET() {
-  return Response.json({
-    message:
-      'Uncomment this file and remove this line. You can delete this file when you are finished.',
-  });
-  // try {
-  // 	return Response.json(await listInvoices());
-  // } catch (error) {
-  // 	return Response.json({ error }, { status: 500 });
-  // }
+  try {
+    const data = await sql`
+      SELECT * FROM projects
+    `;
+    return Response.json(data);
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return Response.json({ error: 'Failed to fetch projects' }, { status: 500 });
+  }
+}
+
+// POST: Add a new project
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+    const project_name = formData.get('project_name') as string;
+    const latitude = parseFloat(formData.get('latitude') as string);
+    const longitude = parseFloat(formData.get('longitude') as string);
+
+    // Insert the new project into the database
+    await sql`
+      INSERT INTO projects (project_name, latitude, longitude)
+      VALUES (${project_name}, ${latitude}, ${longitude})
+    `;
+
+    // Redirect to the dashboard after successful submission
+    return Response.redirect('http://localhost:3000/dashboard');
+  } catch (error) {
+    console.error('Error adding project:', error);
+    return Response.json({ error: 'Failed to add project' }, { status: 500 });
+  }
 }
