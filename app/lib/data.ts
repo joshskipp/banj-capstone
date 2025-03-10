@@ -52,8 +52,6 @@ export async function fetchCommodityById(id: string) {
     }
 }
 
-
-
 // FROM TEMPLATE
 //
 // import postgres from 'postgres';
