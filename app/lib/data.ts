@@ -25,6 +25,18 @@ export async function fetchAllCommodities() {
     }
 }
 
+export async function fetchCommodityById(id: string) {
+    try {
+        const data = await sql`
+            SELECT * FROM commodities WHERE commodity_id=${id};`
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error(`Failed to fetch commodity with id ${id}.`);
+    }
+}
+
+
 export async function fetchCommodityProjects(id: string) {
     try {
         const data = await sql`
@@ -38,17 +50,6 @@ export async function fetchCommodityProjects(id: string) {
         throw new Error('Failed to fetch projects for commodity.');
     }
 
-}
-
-export async function fetchCommodityById(id: string) {
-    try {
-        const data = await sql`
-            SELECT * FROM commodities WHERE commodity_id=${id};`
-        return data;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error(`Failed to fetch commodity with id ${id}.`);
-    }
 }
 
 // FROM TEMPLATE
