@@ -1,8 +1,9 @@
-import { fetchCommodityById} from "@/app/lib/data";
+import { fetchCommodityById, fetchCommodityProjects } from "@/app/lib/data";
 
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
     const [c] = await fetchCommodityById(params.id);
+    const cp = await fetchCommodityProjects(params.id);
 
     return (
         <div>
@@ -24,6 +25,20 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     <li>Approved at: {c.approved_at.toString()}</li>
                 </ul>
             </small>
+
+            <hr className="my-3 border-black" />
+            <h3>Projects with Commodity</h3>
+            {cp.map((cp) => {
+                let val:string = ""
+                if (cp.isprimary) val = val.concat(val, "Primary");
+                if (cp.issecondary) val = val.concat(val, "Secondary");
+                val = ` - ${val} Commodity`
+                return (
+                    <div key={cp.project_id}>
+                        <p><a href="#"><strong>{cp.project_name}</strong></a>{val}</p>
+                    </div>
+                )
+            })}
         </div>
     )
 }
