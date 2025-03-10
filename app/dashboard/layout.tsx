@@ -1,6 +1,7 @@
 //import SideNav from "@/app/ui/dashboard/sidenav-template";
 import { PowerIcon } from '@heroicons/react/24/outline';
 import { signOut } from '@/auth';
+import Link from 'next/link';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
@@ -38,8 +39,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="container mx-auto px-4  justify-between items-start ">
             <div className="ml-0 flex items-start space-x-4">
                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                <a href="#" className=" bg-gray-200 px-3 py-2 text-sm font-medium border-b-[#7a232a] border-b-4 hover:underline hover:underline-offset-4"  aria-current="page">Dashboard</a>
-                <a href="#" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">link 1</a>
+                <Link href="/dashboard" className=" bg-gray-200 px-3 py-2 text-sm font-medium border-b-[#7a232a] border-b-4 hover:underline hover:underline-offset-4"  aria-current="page">Dashboard</Link>
+                <Link href="/dashboard/commodities" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">Commodities</Link>
                 <a href="#" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">link 2</a>
                 <a href="#" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">link 3</a>
                 <a href="#" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">link 4</a>
