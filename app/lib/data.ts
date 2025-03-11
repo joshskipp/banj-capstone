@@ -1,19 +1,41 @@
-import postgres from 'postgres'
+import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
+// Define the type for your project data
+export interface Project {
+  project_id: string;
+  project_name: string;
+  latitude: number;
+  longitude: number;
+}
 
+// Fetch all projects
 export async function fetchAllProjects() {
-  try{
+  try {
     const data = await sql`
-      SELECT * FROM projects`
+      SELECT * FROM projects
+    `;
     return data;
   } catch (error) {
-      console.error('Database Error:', error);
-      throw new Error('Failed to fetch all projects data.');
+    console.error('Error fetching projects:', error);
+    throw new Error('Failed to fetch projects');
   }
 }
 
+// Fetch a single project by ID
+export async function fetchProjectById(id: string) {
+  try {
+    const [project] = await sql`
+      SELECT * FROM projects
+      WHERE project_id = ${id}
+    `;
+    return project;
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    throw new Error('Failed to fetch project');
+  }
+}
 // FROM TEMPLATE
 //
 // import postgres from 'postgres';
