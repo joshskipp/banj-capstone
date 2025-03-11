@@ -21,7 +21,7 @@ export default async function RootLayout({
           <div className="h-full overflow-y-auto">
       <div className="bg-[#1f4656] text-white text-xs">
         <div className="container flex justify-between items-center mx-auto">
-          App/Layout
+
 
         <div className="flex">
           {currentSession == null &&
