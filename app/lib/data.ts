@@ -1,3 +1,4 @@
+
 import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -11,12 +12,10 @@ export interface Project {
 }
 
 // Fetch all projects
-export async function fetchAllProjects() {
+export async function fetchAllProjects(): Promise<Project[]> {
   try {
-    const data = await sql`
-      SELECT * FROM projects
-    `;
-    return data;
+    const data = await sql<Project[]>`SELECT * FROM projects`;
+    return data as Project[]; // Ensure it returns a plain array
   } catch (error) {
     console.error('Error fetching projects:', error);
     throw new Error('Failed to fetch projects');
