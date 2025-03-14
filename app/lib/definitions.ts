@@ -28,9 +28,9 @@ export type Company = {
     asx_code : string,
     notes: string,
     created_by: string,
-    created_at: string,
-    updated_at: string,
+    created_at: Date,
+    updated_at: Date,
     approval_status: string,
     approved_by: string,
-    approved_at: string
+    approved_at: Date
 }
