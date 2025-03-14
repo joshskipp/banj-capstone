@@ -1,0 +1,58 @@
+// app/companies/client.tsx
+'use client';
+
+import React from 'react';
+import {CellClickArgs, CellMouseEvent, DataGrid} from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
+import {redirect} from "next/navigation";
+
+// Define your company type based on your database schema
+interface Company {
+    id: string;
+    name: string;
+    // Add other fields from your company data
+    asx_code?: string;
+    notes?: string;
+    created_at?: Date;
+    updated_at?: Date;
+}
+
+interface CompaniesDataGridProps {
+    initialCompanies: Company[];
+}
+
+export default function CompaniesDataGrid({ initialCompanies }: CompaniesDataGridProps) {
+
+    function onCellClick(args: CellClickArgs<any>, event: CellMouseEvent) {
+            event.preventGridDefault();
+            console.log(`Clicked on ${args.row.id}`);
+            redirect(`dashboard/companies/${args.row.id}`);
+
+    }
+
+    // Define columns for the data grid
+    const columns = [
+        { key: 'id', name: 'ID' },
+        { key: 'name', name: 'Company Name' },
+        { key: 'asx_code', name: 'ASX Code' },
+        { key: 'notes', name: 'Notes' },
+        { key: 'created_at', name: 'Created At' },
+        { key: 'updated_at', name: 'Updated At' },
+    ];
+
+    return (
+            <div className="h-[600px] w-full">
+                <DataGrid
+                    defaultColumnOptions={{
+                        minWidth: 100,
+                        resizable: true,
+                        sortable: true}}
+                    columns={columns}
+                    rows={initialCompanies}
+                    rowKeyGetter={(row) => row.id}
+                    className="fill-grid"
+                    onCellClick={onCellClick}
+                />
+            </div>
+    );
+}
