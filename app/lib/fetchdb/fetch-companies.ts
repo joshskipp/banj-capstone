@@ -11,3 +11,12 @@ export async function fetchAllCompanies() {
         throw new Error('Failed to fetch companies.');
     }
 }
+
+export async function fetchCompanyByID(id: string) {
+    try {
+        return await sql`SELECT * FROM companies WHERE company_id=${id}`;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch companies.');
+    }
+}

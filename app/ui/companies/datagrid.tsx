@@ -26,7 +26,7 @@ export default function CompaniesDataGrid({ initialCompanies }: CompaniesDataGri
     function onCellClick(args: CellClickArgs<any>, event: CellMouseEvent) {
             event.preventGridDefault();
             console.log(`Clicked on ${args.row.id}`);
-            redirect(`/dashboard/companies/${args.row.id}`);
+            redirect(`/dashboard/companies/${args.row.company_id}`);
 
     }
 
