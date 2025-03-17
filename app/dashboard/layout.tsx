@@ -13,9 +13,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
                     Dashboard
                 </Link>
                 <Link
-                    href="#"
+                    href="/dashboard/projects/"
                     className="px-3 py-2 text-sm font-medium hover:bg-gray-200 hover:underline hover:underline-offset-4 hover:border-b-[#7a232a] hover:border-b-4">
-                    Projects(*)
+                    Projects
                 </Link>
                 <Link
                     href="/dashboard/commodities"

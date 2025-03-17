@@ -1,3 +1,4 @@
+'use server';
 import postgres from 'postgres'
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -72,6 +73,31 @@ export async function fetchCommodityById(id: string) {
         console.error('Database Error:', error);
         throw new Error(`Failed to fetch commodity with id ${id}.`);
     }
+}
+
+export async function fetchProjectById(id: string) {
+    try {
+        const data = await sql`
+            SELECT * FROM projects WHERE project_id=${id};`
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error(`Failed to fetch project with id ${id}.`);
+    }
+}
+
+export async function fetchProjectsCommoditites(id: string) {
+    try {
+        const data = await sql`
+            select commodities.commodity_name
+            from commodities;
+            `
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch projects for commodity.');
+    }
+
 }
 
 // FROM TEMPLATE
