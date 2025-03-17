@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <a href="/dashboard" className=" bg-gray-200 px-3 py-2 text-sm font-medium border-b-[#7a232a] border-b-4 hover:underline hover:underline-offset-4"  aria-current="page">Dashboard</a>
               <a href="#" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">link 1</a>
               <a href="/dashboard/projects" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">Projects</a>
-              <a href="/dashboard/create-project" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">link 3</a>
+              <a href="/dashboard/create-project" className=" px-3 py-2 text-sm font-medium hover:underline hover:underline-offset-4">Create</a>
               <a href="#" className=" px-3 py-2 text-sm font-medium  hover:underline hover:underline-offset-4">link 4</a>
             </div>
             </div>

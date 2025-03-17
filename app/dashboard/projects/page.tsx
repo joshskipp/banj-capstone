@@ -70,7 +70,7 @@ export default function ProjectsPage() {
           pagination={true}
           paginationPageSize={10}
           rowModelType="clientSide"
-          modules={[ClientSideRowModelModule, ExcelExportModule]} 
+          // modules={[ClientSideRowModelModule, ExcelExportModule]} 
           onRowClicked={onRowClicked} 
         />
       </div>
