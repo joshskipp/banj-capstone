@@ -75,6 +75,31 @@ export async function fetchCommodityById(id: string) {
     }
 }
 
+export async function fetchProjectById(id: string) {
+    try {
+        const data = await sql`
+            SELECT * FROM projects WHERE project_id=${id};`
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error(`Failed to fetch project with id ${id}.`);
+    }
+}
+
+export async function fetchProjectsCommoditites(id: string) {
+    try {
+        const data = await sql`
+            select commodities.commodity_name
+            from commodities;
+            `
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch projects for commodity.');
+    }
+
+}
+
 // FROM TEMPLATE
 //
 // import postgres from 'postgres';

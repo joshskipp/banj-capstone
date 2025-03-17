@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import type { ColDef } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { fetchAllProjects } from "@/app/lib/data";
-
+import { redirect } from "next/navigation";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
@@ -19,7 +19,7 @@ const GridComponent = () => {
             .catch(error => console.error('Failed to fetch rowData:', error));
     }, []);
     const gridOptions = {
-
+        onRowClicked: (event: { data: { project_id: any; }; }) => { redirect(`/dashboard/projects/${event.data.project_id}`); }
     }
     const [columnDefs, setColumnDefs] = useState<ColDef[]>([
         { field: "project_id", width: 100, headerName: "ID"},
