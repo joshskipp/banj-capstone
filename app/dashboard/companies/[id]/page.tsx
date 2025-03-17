@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {Button} from "@/app/ui/button";
 import {ArrowLeftIcon, PencilSquareIcon} from "@heroicons/react/24/outline";
-import { fetchCompanyByID} from "@/app/lib/fetchdb/fetch-companies";
+import { fetchCompanyByID } from "@/app/lib/fetchdb/fetch-companies";
 
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
@@ -21,13 +21,15 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     </Link>
 
                     <Link href={`/dashboard/companies/${c.company_id}/edit`}>
-                    <Button disabled={true} className="ml-auto hover:bg-gray-400 bg-gray-300 text-gray-900 hover:cursor-not-allowed">
+                    <Button className="ml-auto hover:bg-gray-700 bg-inherit border-black border-[1.15pt] hover:text-white text-black ">
                         <PencilSquareIcon className="w-6 mr-2" />
                         Edit data
                     </Button>
                     </Link>
                 </div>
             </div>
+
+            // TODO: Move to client component
 
             <form className={""}>
                 <div className={"grid grid-cols-[15%,85%] gap-1 p-2"} >

@@ -34,3 +34,10 @@ export type Company = {
     approved_by: string,
     approved_at: Date
 }
+
+export type CompanyForm = {
+    company_id: string,
+    company_name: string,
+    asx_code : string,
+    notes: string,
+}

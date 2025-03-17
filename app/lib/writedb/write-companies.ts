@@ -12,6 +12,7 @@ const FormSchema = z.object({
     id: z.string(),
     name: z.string(),
     asx: z.string(),
+    notes: z.string(),
     created_at: z.date(),
     updated_at: z.date(),
     approved_at: z.date()
@@ -27,13 +28,38 @@ export async function createCompany(formData: FormData) {
     // }
     // console.log(rawFormData);
 
-    const {name, asx} = CreateCompany.parse({
+    const {name, asx, notes} = CreateCompany.parse({
         name: formData.get('name'),
         asx: formData.get('asx'),
+        notes: formData.get('notes'),
     });
 
-    await sql`INSERT INTO companies (company_name, asx_code)
-              VALUES (${name}, ${asx})`;
+    await sql`INSERT INTO companies (company_name, asx_code, notes)
+              VALUES (${name}, ${asx}, ${notes});`
+
+    const message = 'good'
+    const urlParams = new URLSearchParams([['state', message]]);
+
+    revalidatePath('/dashboard/companies');
+    redirect(`/dashboard/companies?${urlParams}`);
+}
+
+export async function updateCompany(id: string, formData: FormData) {
+    const {name, asx, notes} = CreateCompany.parse({
+        name: formData.get('name'),
+        asx: formData.get('asx'),
+        notes: formData.get('notes'),
+    });
+
+    try {
+        await sql`
+        UPDATE companies
+        SET company_name = ${name}, asx_code = ${asx}, notes = ${notes}, updated_at = NOW()
+        WHERE company_id = ${id}
+    `;
+    } catch (error) {
+        console.log(error);
+    }
 
     const message = 'good'
     const urlParams = new URLSearchParams([['state', message]]);
