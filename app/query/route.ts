@@ -1,4 +1,5 @@
 import postgres from 'postgres';
+import { fetchProjectById } from '@/app/lib/data'; // YES, I fully understand how jank this is
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -29,10 +30,64 @@ export async function POST(request: Request) {
       VALUES (${project_name}, ${latitude}, ${longitude})
     `;
 
+    
+
     // Redirect to the dashboard after successful submission
     return Response.redirect('http://localhost:3000/dashboard');
   } catch (error) {
     console.error('Error adding project:', error);
     return Response.json({ error: 'Failed to add project' }, { status: 500 });
+  }
+}
+
+// DELETE: Remove a project by ID
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const projectId = searchParams.get("id");
+
+    if (!projectId) {
+      return Response.json({ error: "Project ID is required" }, { status: 400 });
+    }
+
+    await sql`
+      DELETE FROM projects WHERE project_id = ${projectId}
+    `;
+
+    return Response.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    return Response.json({ error: 'Failed to delete project' }, { status: 500 });
+  }
+}
+
+
+// PUT: Update an existing project
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { project_id, project_name, latitude, longitude } = body;
+
+    if (!project_id || !project_name || isNaN(latitude) || isNaN(longitude)) {
+      return Response.json({ error: 'Missing or invalid fields' }, { status: 400 });
+    }
+
+    // Ensure project exists before updating
+    const existingProject = await fetchProjectById(project_id);
+    if (!existingProject) {
+      return Response.json({ error: 'Project not found' }, { status: 404 });
+    }
+
+    // Update the project in the database
+    await sql`
+      UPDATE projects
+      SET project_name = ${project_name}, latitude = ${latitude}, longitude = ${longitude}
+      WHERE project_id = ${project_id}
+    `;
+
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error('Error updating project:', error);
+    return Response.json({ error: 'Failed to update project' }, { status: 500 });
   }
 }
