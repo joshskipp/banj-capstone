@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
-import { fetchProjectById } from '../../../lib/data';
+import { fetchProjectById } from '@/app/lib/data';
 import Link from 'next/link';
 
 
 export default async function ProjectDetailsPage({ params }: { params: { id: string } }) {
-  const project = await fetchProjectById(params.id);
+    const { id } = await params
+    const project = await fetchProjectById(id);
 
   if (!project) {
     notFound(); // Show a 404 page if the project is not found
