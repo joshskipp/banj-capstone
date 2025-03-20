@@ -18,3 +18,13 @@ export async function fetchKeyEvents() {
         throw new Error('Failed to fetch all key events.')
     }
 }
+
+export async function fetchKeyEventsByProjectID(project_id: string) {
+    try {
+        const data = await sql`SELECT * FROM key_events WHERE project_id=${project_id};`
+        return data;
+    } catch (error) {
+        console.error("Database Error - Failed to fetch key events of Project", error);
+        throw new Error('Failed to fetch key events of Project.')
+    }
+}

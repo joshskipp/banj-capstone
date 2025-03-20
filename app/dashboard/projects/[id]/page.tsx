@@ -1,4 +1,6 @@
 import { fetchProjectById, fetchProjectsCommoditites } from "@/app/lib/data";
+import { fetchKeyEventsByProjectID } from "@/app/lib/fetchdb/fetch-keyevents";
+import Databox from "@/app/ui/devtools/databox";
 
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
@@ -6,8 +8,10 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
     const [p] = await fetchProjectById(params.id);
     const cp = await fetchProjectsCommoditites(params.id);
 
+    const key_events = await fetchKeyEventsByProjectID(params.id);
+
     return (
-        <div>
+        <main>
             <h2>{p.project_name}</h2>
             <small>{p.project_id}</small>
             <ul>
@@ -29,7 +33,7 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
             </small>
 
             <hr className="my-3 border-black" />
-            <p>{JSON.stringify(cp)}</p>
+
 
             <h3>Commodity</h3>
             {cp.map((cp) => {
@@ -43,6 +47,20 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     </div>
                 )
             })}
-        </div>
+            <Databox rawData={cp} />
+            <hr />
+
+            <hr className="my-3 border-black" />
+            <h3>Key Events</h3>
+            {/* Displays key events, if there aren't any, display a meaningful message */}
+            {key_events[0]!=null ? key_events.map((k) => {
+                return (
+                    <div key={k.event_id}>
+                        <p>{k.event_date.toLocaleDateString()} - <strong>{k.event_details}</strong></p>
+                    </div>
+                )
+            }) : (<p>No key events</p>)}
+            <Databox rawData={key_events} />
+        </main>
     )
 }
