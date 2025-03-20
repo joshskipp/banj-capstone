@@ -1,6 +1,6 @@
-//import SideNav from "@/app/ui/dashboard/sidenav-template";
 
 import NavBar from "@/app/ui/dashboard/nav-bar";
+
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   return (

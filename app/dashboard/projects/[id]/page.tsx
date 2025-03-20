@@ -1,4 +1,23 @@
 import { fetchProjectById, fetchProjectsCommoditites } from "@/app/lib/data";
+import { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+    params: Promise<{ id: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const id = (await params).id;
+    const [project] = await fetchProjectById(id);
+
+    return {
+        title: `${project.project_name}`,
+    }
+}
+
 
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
