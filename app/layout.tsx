@@ -20,10 +20,9 @@ export default async function RootLayout({
             <div className="flex flex-col w-full">
                 <div className="h-full  overflow-y-auto">
                     <div className="bg-[#1f4656] text-white text-xs">
-                        <div className="container flex justify-between items-center mx-auto">
-                            App/Layout
-
-                            <div className="flex">
+                        <div className="container flex flex-row justify-between align-center mx-auto">
+                            <small></small>
+                            <div className="flex justify-self-end">
                                 {currentSession == null &&
                                     <div className="flex flex-row items-center gap-2">
                                         <button

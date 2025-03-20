@@ -55,7 +55,7 @@ export default function NavBar() {
                     <Link
                         key={link.href}
                         href={link.href}
-                        className={clsx("flex w-fit grow items-center justify-center gap-2 font-medium py-2 text-sm hover:underline-offset-4 hover:border-b-[#7a232a] hover:border-b-4", {"bg-gray-200 border-b-[#7a232a] border-b-4" : pathname === link.href})}>
+                        className={clsx("flex w-fit grow items-center justify-center gap-2 font-medium py-2 text-sm border-b-4 hover:underline-offset-4 hover:border-b-[#7a232a] hover:border-b-4", {"bg-gray-200 border-b-[#7a232a] border-b-4" : pathname === link.href})}>
                         <LinkIcon className="w-6" />
                         <p>{link.name}</p>
                     </Link>

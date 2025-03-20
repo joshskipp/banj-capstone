@@ -21,7 +21,7 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     </Link>
 
                     <Link href={`/dashboard/companies/${c.company_id}/edit`}>
-                    <Button className="ml-auto hover:bg-gray-700 bg-inherit border-black border-[1.15pt] hover:text-white text-black ">
+                    <Button className="ml-auto text-[#000] hover:bg-gray-700 bg-inherit border-black border-[1.15pt] hover:text-white ">
                         <PencilSquareIcon className="w-6 mr-2" />
                         Edit data
                     </Button>
