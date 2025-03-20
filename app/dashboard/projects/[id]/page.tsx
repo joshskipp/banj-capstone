@@ -1,4 +1,5 @@
 import { fetchProjectById, fetchProjectsCommoditites } from "@/app/lib/data";
+import DeleteProjectButton from "@/app/ui/projects/delete-project";
 
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
@@ -41,8 +42,12 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     <div key={cp.commodity_id}>
                         <p><a href="#"><strong>{cp.commodity_name}</strong></a>{val}</p>
                     </div>
+                    
                 )
             })}
+            <DeleteProjectButton projectId={params.id} />
+
+
         </div>
     )
 }

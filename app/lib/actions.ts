@@ -27,3 +27,18 @@ export async function authenticate(
       throw error;
     }
   }
+
+  export async function deleteProject(id: string) {
+    // try {
+
+      await sql`
+        DELETE FROM projects WHERE project_id = ${id}
+      `;
+      revalidatePath('/dashboard/projects'); // Refresh the projects list
+      redirect('/dashboard/projects'); // Redirect to the projects list page
+    // } 
+    // catch (error) {
+    //   console.error('Error deleting project:', error);
+    //   throw new Error('Failed to delete project');
+    // }
+  }
