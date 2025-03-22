@@ -1,12 +1,13 @@
-import { fetchProjectById, fetchProjectsCommoditites } from "@/app/lib/data";
+import { fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId} from "@/app/lib/data";
 import DeleteProjectButton from "@/app/ui/projects/delete-project";
 import { notFound } from 'next/navigation';
+import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
 
 export default async function Page({ params }: { params: { id: string } }) {
   // Fetch the project and its commodities
   const p = await fetchProjectById(params.id);
   const cp = await fetchProjectsCommoditites(params.id);
-
+  const attachments = await fetchAttachmentsByProjectId(params.id);
   // If the project is not found, show a 404 page
   if (!p) {
     notFound();
@@ -53,6 +54,21 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         );
       })}
+      <hr className="my-3 border-black" />
+
+<h3>Attachments</h3>
+<UploadAttachmentForm projectId={params.id} />
+<ul>
+  {attachments.map((attachment) => (
+    <li key={attachment.attachment_id}>
+      <p>
+        <strong>{attachment.link_name}</strong> - <a href={attachment.link_url} target="_blank" rel="noopener noreferrer">Link</a>
+      </p>
+      <p>File: <a href={attachment.file_url} target="_blank" rel="noopener noreferrer">{attachment.file_name}</a></p>
+      <p>Notes: {attachment.notes}</p>
+    </li>
+  ))}
+</ul>
       <DeleteProjectButton projectId={params.id} />
     </div>
   );

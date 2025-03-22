@@ -88,6 +88,19 @@ export async function fetchProjectById(id: string) {
     }
   }
 
+// Directly for each project
+  export async function fetchAttachmentsByProjectId(projectId: string) {
+    try {
+      const data = await sql`
+        SELECT * FROM attachments WHERE project_id = ${projectId}
+      `;
+      return data;
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch attachments');
+    }
+  }
+
 export async function fetchProjectsCommoditites(id: string) {
     try {
         const data = await sql`
