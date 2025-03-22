@@ -77,14 +77,16 @@ export async function fetchCommodityById(id: string) {
 
 export async function fetchProjectById(id: string) {
     try {
-        const data = await sql`
-            SELECT * FROM projects WHERE project_id=${id};`
-        return data;
+      const [project] = await sql`
+        SELECT * FROM projects
+        WHERE project_id = ${id}
+      `;
+      return project || null; // Return the first result or null if not found
     } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error(`Failed to fetch project with id ${id}.`);
+      console.error('Error fetching project:', error);
+      throw new Error('Failed to fetch project');
     }
-}
+  }
 
 export async function fetchProjectsCommoditites(id: string) {
     try {
