@@ -1,5 +1,7 @@
 import { fetchProjectById, fetchProjectsCommoditites } from "@/app/lib/data";
 import { Metadata, ResolvingMetadata } from 'next';
+import NewReservesForm from "@/app/ui/projects/newReservesForm"
+import Link from "next/link";
 
 type Props = {
     params: Promise<{ id: string }>
@@ -25,6 +27,15 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
     const [p] = await fetchProjectById(params.id);
     const cp = await fetchProjectsCommoditites(params.id);
 
+    const id:string = p.project_id
+    const commodititiesArray = cp.map(row => {
+        return {
+            commodity_id: row.commodity_id,
+            commodity_name: row.commodity_name,
+        }
+    })
+
+
     return (
         <div>
             <h2>{p.project_name}</h2>
@@ -46,6 +57,18 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     <li>Approved at: {p.approved_at.toString()}</li>
                 </ul>
             </small>
+
+            <div className="flex flex-row my-2 gap-2 rounded-md">
+                <div className="w-1/2 p-3 bg-gray-200 rounded-md">
+                    <h3>Reserves</h3>
+                    <Link href={`/dashboard/projects/${p.project_id}/reserves`}><u>Add Reserves Record</u></Link>
+                </div>
+                <div className="w-1/2 p-3 bg-gray-200 rounded-md">
+                    <h3>Productions</h3>
+
+                </div>
+            </div>
+
 
             <hr className="my-3 border-black" />
             <p>{JSON.stringify(cp)}</p>
