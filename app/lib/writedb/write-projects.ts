@@ -22,18 +22,17 @@ const FormSchema = z.object({
     // approved_by: z.string(),
 });
 // created_at: true, updated_at:true, approved_at:true, approved_by:true, updated_by:true
-const AddReserves = FormSchema.omit({project_id: true, })
+const AddReserves = FormSchema.omit({project_id: true })
 
 /**
  * Creates a "Reserves" record in the database using form input data and a project ID.
+ * @param deets
  * @param formData - The form data to be written to the database.
- * @param project_id - UUID (string) identifier for the project
- * @param commodity_id - UUID (string) identifier for the commodity of the Reserve
  */
-export async function writeReserves(project_id: string, formData:FormData) {
+export async function writeReserves(deets: { project_id:string, user_id:string }, formData:FormData) {
     console.log("Writing reserves to project...");
-    console.log("project id:", project_id);
-    console.log("commoditiy id:", formData.get('cmod'));
+    console.log("project id:", deets.project_id);
+    console.log("user_id:", deets.user_id);
     console.log(formData);
 
 
@@ -49,7 +48,7 @@ export async function writeReserves(project_id: string, formData:FormData) {
     });
 
     console.log(`Fetched reserved data: \n
-    Project id: ${project_id}\n
+    Project id: ${deets.project_id}\n
     CommodityId: ${commodity_id}\n
     Tonnage: ${tonnage}\n
     Grade: ${grade}\n
@@ -64,11 +63,11 @@ export async function writeReserves(project_id: string, formData:FormData) {
 
     await sql`
             INSERT INTO reserves
-                (project_id, commodity_id, tonnage, grade, units_of_measurement, estimate_date, notes, approved_status)
+                (project_id, commodity_id, tonnage, grade, units_of_measurement, estimate_date, notes, approved_status, created_by)
             VALUES
-                (${project_id}, ${commodity_id}, ${tonnage}, ${grade}, ${units_of_measurement}, ${estimate_date}, ${notes}, 'new')
+                (${deets.project_id}, ${commodity_id}, ${tonnage}, ${grade}, ${units_of_measurement}, ${estimate_date}, ${notes}, 'new', ${deets.user_id})
             ;`
 
-    revalidatePath(`/dashboard/projects/${project_id}`);
-    redirect(`/dashboard/projects/${project_id}`);
+    revalidatePath(`/dashboard/projects/${deets.project_id}`);
+    redirect(`/dashboard/projects/${deets.project_id}`);
 }
