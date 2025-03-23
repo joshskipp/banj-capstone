@@ -5,6 +5,16 @@ import {GetSession} from "@/app/lib/get-session"
 import {signOut} from "@/auth";
 import {PowerIcon, KeyIcon} from "@heroicons/react/24/outline";
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title:  {
+        template: '%s - Prospector',
+        default: 'Prospector Dashboard'
+    },
+}
+
+
 
 export default async function RootLayout({
                                              children,
@@ -15,6 +25,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
+
         <body className={`${lato.className} antialiased`}>
         <div className="flex flex-col min-h-[90vh] bg-[#f8f5f6]">
             <div className="flex flex-col w-full">
