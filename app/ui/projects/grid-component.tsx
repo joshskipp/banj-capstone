@@ -31,6 +31,9 @@ const GridComponent = () => {
         { field: "latitude", maxWidth: 120, sortable: true },
         { field: "longitude", maxWidth: 120, sortable: true },
         { field: "updated_at", maxWidth: 150, headerName: "Last Updated", sortable: true },
+        {field: "primary_commodity", maxWidth: 150, headerName: "Commodity", sortable: true },
+        //{field: "secondary_commodity", maxWidth: 150, headerName: "Commodity- (Other)", sortable: true },
+        {field: "approved_status", maxWidth: 150, headerName: "Approval", sortable: true }
     ]);
 
     // Function to export data to Excel
@@ -41,8 +44,8 @@ const GridComponent = () => {
     };
 
     return (
-        <div style={{ width: "100%", height: "80vh" }}>
-            {/* Add Export to Excel Button */}
+        <div style={{ width: "100%", height: "70vh" }}>
+            {/* Add Export to Excel Button */} <br />       
             <button
                 onClick={exportToExcel}
                 style={{
@@ -67,7 +70,7 @@ const GridComponent = () => {
                     rowData={rowData}
                     columnDefs={columnDefs}
                     pagination={true}
-                    paginationPageSize={10}
+                    paginationPageSize={14}
                     rowModelType="clientSide"
                 />
             </div>

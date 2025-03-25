@@ -29,38 +29,64 @@ export async function authenticate(
     }
   }
 
+
+  
+// Create a new project
 // Create a new project
 export async function createProject(formData: {
   project_name: string;
   latitude: string;
   longitude: string;
+  primary_commodity: string;
+  secondary_commodity: string;
+  product: string;
+  project_status: string;
 }) {
   try {
     await sql`
-      INSERT INTO projects (project_name, latitude, longitude)
-      VALUES (${formData.project_name}, ${parseFloat(formData.latitude)}, ${parseFloat(formData.longitude)})
+      INSERT INTO projects (
+        project_name, 
+        latitude, 
+        longitude,
+        primary_commodity,
+        secondary_commodity,
+        product,
+        project_status
+      )
+      VALUES (
+        ${formData.project_name}, 
+        ${parseFloat(formData.latitude)}, 
+        ${parseFloat(formData.longitude)},
+        ${formData.primary_commodity},
+        ${formData.secondary_commodity},
+        ${formData.product},
+        ${formData.project_status}
+      )
     `;
-    revalidatePath('/dashboard/projects'); // Refresh the projects list
-    redirect('/dashboard/projects'); // Redirect to the projects list page
+    revalidatePath('/dashboard/projects');
+    redirect('/dashboard/projects');
   } catch (error) {
     console.error('Error creating project:', error);
     throw new Error('Failed to create project');
   }
 }
-
+  
 // Update an existing project
 export async function updateProject(project: {
   project_id: string;
   project_name: string;
   latitude: string;
   longitude: string;
+  primary_commodity: string;
+  secondary_commodity: string;
+  product: string;
+  project_status: string;
 }) {
   // Validate input
   if (!project.project_id || !project.project_name || !project.latitude || !project.longitude) {
     throw new Error('Missing or invalid fields');
   }
 
-  // Parse latitude and longitude to numbers
   const latitude = parseFloat(project.latitude);
   const longitude = parseFloat(project.longitude);
 
@@ -69,21 +95,26 @@ export async function updateProject(project: {
   }
 
   try {
-    // Ensure project exists before updating
     const existingProject = await fetchProjectById(project.project_id);
     if (!existingProject) {
       throw new Error('Project not found');
     }
 
-    // Update the project in the database
     await sql`
       UPDATE projects
-      SET project_name = ${project.project_name}, latitude = ${latitude}, longitude = ${longitude}
+      SET 
+        project_name = ${project.project_name}, 
+        latitude = ${latitude}, 
+        longitude = ${longitude},
+        primary_commodity = ${project.primary_commodity},
+        secondary_commodity = ${project.secondary_commodity},
+        product = ${project.product},
+        project_status = ${project.project_status}
       WHERE project_id = ${project.project_id}
     `;
 
-    revalidatePath('/dashboard/projects'); // Refresh the projects list
-    redirect('/dashboard/projects'); // Redirect to the projects list page
+    revalidatePath('/dashboard/projects');
+    redirect('/dashboard/projects');
   } catch (error) {
     console.error('Error updating project:', error);
     throw new Error('Failed to update project');
@@ -122,7 +153,7 @@ export async function createAttachment(prevState: any, formData: FormData) {
   const file_name = formData.get('file_name') as string;
   const file_url = formData.get('file_url') as string;
   const notes = formData.get('notes') as string;
-  const created_by = 'no-user'; // Replace with actual user ID from session
+  const created_by = 'no-userTBI'; // Replace with actual user ID from session
 
   try {
     await sql`

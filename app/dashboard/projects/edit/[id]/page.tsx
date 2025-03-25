@@ -2,6 +2,7 @@ import { fetchProjectById } from "@/app/lib/data";
 import EditProjectForm from "@/app/ui/projects/edit-project";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/app/ui/button";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const project = await fetchProjectById(params.id); // Fetch the project
@@ -12,9 +13,14 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <h1>Edit Project</h1>
+      <h1>DEVELOPMENT Edit Project</h1>
       <EditProjectForm project={project} />
-      <Link href="/dashboard/projects">Back to Projects</Link>
+      <br />
+      <Link href="/dashboard/projects">
+      <Button>
+        Back to Projects
+        </Button>
+      </Link>
     </div>
   );
 }
