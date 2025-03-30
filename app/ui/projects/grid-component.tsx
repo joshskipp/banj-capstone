@@ -4,12 +4,11 @@ import { AgGridReact } from 'ag-grid-react';
 import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, themeQuartz, ClientSideRowModelModule } from "ag-grid-community";
-// import { ClientSideRowModelModule, ExcelExportModule } from "ag-grid-enterprise"; 
 import { fetchAllProjects } from "@/app/lib/data";
 import { redirect } from "next/navigation";
 
 // Register AG Grid modules
-ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]); 
+ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 const GridComponent = () => {
     const [rowData, setRowData] = useState<any[]>([]);
@@ -31,23 +30,22 @@ const GridComponent = () => {
         { field: "latitude", maxWidth: 120, sortable: true },
         { field: "longitude", maxWidth: 120, sortable: true },
         { field: "updated_at", maxWidth: 150, headerName: "Last Updated", sortable: true },
-        {field: "primary_commodity", maxWidth: 150, headerName: "Commodity", sortable: true },
-        //{field: "secondary_commodity", maxWidth: 150, headerName: "Commodity- (Other)", sortable: true },
-        {field: "approved_status", maxWidth: 150, headerName: "Approval", sortable: true }
+        { field: "primary_commodity", maxWidth: 150, headerName: "Commodity", sortable: true },
+        { field: "approved_status", maxWidth: 150, headerName: "Approval", sortable: true }
     ]);
 
-    // Function to export data to Excel
-    const exportToExcel = () => {
+    // Function to export data to CSV
+    const exportToCsv = () => {
         if (gridRef.current?.api) {
-            gridRef.current.api.exportDataAsExcel();
+            gridRef.current.api.exportDataAsCsv();
         }
     };
 
     return (
         <div style={{ width: "100%", height: "70vh" }}>
-            {/* Add Export to Excel Button */} <br />       
+            {/* Add Export to CSV Button */} <br />
             <button
-                onClick={exportToExcel}
+                onClick={exportToCsv}
                 style={{
                     marginBottom: "10px",
                     padding: "8px 12px",
@@ -58,7 +56,7 @@ const GridComponent = () => {
                     cursor: "pointer",
                 }}
             >
-                Export to Excel
+                Export to CSV
             </button>
 
             {/* AG Grid */}
