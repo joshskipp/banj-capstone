@@ -3,13 +3,13 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
-import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
-import { ClientSideRowModelModule, ExcelExportModule } from "ag-grid-enterprise"; 
+import { AllCommunityModule, ModuleRegistry, themeQuartz, ClientSideRowModelModule } from "ag-grid-community";
+// import { ClientSideRowModelModule, ExcelExportModule } from "ag-grid-enterprise"; 
 import { fetchAllProjects } from "@/app/lib/data";
 import { redirect } from "next/navigation";
 
 // Register AG Grid modules
-ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, ExcelExportModule]); 
+ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]); 
 
 const GridComponent = () => {
     const [rowData, setRowData] = useState<any[]>([]);
