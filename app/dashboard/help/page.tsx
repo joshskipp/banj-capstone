@@ -49,22 +49,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Step 2: Dashboard</h3>
-              <p>The dashboard provides an overview of your data. You can click on different sections such as Analytics, Users, and Settings to explore more details.</p>
+              <p>The dashboard provides an overview of your data. You can click on different sections for more details.</p>
             </div>
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Step 3: Navigation</h3>
-              <p>Use the sidebar to navigate between different sections of the application. Each link will bring you to a relevant page where you can manage your data.</p>
+              <p>Use the navbar to navigate between different sections of the application. Each link will bring you to a relevant page where you can manage your data.</p>
             </div>
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Step 4: Settings</h3>
               <p>In the Settings section, you can customize your profile, preferences, and application settings to suit your needs.</p>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">FAQs</h3>
-              <ul className="list-disc pl-5">
-                <li>How do I change my password? Go to Settings &gt; Profile.</li>
-                <li>How do I view detailed analytics? Click on Analytics in the sidebar.</li>
-              </ul>
             </div>
           </div>
         )}
