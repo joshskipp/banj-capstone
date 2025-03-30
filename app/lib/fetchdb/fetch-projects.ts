@@ -38,3 +38,12 @@ export async function fetchProductions(project_id: string) {
         throw new Error("Failed to fetch reserves from database for project: " + project_id);
     }
 }
+
+export async function fetchAllProjectNamePairs() {
+    try {
+        return await sql`SELECT project_id, project_name FROM Projects`;
+    } catch (error) {
+        console.error("Database Error: " + error + "\n Failed to fetch projects from database");
+        throw new Error("Failed to fetch projects from database");
+    }
+}

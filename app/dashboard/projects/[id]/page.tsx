@@ -1,4 +1,6 @@
 import { fetchProjectById, fetchProjectsCommoditites } from "@/app/lib/data";
+import { fetchKeyEventsByProjectID } from "@/app/lib/fetchdb/fetch-keyevents";
+import Databox from "@/app/ui/devtools/databox";
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from "next/link";
 import { fetchReserves }  from "@/app/lib/fetchdb/fetch-projects";
@@ -20,12 +22,14 @@ export async function generateMetadata(
     }
 }
 
-
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
 
     const [p] = await fetchProjectById(params.id);
     const cp = await fetchProjectsCommoditites(params.id);
+
+
+    const key_events = await fetchKeyEventsByProjectID(params.id);
 
     /**
      * Fetch Project Reserves
@@ -33,8 +37,9 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
     const pReserves = await fetchReserves(params.id);
 
 
+
     return (
-        <div>
+        <main>
             <h2>{p.project_name}</h2>
             <small>{p.project_id}</small>
             <ul>
@@ -54,6 +59,10 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     <li>Approved at: {p.approved_at.toString()}</li>
                 </ul>
             </small>
+
+
+            <hr className="my-3 border-black" />
+
 
             <div className="flex flex-row my-2 gap-2 rounded-md">
                 <div className="w-1/2 p-3 bg-gray-200 rounded-md">
@@ -97,6 +106,7 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
             <hr className="my-3 border-black"/>
             <p>{JSON.stringify(cp)}</p>
 
+
             <h3>Commodity</h3>
             {cp.map((cp) => {
                 let val: string = ""
@@ -109,6 +119,20 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                     </div>
                 )
             })}
-        </div>
+            <Databox rawData={cp} />
+            <hr />
+
+            <hr className="my-3 border-black" />
+            <h3>Key Events</h3>
+            {/* Displays key events, if there aren't any, display a meaningful message */}
+            {key_events[0]!=null ? key_events.map((k) => {
+                return (
+                    <div key={k.event_id}>
+                        <p>{k.event_date.toLocaleDateString()} - <strong>{k.event_details}</strong></p>
+                    </div>
+                )
+            }) : (<p>No key events</p>)}
+            <Databox rawData={key_events} />
+        </main>
     )
 }

@@ -41,3 +41,20 @@ export type CompanyForm = {
     asx_code : string,
     notes: string,
 }
+
+export type KeyEvent = {
+    event_id: string,
+    event_date: Date,
+    event_details: string,
+    created_by: string,
+    created_at: Date,
+    updated_at: Date,
+}
+
+export type KeyEventForm = {
+    event_id: string,
+    event_date: Date,
+    event_details: string,
+    project_id: string,
+    project_name: string,
+}

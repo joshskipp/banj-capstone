@@ -77,3 +77,46 @@ textarea.dev {
   border: solid 1px #ccc;
   font: 10pt monospace;
 }
+
+button {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+.fluent-primary-button {
+  color: white;
+  background-color: #0078d4;
+  border: 1px solid #0078d4;
+  border-radius: 2px;
+  padding: 6.25px 15px;
+  transition: all 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+  outline: none;
+}
+
+.fluent-primary-button:hover {
+  background-color: #005ba1;
+}
+
+.fluent-primary-button:active {
+  background-color: #0894ff;
+}
+
+.fluent-default-button {
+  color: black;
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 6.25px 15px;
+  transition: all 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+  outline: none;
+}
+
+.fluent-default-button:hover {
+  background-color: #0078d4;
+  border: 1px solid #0078d4;
+  color: white;
+}
+
+.fluent-default-button:active {
+  background-color: #005ba1;
+}

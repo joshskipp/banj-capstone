@@ -1,5 +1,6 @@
 import { fetchAllProjects } from "@/app/lib/data";
 import GridComponent from "@/app/ui/projects/grid-component";
+import Databox from "@/app/ui/devtools/databox";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,9 +12,8 @@ export default async function Page(){
 
     return (
         <main>
-
             <GridComponent />
-            <textarea disabled value={JSON.stringify(AllProjects, null, 2)}/>
+           <Databox rawData={AllProjects} />
         </main>
     )
 }
