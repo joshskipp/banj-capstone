@@ -41,7 +41,7 @@ export default async function Page(props: {
                             Coordinates: {project.latitude}, {project.longitude}
                             <br />
                             {/* Constructing the link using the project_id */}
-                            <a href={`/dashboard/projects/${project.project_id}/dashboard/projects/${project.project_id}`}>
+                            <a href={`/dashboard/projects/${project.project_id}`}>
                                 More...
                             </a>
                         </div>

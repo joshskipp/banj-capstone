@@ -26,13 +26,10 @@ export default async function Page(props: {
     return (
         <div>
             <h2><strong>Dashboard</strong></h2>
-            <hr/>
-
             <div className="w-full">
                 <DashboardSkeleton />
             </div>
-            
-
+        
             <div className="flex w-full flex-row justify-end">
                 <Link href="/dashboard/projects/searchresults">
                 <Button className="w-[12rem] flex gap-2">

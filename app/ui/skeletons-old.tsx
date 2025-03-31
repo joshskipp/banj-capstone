@@ -5,14 +5,8 @@ const shimmer =
 export function CreateProjectSkeleton() {
   return (
     <div>
-      <div className="flex p-4 bg-[#1f4656] ">
-        <div className="h-5 w-5 rounded-md bg-[#1f4656] " />
-        <div>
-        <h2 className="text-xl font-semibold">Create Project</h2>
-        </div>
-      </div>
       <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8">
-        <div className="h-7 w-20 rounded-md bg-gray-200" />
+        <h2 className="text-xl bg-white font-semibold">Create Project</h2>
       </div>
     </div>
   );
@@ -21,15 +15,8 @@ export function CreateProjectSkeleton() {
 export function CreateCommoditySkeleton() {
   return (
     <div>
-      <div className="flex p-4 bg-[#1f4656] ">
-        <div className="h-5 w-5 rounded-md bg-[#1f4656] " />
-        <div className="ml-2 h-6 w-16 rounded-md bg-gray-200 text-sm font-medium"/>
-        <div>
-        <h2 className="text-xl font-semibold">This Web Application</h2>
-        </div>
-      </div>
       <div className="flex items-center justify-center truncate rounded-xl bg-white px-4 py-8">
-        <div className="h-7 w-20 rounded-md bg-gray-200" />
+        <h2 className="text-xl bg-white font-semibold">Create Commodity</h2>
       </div>
     </div>
   );
@@ -38,15 +25,8 @@ export function CreateCommoditySkeleton() {
 export function CreateCompanySkeleton() {
   return (
     <div>
-      <div className="flex p-4 bg-[#1f4656] ">
-        <div className="h-5 w-5 rounded-md bg-[#1f4656] " />
-        <div className="ml-2 h-6 w-16 rounded-md bg-gray-200 text-sm font-medium"/>
-        <div>
-        <h2 className="text-xl font-semibold">This Web Application</h2>
-        </div>
-      </div>
       <div className="flex items-center justify-center truncate rounded-xl bg-white px-4 py-8">
-        <div className="h-7 w-20 rounded-md bg-gray-200" />
+      <h2 className="text-xl bg-white font-semibold">Create Company</h2>
       </div>
     </div>
   );
@@ -55,15 +35,8 @@ export function CreateCompanySkeleton() {
 export function CreateKeyEventSkeleton() {
   return (
     <div>
-      <div className="flex p-4 bg-[#1f4656] ">
-        <div className="h-5 w-5 rounded-md bg-[#1f4656] " />
-        <div className="ml-2 h-6 w-16 rounded-md bg-gray-200 text-sm font-medium"/>
-        <div>
-        <h2 className="text-xl font-semibold">This Web Application</h2>
-        </div>
-      </div>
       <div className="flex items-center justify-center truncate rounded-xl bg-white px-4 py-8">
-        <div className="h-7 w-20 rounded-md bg-gray-200" />
+      <h2 className="text-xl bg-white font-semibold">Create Key Event</h2>
       </div>
     </div>
   );
