@@ -18,7 +18,6 @@ export default async function Page(props: {
     const currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchProjectsPages(query);
 
-
     const AllProjects = await fetchAllProjects();
     const SearchedProjects = await fetchFilteredProjects(query, currentPage);
     const Pagination = await fetchProjectsPages(query);
@@ -56,6 +55,7 @@ export default async function Page(props: {
             {/* {AllProjects.map((project, i) => {
                 return (
                     <div key={project.project_id} className="p-2 b-1 b-black">
+
                         <strong>{project.project_name}</strong><br />
                         <small>{project.project_id}</small><br />
                         {project.latitude}, {project.longitude}

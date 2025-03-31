@@ -1,7 +1,14 @@
 import { fetchAllProjects } from "@/app/lib/data";
-import Link from "next/link";
 import GridComponent from "@/app/ui/projects/grid-component";
 import { Button } from "@/app/ui/button";
+import Databox from "@/app/ui/devtools/databox";
+import { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+    title: 'Projects',
+};
+
 
 export default async function Page(){
     const AllProjects = await fetchAllProjects();
@@ -19,7 +26,7 @@ export default async function Page(){
 
 
             <GridComponent />
-            <textarea disabled value={JSON.stringify(AllProjects, null, 2)}/>
+           <Databox rawData={AllProjects} />
         </main>
     )
 }
