@@ -3,6 +3,7 @@ import CompaniesDataGrid from "@/app/ui/companies/datagrid";
 import { Button } from "@/app/ui/button";
 import { PlusCircleIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Databox from "@/app/ui/devtools/databox";
 
 
 export default async function Page() {
@@ -43,9 +44,7 @@ export default async function Page() {
 
             <CompaniesDataGrid initialCompanies={companies} />
 
-            <textarea cols={80} className="dev"  readOnly rows={10}
-                value={JSON.stringify(companies)}>
-            </textarea>
+            <Databox rawData={companies} />
 
         </main>
     )

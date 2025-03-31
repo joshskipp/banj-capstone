@@ -52,7 +52,7 @@ export async function fetchAllCommodities() {
 export async function fetchCommodityProjects(id: string) {
     try {
         const data = await sql`
-            select pc.project_id, pc.isprimary, pc.issecondary, projects.project_name
+            select pc.project_id, pc.isprimary, pc.issecondary, projects.project_name, pc.commodity_id
             from project_commodities as pc
             inner join Projects on pc.project_id = projects.project_id
             where commodity_id = ${id};`
@@ -89,8 +89,10 @@ export async function fetchProjectById(id: string) {
 export async function fetchProjectsCommoditites(id: string) {
     try {
         const data = await sql`
-            select commodities.commodity_name
-            from commodities;
+            select pc.project_id, pc.isprimary, pc.issecondary, commodities.commodity_name, pc.commodity_id
+            from project_commodities as pc
+            inner join Commodities on pc.commodity_id = commodities.commodity_id
+            where pc.project_id = ${id};
             `
         return data;
     } catch (error) {
