@@ -33,7 +33,7 @@ export default function CompaniesDataGrid({ initialCompanies }: CompaniesDataGri
     // Define columns for the data grid
     const columns = [
         //{ key: 'id', name: 'ID', width: 5},
-        { key: 'name', name: 'Company Name' },
+        { key: 'name', name: 'Company Name', filter: "agSetColumnFilter", sortable: true},
         { key: 'asx', name: 'ASX Code' },
         { key: 'notes', name: 'Notes' },
         { key: 'created_at', name: 'Created At' },

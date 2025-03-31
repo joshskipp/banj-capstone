@@ -102,6 +102,50 @@ export async function fetchProjectsCommoditites(id: string) {
 
 }
 
+const ITEMS_PER_PAGE = 100;
+
+export async function fetchFilteredProjects(
+    query: string,
+    currentPage: number,  ) {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  
+    try {
+      const projects = await sql`
+        SELECT * FROM projects
+        WHERE
+          projects.project_name ILIKE ${`%${query}%`} OR
+          projects.product ILIKE ${`%${query}%`} 
+        ORDER BY projects.created_at DESC
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+      `;
+  
+      return projects;
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch projects.');
+    }
+}
+  
+  
+export async function fetchProjectsPages(query: string) {
+      try {
+        const data = await sql`SELECT COUNT(*)
+        FROM projects
+        WHERE
+          projects.project_name ILIKE ${`%${query}%`} OR
+          projects.product ILIKE ${`%${query}%`} 
+      `;
+    
+        const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+        return totalPages;
+      } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch total number of projects.');
+      }
+    }
+
+
+
 // FROM TEMPLATE
 //
 // import postgres from 'postgres';
