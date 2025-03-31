@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Page() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   const toggleHelpMenu = () => setIsHelpOpen(!isHelpOpen);
@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex-1 overflow-hidden flex">
         {/* Main Content */}
         <main className="flex-1 p-6 bg-[#f8f8f8] overflow-auto">
-          {children}
+          {/*{children}*/}
         </main>
 
         {/* Help Section */}
