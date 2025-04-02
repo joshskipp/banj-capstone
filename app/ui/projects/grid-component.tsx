@@ -3,9 +3,11 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
-import { AllCommunityModule, ModuleRegistry, themeQuartz, ClientSideRowModelModule } from "ag-grid-community";
+import { themeQuartz } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule} from "ag-grid-community";
 import { fetchAllProjects } from "@/app/lib/data";
 import { redirect } from "next/navigation";
+ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, QuickFilterModule]);
 
 // Register AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
@@ -25,11 +27,12 @@ const GridComponent = () => {
     };
 
     const [columnDefs] = useState<ColDef[]>([
-        { field: "project_id", width: 100, headerName: "ID" },
-        { field: "project_name", width: 300, headerName: "Project Name", sortable: true },
+        { field: "project_id", width: 300, headerName: "ID" },
+        { field: "project_name", width: 300, headerName: "Project Name", filter: "agTextColumnFilter", sortable: true},
+        { field: "product", width: 300, headerName: "Product", filter: "agTextColumnFilter",sortable: true },
         { field: "latitude", maxWidth: 120, sortable: true },
         { field: "longitude", maxWidth: 120, sortable: true },
-        { field: "updated_at", maxWidth: 150, headerName: "Last Updated", sortable: true },
+        { field: "updated_at", maxWidth: 150, headerName: "Last Updated", filter: "agTextColumnFilter",sortable: true },
         { field: "primary_commodity", maxWidth: 150, headerName: "Commodity", sortable: true },
         { field: "approved_status", maxWidth: 150, headerName: "Approval", sortable: true }
     ]);

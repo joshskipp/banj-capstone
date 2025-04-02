@@ -52,7 +52,7 @@ export async function fetchAllCommodities() {
 export async function fetchCommodityProjects(id: string) {
     try {
         const data = await sql`
-            select pc.project_id, pc.isprimary, pc.issecondary, projects.project_name
+            select pc.project_id, pc.isprimary, pc.issecondary, projects.project_name, pc.commodity_id
             from project_commodities as pc
             inner join Projects on pc.project_id = projects.project_id
             where commodity_id = ${id};`
@@ -104,8 +104,10 @@ export async function fetchProjectById(id: string) {
 export async function fetchProjectsCommoditites(id: string) {
     try {
         const data = await sql`
-            select commodities.commodity_name
-            from commodities;
+            select pc.project_id, pc.isprimary, pc.issecondary, commodities.commodity_name, pc.commodity_id
+            from project_commodities as pc
+            inner join Commodities on pc.commodity_id = commodities.commodity_id
+            where pc.project_id = ${id};
             `
         return data;
     } catch (error) {
@@ -114,6 +116,50 @@ export async function fetchProjectsCommoditites(id: string) {
     }
 
 }
+
+const ITEMS_PER_PAGE = 100;
+
+export async function fetchFilteredProjects(
+    query: string,
+    currentPage: number,  ) {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  
+    try {
+      const projects = await sql`
+        SELECT * FROM projects
+        WHERE
+          projects.project_name ILIKE ${`%${query}%`} OR
+          projects.product ILIKE ${`%${query}%`} 
+        ORDER BY projects.created_at DESC
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+      `;
+  
+      return projects;
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch projects.');
+    }
+}
+  
+  
+export async function fetchProjectsPages(query: string) {
+      try {
+        const data = await sql`SELECT COUNT(*)
+        FROM projects
+        WHERE
+          projects.project_name ILIKE ${`%${query}%`} OR
+          projects.product ILIKE ${`%${query}%`} 
+      `;
+    
+        const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+        return totalPages;
+      } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch total number of projects.');
+      }
+    }
+
+
 
 // FROM TEMPLATE
 //
