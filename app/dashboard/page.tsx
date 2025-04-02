@@ -18,7 +18,6 @@ export default async function Page(props: {
     const currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchProjectsPages(query);
 
-
     const AllProjects = await fetchAllProjects();
     const SearchedProjects = await fetchFilteredProjects(query, currentPage);
     const Pagination = await fetchProjectsPages(query);
@@ -27,14 +26,9 @@ export default async function Page(props: {
     return (
         <div>
             <h2><strong>Dashboard</strong></h2>
-            <hr/>
-            <h3><strong>Shortcuts</strong></h3>
-            <hr />
-
             <div className="w-full">
                 <DashboardSkeleton />
             </div>
-
 
             <div className="flex w-full flex-row justify-end">
                 <Link href="/dashboard/projects/searchresults">
@@ -53,32 +47,6 @@ export default async function Page(props: {
                 </Link>
                 <br></br>
             </div>
-
-
-            <div className="w-full">
-                <div className="flex w-full items-center justify-between">
-                </div>
-                <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                    <Search />
-                </div>
-
-                {SearchedProjects.map((project, i) => {
-                    return (
-                        <div key={project.project_id} className="p-2 b-1 b-black">
-                            <strong>{project.project_name}</strong><br />
-                            <small>ID: {project.project_id}</small><br />
-                            Coordinates: {project.latitude}, {project.longitude}
-                            {/* <small>Date Created: {project.created_at}</small><br /> */}
-                        </div>
-                    )
-                })}
-
-                <div className="mt-5 flex w-full justify-center">
-
-                </div>
-            </div>
-
-
 
 
             {/* {AllProjects.map((project, i) => {

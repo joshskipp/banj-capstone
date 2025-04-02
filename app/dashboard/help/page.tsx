@@ -3,9 +3,12 @@
 import { useState } from 'react';
 
 export default function Page() {
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('welcome'); // Tracks the active section
 
-  const toggleHelpMenu = () => setIsHelpOpen(!isHelpOpen);
+  // Function to handle the section change
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -13,14 +16,49 @@ export default function Page() {
       <aside className="w-64 bg-[#1f4656] text-white p-4 border-r border-[#7a232a]">
         <nav>
           <ul className="space-y-4">
-            <li><a href="#" className="text-lg hover:text-[#7a232a]">Welcome to Propsector</a></li>
-            <li><a href="#" className="text-lg hover:text-[#7a232a]">Creating/Editing Data</a></li>
-            <li><a href="#" className="text-lg hover:text-[#7a232a]">Searching and Filtering</a></li>
-            <li><a href="#" className="text-lg hover:text-[#7a232a]">Exporting</a></li>
-            <li><a href="#" className="text-lg hover:text-[#7a232a]">Reviewing</a></li>
             <li>
-              <button 
-                onClick={toggleHelpMenu} 
+              <button
+                onClick={() => handleSectionChange('welcome')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Welcome to Prospector
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('creatingEditingData')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Creating/Editing Data
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('searchingFiltering')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Searching and Filtering
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('exporting')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Exporting
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('reviewing')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Reviewing
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('help')}
                 className="text-lg hover:text-[#7a232a] mt-4 w-full text-left"
               >
                 Help
@@ -37,27 +75,49 @@ export default function Page() {
           {/*{children}*/}
         </main>
 
-        {/* Help Section */}
-        {isHelpOpen && (
-          <div className="w-80 bg-[#f8f8f8] p-6 border-l border-[#7a232a]">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">How to Use This Web Application</h2>
-            </div>
+        {/* Content Sections */}
+        {activeSection === 'welcome' && (
+          <div className="w-full p-6">
+            <h2>Welcome to Prospector</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'creatingEditingData' && (
+          <div className="w-full p-6">
+            <h2>Creating/Editing Data</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'searchingFiltering' && (
+          <div className="w-full p-6">
+            <h2>Searching and Filtering</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'exporting' && (
+          <div className="w-full p-6">
+            <h2>Exporting</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'reviewing' && (
+          <div className="w-full p-6">
+            <h2>Reviewing</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'help' && (
+          <div className="w-full p-6">
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">Step 1: Login</h3>
-              <p>To get started, sign in using your credentials. If you don’t have an account, you can register from the login page.</p>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Step 2: Dashboard</h3>
-              <p>The dashboard provides an overview of your data. You can click on different sections for more details.</p>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Step 3: Navigation</h3>
-              <p>Use the navbar to navigate between different sections of the application. Each link will bring you to a relevant page where you can manage your data.</p>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Step 4: Settings</h3>
-              <p>In the Settings section, you can customize your profile, preferences, and application settings to suit your needs.</p>
+              <h3 className="text-lg font-semibold">FAQs</h3>
+              <ul className="list-disc pl-5">
+                <li>How do I change my password? Go to Settings &gt; Profile.</li>
+              </ul>
             </div>
           </div>
         )}
@@ -65,4 +125,3 @@ export default function Page() {
     </div>
   );
 }
-
