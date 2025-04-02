@@ -29,7 +29,7 @@ export default async function Page(props: {
             <div className="w-full">
                 <DashboardSkeleton />
             </div>
-        
+
             <div className="flex w-full flex-row justify-end">
                 <Link href="/dashboard/projects/searchresults">
                 <Button className="w-[12rem] flex gap-2">
@@ -47,7 +47,7 @@ export default async function Page(props: {
                 </Link>
                 <br></br>
             </div>
-            
+
 
             {/* {AllProjects.map((project, i) => {
                 return (

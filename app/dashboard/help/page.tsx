@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Page() {
   const [activeSection, setActiveSection] = useState<string>('welcome'); // Tracks the active section
 
   // Function to handle the section change
@@ -72,42 +72,42 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex-1 overflow-hidden flex">
         {/* Main Content */}
         <main className="flex-1 p-6 bg-[#f8f8f8] overflow-auto">
-          {children}
+          {/*{children}*/}
         </main>
 
         {/* Content Sections */}
         {activeSection === 'welcome' && (
           <div className="w-full p-6">
             <h2>Welcome to Prospector</h2>
-            
+
           </div>
         )}
 
         {activeSection === 'creatingEditingData' && (
           <div className="w-full p-6">
             <h2>Creating/Editing Data</h2>
-            
+
           </div>
         )}
 
         {activeSection === 'searchingFiltering' && (
           <div className="w-full p-6">
             <h2>Searching and Filtering</h2>
-            
+
           </div>
         )}
 
         {activeSection === 'exporting' && (
           <div className="w-full p-6">
             <h2>Exporting</h2>
-            
+
           </div>
         )}
 
         {activeSection === 'reviewing' && (
           <div className="w-full p-6">
             <h2>Reviewing</h2>
-            
+
           </div>
         )}
 
