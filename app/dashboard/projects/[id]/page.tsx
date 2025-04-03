@@ -6,41 +6,43 @@ import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 import Databox from "@/app/ui/devtools/databox";
-import {Metadata, ResolvingMetadata} from 'next';
+// import {Metadata, ResolvingMetadata} from 'next';
 import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
 
-type Props = {
-    params: Promise<{ id: string }>
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+// type Props = {
+//     params: Promise<{ id: string }>
+//     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+// }
 
-export async function generateMetadata(
-    {params, searchParams}: Props,
-    parent: ResolvingMetadata
-): Promise<Metadata> {
-    const id = (await params).id;
-    const project = await fetchProjectById(id);
+// export async function generateMetadata(
+//     {params, searchParams}: Props,
+//     parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//     const id = (await params).id;
+//     const project = await fetchProjectById(id);
+//
+//     return {
+//         title: `${project.project_name}`,
+//     }
+// }
 
-    return {
-        title: `${project.project_name}`,
-    }
-}
-
-export default async function Page({params}: { params: { id: string } }) {
-    const p = await fetchProjectById(params.id);
-    const cp = await fetchProjectsCommoditites(params.id);
-    const attachments = await fetchAttachmentsByProjectId(params.id);
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
+    const id = params.id;
+    const p = await fetchProjectById(id);
+    const cp = await fetchProjectsCommoditites(id);
+    const attachments = await fetchAttachmentsByProjectId(id);
 
     if (!p) {
         notFound();
     }
 
-    const key_events = await fetchKeyEventsByProjectID(params.id);
+    const key_events = await fetchKeyEventsByProjectID(id);
 
     /**
      * Fetch Project Reserves
      */
-    const pReserves = await fetchReserves(params.id);
+    const pReserves = await fetchReserves(id);
 
     return (
         <main>
@@ -52,12 +54,12 @@ export default async function Page({params}: { params: { id: string } }) {
                     </div>
                     <div className="flex space-x-2">
                         <Link
-                            href={`/dashboard/projects/edit/${params.id}`}
+                            href={`/dashboard/projects/edit/${id}`}
                             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                         >
                             Edit Project
                         </Link>
-                        <DeleteProjectButton projectId={params.id}/>
+                        <DeleteProjectButton projectId={id}/>
                     </div>
 
                 </div>
@@ -172,7 +174,7 @@ export default async function Page({params}: { params: { id: string } }) {
                         </summary>
 
                         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                            <UploadAttachmentForm projectId={params.id}/>
+                            <UploadAttachmentForm projectId={id}/>
 
                             {attachments.length > 0 ? (
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
