@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter} from 'next/navigation';
 import { updateProject } from '@/app/lib/actions';
 
 const COMMODITY_OPTIONS = [
@@ -58,11 +58,16 @@ export default function EditProjectForm({ project }: { project: any }) {
   }, [project]);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Submitting data...")
     e.preventDefault();
     try {
+      console.log("Running function updateProject");
       await updateProject(formData);
-      router.push('/dashboard/projects');
+      console.log("Redirect");
+      router.push(`/dashboard/projects/${project.project_id}`);
     } catch (error) {
+      console.log(error);
+      console.log("hit catch block");
       console.error('Error updating project:', error);
       alert('Failed to update project. Please try again.');
     }

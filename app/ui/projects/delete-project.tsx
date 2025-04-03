@@ -14,7 +14,7 @@ export default function DeleteProjectButton({ projectId }: { projectId: string }
       try {
         await deleteProject(projectId);
         // Redirect to the projects list page after successful deletion
-        router.push('/dashboard/projects');
+          router.push(`/dashboard/projects/`);
       } catch (error) {
         console.error('Error deleting project:', error);
         alert('Failed to delete project. Please try again.');

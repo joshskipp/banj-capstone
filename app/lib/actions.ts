@@ -2,7 +2,7 @@
 
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-import { z } from 'zod';
+// import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import postgres from 'postgres';
@@ -121,18 +121,24 @@ export async function updateProject(project: {
     console.error('Error updating project:', error);
     throw new Error('Failed to update project');
   }
-  console.log("revalidating and redirecting")
-  revalidatePath('/dashboard/projects');
-  redirect('/dashboard/projects');
+  // Cannot run redirect. Redirect internally throws an error so it should be called outside of try/catch blocks
+  revalidatePath('/dashboard/projects')
+    //redirect(`/dashboard/projects/${project.project_id}`)
+
 }
 
-// Delte an existing project
+// Delete an existing project
 // To Be DEBUGGED - try catch creates ussues where the page errors out put the action is still completed (The 'delete' is carried out before the page error)
 export async function deleteProject(id: string) {
   try {
     // Delete related records in the attachments table
     await sql`
       DELETE FROM attachments WHERE project_id = ${id}
+    `;
+
+    // Delete associated key_events
+    await sql`
+      DELETE FROM key_events WHERE project_id = ${id}
     `;
 
     // Delete the project
@@ -145,8 +151,9 @@ export async function deleteProject(id: string) {
     console.error('Error deleting project:', error);
     throw new Error('Failed to delete project');
   }
-  revalidatePath('/dashboard/projects'); // Refresh the projects list
-  redirect('/dashboard/projects'); // Redirect to the projects list page
+  // Cannot run redirect. Redirect internally throws an error so it should be called outside of try/catch blocks
+  revalidatePath('/dashboard/projects')
+    //redirect(`/dashboard/projects/${project.project_id}`)
 }
 
 // Attachments
