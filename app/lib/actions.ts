@@ -63,12 +63,12 @@ export async function createProject(formData: {
         ${formData.project_status}
       )
     `;
-    revalidatePath('/dashboard/projects');
-    redirect('/dashboard/projects');
   } catch (error) {
     console.error('Error creating project:', error);
     throw new Error('Failed to create project');
   }
+  revalidatePath('/dashboard/projects');
+  redirect('/dashboard/projects');
 }
   
 // Update an existing project
@@ -86,6 +86,7 @@ export async function updateProject(project: {
   if (!project.project_id || !project.project_name || !project.latitude || !project.longitude) {
     throw new Error('Missing or invalid fields');
   }
+  console.log('input validated...');
 
   const latitude = parseFloat(project.latitude);
   const longitude = parseFloat(project.longitude);
@@ -93,7 +94,7 @@ export async function updateProject(project: {
   if (isNaN(latitude) || isNaN(longitude)) {
     throw new Error('Invalid latitude or longitude');
   }
-
+  console.log('attempting to update project');
   try {
     const existingProject = await fetchProjectById(project.project_id);
     if (!existingProject) {
@@ -112,13 +113,17 @@ export async function updateProject(project: {
         project_status = ${project.project_status}
       WHERE project_id = ${project.project_id}
     `;
-
-    revalidatePath('/dashboard/projects');
-    redirect('/dashboard/projects');
+    console.log("updated database");
   } catch (error) {
+
+    console.error('Error updating project');
+
     console.error('Error updating project:', error);
     throw new Error('Failed to update project');
   }
+  console.log("revalidating and redirecting")
+  revalidatePath('/dashboard/projects');
+  redirect('/dashboard/projects');
 }
 
 // Delte an existing project
@@ -135,12 +140,13 @@ export async function deleteProject(id: string) {
       DELETE FROM projects WHERE project_id = ${id}
     `;
 
-    revalidatePath('/dashboard/projects'); // Refresh the projects list
-    redirect('/dashboard/projects'); // Redirect to the projects list page
+
   } catch (error) {
     console.error('Error deleting project:', error);
     throw new Error('Failed to delete project');
   }
+  revalidatePath('/dashboard/projects'); // Refresh the projects list
+  redirect('/dashboard/projects'); // Redirect to the projects list page
 }
 
 // Attachments
