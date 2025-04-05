@@ -12,7 +12,7 @@ type Props = {
 
 export default async function Page(props: { params: Promise<{id: string}>}) {
     const params = await props.params;
-    const [p] = await fetchProjectById(params.id);
+    const p = await fetchProjectById(params.id);
     const cp = await fetchProjectsCommoditites(params.id);
 
     const session = await auth();
