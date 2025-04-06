@@ -35,4 +35,38 @@ export async function createUser(formData: FormData) {
 
     revalidatePath('/dashboard/settings');
     redirect(`/dashboard/settings`);
+    // return {
+    //     message: 'user created',
+    // };
+}
+
+const updateUserPasswordSchema = z.object({
+    user_id: z.string(),
+    password: z.string(),
+    confirmPassword: z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+    message: `Passwords don't match`,
+    path: ["confirmPassword"],});
+
+const UpdateUserPassword = updateUserPasswordSchema;
+
+export async function updateUserPassword(formData: FormData) {
+
+    const result = UpdateUserPassword.safeParse({
+        user_id: formData.get('user_id'),
+        password: formData.get('password'),
+        confirmPassword: formData.get('confirmPassword'),
+    });
+    if (result.success) {
+        const hashedPassword = await bcrypt.hash(result.data.password, 10);
+
+        await sql`UPDATE users
+                    SET password = ${hashedPassword}
+                    WHERE id=${result.data.user_id}`
+
+        revalidatePath('/dashboard/settings');
+        redirect(`/dashboard/settings`);
+    } else {
+        console.error('Validation errors:', result.error.errors);
+    }
 }
