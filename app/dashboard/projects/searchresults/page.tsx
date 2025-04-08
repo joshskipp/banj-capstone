@@ -37,9 +37,9 @@ export default async function Page(props: {
                         <div key={project.project_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
                             <strong>{project.project_name}</strong><br />
                             ID: {project.project_id}<br />
-                            Product:{project.product}
-                            Primary Commodity: {project.primary_commodity}
-                            Coordinates: {project.latitude}, {project.longitude}
+                            Product:{project.product}<br />
+                            Primary Commodity: {project.primary_commodity}<br />
+                            Coordinates: {project.latitude}, {project.longitude}<br />
                             Status: {project.approved_status}
                             <br />
                             {/* Constructing the link using the project_id */}
