@@ -16,7 +16,9 @@ export default async function Page(){
 
     return (
         <main>
-            <h2><strong>Project List</strong></h2>
+            <div className="mb-4">
+                <h2><strong>Project Directory</strong></h2>
+            </div>
 
             <GridComponent />
            <Databox rawData={AllProjects} />

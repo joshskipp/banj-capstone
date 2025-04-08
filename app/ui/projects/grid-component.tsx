@@ -50,20 +50,18 @@ const GridComponent = () => {
     return (
         <div style={{ width: "100%", height: "70vh" }}>
 
-            <div style={{ display: 'flex', gap: '1rem', fontSize: '10px' }}>
+            <div className="mb-4" style={{ display: 'flex', gap: '1rem', fontSize: '10px' }}>
 
             
                 <Link href="/dashboard/projects/create">
-                <PlusCircleIcon title="Add Project" className="w-5 h-5"/>
+                <PlusCircleIcon title="Add Project" className="w-7 h-7"/>
                 </Link>  
 
                 <Link href="/dashboard/projects/searchresults">
-                <MagnifyingGlassIcon title="Search Projects" className="w-5 h-5"/>
+                <MagnifyingGlassIcon title="Search Projects" className="w-7 h-7"/>
                 </Link>             
 
-                <Button onClick={exportToCsv}>
-                    <ArrowDownTrayIcon title="Export Projects" className="w-5 h-5"/>
-                </Button>
+                <ArrowDownTrayIcon title="Export Projects" onClick={exportToCsv} className="w-7 h-7"/>
                 
             </div>
 
