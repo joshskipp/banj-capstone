@@ -1,20 +1,23 @@
 "use client";
 
 import { AgGridReact } from 'ag-grid-react';
-import { useEffect, useState, useRef, useImperativeHandle, forwardRef} from "react";
+import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
 import { themeQuartz } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule} from "ag-grid-community";
 import { fetchAllProjects } from "@/app/lib/data";
 import { redirect } from "next/navigation";
+import Link from 'next/link';
+import { Button } from '../button';
+import { ArrowDownTrayIcon, MagnifyingGlassIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, QuickFilterModule]);
 
 // Register AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
-const GridComponent = forwardRef((props, ref) => {
+const GridComponent = () => {
     const [rowData, setRowData] = useState<any[]>([]);
-    const gridRef = useRef<AgGridReact>(null);
+    const gridRef = useRef<AgGridReact>(null); // Add a ref for the grid
 
     useEffect(() => {
         fetchAllProjects()
@@ -23,9 +26,7 @@ const GridComponent = forwardRef((props, ref) => {
     }, []);
 
     const gridOptions = {
-        onRowClicked: (event: { data: { project_id: any; }; }) => {
-            redirect(`/dashboard/projects/${event.data.project_id}`);
-        }
+        onRowClicked: (event: { data: { project_id: any; }; }) => { redirect(`/dashboard/projects/${event.data.project_id}`); }
     };
 
     const [columnDefs] = useState<ColDef[]>([
@@ -39,20 +40,37 @@ const GridComponent = forwardRef((props, ref) => {
         { field: "approved_status", maxWidth: 150, headerName: "Approval", sortable: true }
     ]);
 
-    // Expose exportToCsv to parent using ref
-    useImperativeHandle(ref, () => ({
-        exportToCsv: () => {
-            if (gridRef.current?.api) {
-                gridRef.current.api.exportDataAsCsv();
-            }
+    // Function to export data to CSV
+    const exportToCsv = () => {
+        if (gridRef.current?.api) {
+            gridRef.current.api.exportDataAsCsv();
         }
-    }));
+    };
 
     return (
         <div style={{ width: "100%", height: "70vh" }}>
+
+            <div style={{ display: 'flex', gap: '1rem', fontSize: '10px' }}>
+
+            
+                <Link href="/dashboard/projects/create">
+                <PlusCircleIcon title="Add Project" className="w-5 h-5"/>
+                </Link>  
+
+                <Link href="/dashboard/projects/searchresults">
+                <MagnifyingGlassIcon title="Search Projects" className="w-5 h-5"/>
+                </Link>             
+
+                <Button onClick={exportToCsv}>
+                    <ArrowDownTrayIcon title="Export Projects" className="w-5 h-5"/>
+                </Button>
+                
+            </div>
+
+            {/* AG Grid */}
             <div className="ag-theme-quartz" style={{ height: "100%", width: "100%" }}>
                 <AgGridReact
-                    ref={gridRef}
+                    ref={gridRef} // Add the ref to the grid
                     theme={themeQuartz}
                     gridOptions={gridOptions}
                     rowData={rowData}
@@ -64,6 +82,6 @@ const GridComponent = forwardRef((props, ref) => {
             </div>
         </div>
     );
-});
+};
 
 export default GridComponent;
