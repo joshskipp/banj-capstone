@@ -9,41 +9,53 @@ const shimmer =
 
 export function CreateProjectSkeleton() {
   return (
-    <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
-        <h2 className="text-xl text-white font-semibold">Create Project</h2>
+    <Link href="/dashboard/projects/create">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+          <h2 className="text-xl text-white font-semibold">Create Project</h2>
+        </div>
       </div>
-    </div>
+    </Link>
+    
   );
 }
 
 export function CreateCommoditySkeleton() {
   return (
-    <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
-        <h2 className="text-xl text-white font-semibold">Create Commodity</h2>
+    <Link href="/dashboard/commodities/new">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+          <h2 className="text-xl text-white font-semibold">Create Commodity</h2>
+        </div>
       </div>
-    </div>
+    </Link>
+    
   );
 }
 
 export function CreateCompanySkeleton() {
   return (
-    <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
-      <h2 className="text-xl text-white font-semibold">Create Company</h2>
+    <Link href="/dashboard/companies/new">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Create Company</h2>
+        </div>
       </div>
-    </div>
+    </Link>
+    
   );
 }
 
 export function CreateKeyEventSkeleton() {
   return (
-    <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
-      <h2 className="text-xl text-white font-semibold">Create Key Event</h2>
+    <Link href="/dashboard/keyevents/create">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Create Key Event</h2>
+        </div>
       </div>
-    </div>
+    </Link>
+    
   );
 }
 
