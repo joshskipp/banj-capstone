@@ -40,7 +40,6 @@ export default async function Page(props: {
                             Product:{project.product}
                             Primary Commodity: {project.primary_commodity}
                             Coordinates: {project.latitude}, {project.longitude}
-                            Updated at: {project.updated_at}
                             Status: {project.approved_status}
                             <br />
                             {/* Constructing the link using the project_id */}
