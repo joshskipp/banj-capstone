@@ -1,6 +1,5 @@
 import { fetchAllProjects, fetchFilteredProjects  } from "@/app/lib/data"
 import { fetchProjectsPages } from '@/app/lib/data';
-import Search from '@/app/ui/search/search';
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
 import DashboardSkeleton from "../ui/skeletons-old";
@@ -30,35 +29,21 @@ export default async function Page(props: {
                 <DashboardSkeleton />
             </div>
 
-            <div className="flex w-full flex-row justify-end">
+            <div className="flex w-full py-10 flex-row justify-end">
                 <Link href="/dashboard/projects/searchresults">
-                <Button className="w-[12rem] flex gap-2">
+                <Button className="w-[12rem] object-left px-10 flex gap-2">
                     Search Projects
                 </Button>
                 </Link>
-                <br></br>
-            </div>
 
-            <div className="flex w-full flex-row justify-end">
                 <Link href="/dashboard/help">
-                <Button className="w-[12rem] flex gap-2">
+                <Button className="w-[12rem] object-left px-10 flex gap-2">
                     Help
                 </Button>
                 </Link>
                 <br></br>
             </div>
-
-
-            {/* {AllProjects.map((project, i) => {
-                return (
-                    <div key={project.project_id} className="p-2 b-1 b-black">
-
-                        <strong>{project.project_name}</strong><br />
-                        <small>{project.project_id}</small><br />
-                        {project.latitude}, {project.longitude}
-                    </div>
-                )
-            })} */}
+            
         </div>
     )
 }

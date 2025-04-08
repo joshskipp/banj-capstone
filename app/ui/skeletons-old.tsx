@@ -1,3 +1,8 @@
+import Link from "next/link";
+import ProductivityGrid from "./dashboard/productivitygrid";
+import ProductivityChart from "./dashboard/productivitychart";
+import Productivity from "./dashboard/productivity";
+
 // Loading animation
 const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
@@ -5,8 +10,8 @@ const shimmer =
 export function CreateProjectSkeleton() {
   return (
     <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8">
-        <h2 className="text-xl bg-white font-semibold">Create Project</h2>
+      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Create Project</h2>
       </div>
     </div>
   );
@@ -15,8 +20,8 @@ export function CreateProjectSkeleton() {
 export function CreateCommoditySkeleton() {
   return (
     <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-white px-4 py-8">
-        <h2 className="text-xl bg-white font-semibold">Create Commodity</h2>
+      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Create Commodity</h2>
       </div>
     </div>
   );
@@ -25,8 +30,8 @@ export function CreateCommoditySkeleton() {
 export function CreateCompanySkeleton() {
   return (
     <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-white px-4 py-8">
-      <h2 className="text-xl bg-white font-semibold">Create Company</h2>
+      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+      <h2 className="text-xl text-white font-semibold">Create Company</h2>
       </div>
     </div>
   );
@@ -35,10 +40,34 @@ export function CreateCompanySkeleton() {
 export function CreateKeyEventSkeleton() {
   return (
     <div>
-      <div className="flex items-center justify-center truncate rounded-xl bg-white px-4 py-8">
-      <h2 className="text-xl bg-white font-semibold">Create Key Event</h2>
+      <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+      <h2 className="text-xl text-white font-semibold">Create Key Event</h2>
       </div>
     </div>
+  );
+}
+
+export function HelpSkeleton() {
+  return (
+    <Link href="/dashboard/help">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Help</h2>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function SearchSkeleton() {
+  return (
+    <Link href="/dashboard/projects/searchresults">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Search</h2>
+        </div>
+      </div>
+    </Link>
   );
 }
 
@@ -110,22 +139,34 @@ export function LatestInvoicesSkeleton() {
 export default function DashboardSkeleton() {
   return (
     <>
-      <h3><strong>Shortcuts</strong></h3>
-      <hr />
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        <RevenueChartSkeleton />
-        <LatestInvoicesSkeleton />
-      </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <h3 className="mb-4"><strong>Shortcuts</strong></h3>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <CreateProjectSkeleton />
         <CreateCommoditySkeleton />
         <CreateCompanySkeleton />
         <CreateKeyEventSkeleton />
       </div>
-      
+
+      <h3 className="mb-4"><strong>Tools/Help</strong></h3>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2 mb-8">
+        <HelpSkeleton />
+        <SearchSkeleton />
+      </div>
+
+      <h3 className="mb-2"><strong>Productivity</strong></h3>
+      <hr className="mb-4" />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-8 mb-4">
+        <div className="md:col-span-2 lg:col-span-4">
+          <ProductivityChart />
+        </div>
+        <div className="md:col-span-2 lg:col-span-4">
+          <Productivity />
+        </div>
+      </div>
     </>
   );
 }
+
 
 export function TableRowSkeleton() {
   return (
