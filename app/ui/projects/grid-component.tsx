@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from 'ag-grid-react';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useImperativeHandle, forwardRef} from "react";
 import type { ColDef } from "ag-grid-community";
 import { themeQuartz } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule} from "ag-grid-community";
@@ -12,9 +12,9 @@ ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, Qu
 // Register AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
-const GridComponent = () => {
+const GridComponent = forwardRef((props, ref) => {
     const [rowData, setRowData] = useState<any[]>([]);
-    const gridRef = useRef<AgGridReact>(null); // Add a ref for the grid
+    const gridRef = useRef<AgGridReact>(null);
 
     useEffect(() => {
         fetchAllProjects()
@@ -23,7 +23,9 @@ const GridComponent = () => {
     }, []);
 
     const gridOptions = {
-        onRowClicked: (event: { data: { project_id: any; }; }) => { redirect(`/dashboard/projects/${event.data.project_id}`); }
+        onRowClicked: (event: { data: { project_id: any; }; }) => {
+            redirect(`/dashboard/projects/${event.data.project_id}`);
+        }
     };
 
     const [columnDefs] = useState<ColDef[]>([
@@ -37,35 +39,20 @@ const GridComponent = () => {
         { field: "approved_status", maxWidth: 150, headerName: "Approval", sortable: true }
     ]);
 
-    // Function to export data to CSV
-    const exportToCsv = () => {
-        if (gridRef.current?.api) {
-            gridRef.current.api.exportDataAsCsv();
+    // Expose exportToCsv to parent using ref
+    useImperativeHandle(ref, () => ({
+        exportToCsv: () => {
+            if (gridRef.current?.api) {
+                gridRef.current.api.exportDataAsCsv();
+            }
         }
-    };
+    }));
 
     return (
         <div style={{ width: "100%", height: "70vh" }}>
-            {/* Add Export to CSV Button */} <br />
-            <button
-                onClick={exportToCsv}
-                style={{
-                    marginBottom: "10px",
-                    padding: "8px 12px",
-                    backgroundColor: "#28a745",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                }}
-            >
-                Export to CSV
-            </button>
-
-            {/* AG Grid */}
             <div className="ag-theme-quartz" style={{ height: "100%", width: "100%" }}>
                 <AgGridReact
-                    ref={gridRef} // Add the ref to the grid
+                    ref={gridRef}
                     theme={themeQuartz}
                     gridOptions={gridOptions}
                     rowData={rowData}
@@ -77,6 +64,6 @@ const GridComponent = () => {
             </div>
         </div>
     );
-};
+});
 
 export default GridComponent;
