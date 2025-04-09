@@ -179,3 +179,43 @@ export async function createAttachment(prevState: any, formData: FormData) {
     return { success: false, message: 'Failed to create attachment' };
   }
 }
+
+export async function updateProjectReviewStatus(formData: {
+  project_id: string;
+  approved_status: string;
+  review_notes?: string;
+}) {
+  try {
+      await sql`
+          UPDATE projects
+          SET 
+              approved_status = ${formData.approved_status},
+              review_notes = ${formData.review_notes || null},
+              updated_at = NOW()
+          WHERE project_id = ${formData.project_id}
+      `;
+  } catch (error) {
+      console.error('Error updating project review:', error);
+      throw new Error('Failed to update project review');
+  }
+  revalidatePath(`/dashboard/projects/${formData.project_id}`);
+  // revalidatePath('/dashboard/projects');
+}
+
+// delete an attachment - NOT TESTED
+export async function deleteAttachment(id: string) {
+  try {
+    await sql`
+      DELETE FROM attachments WHERE attachment_id = ${id}
+    `;
+  } catch (error) {
+    console.error('Error deleting attachment:', error);
+    throw new Error('Failed to delete attachment');
+  }
+  console.log(`Attachment with ID: ${id} deleted successfully.`);
+  // revalidatePath('/dashboard/projects')
+}
+//   redirect(`/dashboard/projects/${project.project_id}`)
+// }
+
+
