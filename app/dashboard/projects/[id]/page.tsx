@@ -10,6 +10,9 @@ import Databox from "@/app/ui/devtools/databox";
 // import {Metadata, ResolvingMetadata} from 'next';
 import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
 import { auth } from "@/auth"
+import ProjectComments from "@/app/ui/projects/project-comments";
+
+
 
 
 // type Props = {
@@ -44,6 +47,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     const key_events = await fetchKeyEventsByProjectID(id);
 
+    
     /**
      * Fetch Project Reserves
      */
@@ -76,7 +80,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Product:</b> {p.product}</li>
                             <li><b>Latitude:</b> {p.latitude}</li>
                             <li><b>Longitude:</b> {p.longitude}</li>
-                            <li><b>ASX:</b> {p.asx}</li>
                             <li><b>Primary Commodity:</b> {p.primary_commodity}</li>
                             <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
@@ -88,7 +91,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <h3 className="font-semibold text-lg mb-3">Metadata</h3>
                         <ul className="space-y-2">
-                            <li><b>Key Events:</b> TOBeImplemented</li>
                             <li><b>Created at:</b> {p.created_at?.toLocaleString()}</li>
                             <li><b>Created by:</b> TOBeImplemented {p.created_by}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
@@ -272,7 +274,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                     <h2>Comments</h2>
                     <CreateComment session={session} project_id={p.project_id} />
-                    
+                    <ProjectComments project_id={p.project_id} />
                 </div>
 
 
