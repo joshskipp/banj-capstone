@@ -2,12 +2,15 @@ import {fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId
 import DeleteProjectButton from "@/app/ui/projects/delete-project";
 import {notFound} from 'next/navigation';
 import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
+import CreateComment from "@/app/ui/projects/create-comment";
 import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 import Databox from "@/app/ui/devtools/databox";
 // import {Metadata, ResolvingMetadata} from 'next';
 import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
+import { auth } from "@/auth"
+
 
 // type Props = {
 //     params: Promise<{ id: string }>
@@ -32,6 +35,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     const p = await fetchProjectById(id);
     const cp = await fetchProjectsCommoditites(id);
     const attachments = await fetchAttachmentsByProjectId(id);
+    
+    const session = await auth()
 
     if (!p) {
         notFound();
@@ -262,6 +267,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             )}
                         </div>
                     </details>
+                </div>
+
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h2>Comments</h2>
+                    <CreateComment session={session} project_id={p.project_id} />
+                    
                 </div>
 
 
