@@ -20,6 +20,11 @@ const PRODUCT_OPTIONS = [
   'Vanadium pentoxide, high-purity alumina'
 ];
 
+const Review_STATUS_OPTIONS = [
+  'Update in Progress',
+  'Ready for Review'
+]
+
 const PROJECT_STATUS_OPTIONS = [
   'Publicly announced',
   'Definitive feasibility',
@@ -37,7 +42,8 @@ export default function CreateProjectForm() {
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
-    project_status: 'Publicly announced'
+    project_status: 'Publicly announced',
+    approved_status: 'Update in Progress'
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -184,8 +190,25 @@ export default function CreateProjectForm() {
                 {PROJECT_STATUS_OPTIONS.map(option => (
                   <option key={option} value={option}>{option}</option>
                 ))}
+
               </select>
             </div>
+            {/* Ready for review */}
+            <p>review</p>
+            <div>
+              <label htmlFor="review_status" className="block mb-1">Review Status</label>
+              <select
+                id="review_status"
+                name="review_status"
+                value={formData.approved_status}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                {Review_STATUS_OPTIONS.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+              </div>
           </div>
         </div>
 

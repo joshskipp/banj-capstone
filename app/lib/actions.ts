@@ -41,6 +41,7 @@ export async function createProject(formData: {
   secondary_commodity: string;
   product: string;
   project_status: string;
+  approved_status: string;
 }) {
   try {
     await sql`
@@ -51,7 +52,8 @@ export async function createProject(formData: {
         primary_commodity,
         secondary_commodity,
         product,
-        project_status
+        project_status,
+        approved_status
       )
       VALUES (
         ${formData.project_name}, 
@@ -60,7 +62,8 @@ export async function createProject(formData: {
         ${formData.primary_commodity},
         ${formData.secondary_commodity},
         ${formData.product},
-        ${formData.project_status}
+        ${formData.project_status},
+        ${formData.approved_status}        
       )
     `;
   } catch (error) {
