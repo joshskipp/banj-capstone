@@ -6,10 +6,12 @@ import { useRouter } from 'next/navigation';
 import { updateProjectReviewStatus } from '@/app/lib/actions';
 
 const REVIEW_STATUS_OPTIONS = [
-    { value: 'approved', label: 'Approved' },
-    { value: 'pending', label: 'Pending' },
-    { value: 'not_approved', label: 'Not Approved' },
-    { value: 'new', label: 'New' }
+    { value: 'update in progress', label: 'Update in Progress' },
+    { value: 'Ready for review', label: 'Ready for review' },
+    { value: 'Under review', label: 'Under review' },
+    { value: 'Reviewed', label: 'Reviewed' },
+    { value: 'Approved for Internal Use', label: 'Approved for Internal Use' },
+    { value: 'Approved for External Use', label: 'Approved for External Use' },
 ];
 
 export default function ReviewProjectForm({ project }: { project: any }) {

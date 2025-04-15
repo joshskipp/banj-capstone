@@ -47,7 +47,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     return (
         <main>
              {/* Add Review Status Banner */}
-             {p.approved_status === 'not_approved' && (
+             {/* {p.approved_status === 'not_approved' && (
                 <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
@@ -58,6 +58,39 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         <div className="ml-3">
                             <p className="text-sm text-yellow-700">
                                 <strong>Pending Re-review</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )} */}
+            {/* Add Review Status Banner */}
+            {p.approved_status !== 'Approved for External Use' && (
+                <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm text-red-700">
+                                <strong>Approval Status Warning:</strong> This project is not approved for external use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {p.approved_status === 'Approved for External Use' && (
+                <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm text-green-700">
+                                <strong>Approval Status:</strong> This project is <strong>approved for external use.</strong>
                             </p>
                         </div>
                     </div>
