@@ -95,27 +95,27 @@ export default function CreateProjectForm() {
           {/* Coordinates */}
           <div className="space-y-4">
             <div>
-              <label htmlFor="latitude" className="block mb-1">Latitude*</label>
+              <label htmlFor="latitude" className="block mb-1">Latitude</label>
               <input
                 type="number"
                 id="latitude"
                 name="latitude"
                 value={formData.latitude}
                 onChange={handleChange}
-                required
+                // required
                 step="any"
                 className="w-full p-2 border rounded"
               />
             </div>
             <div>
-              <label htmlFor="longitude" className="block mb-1">Longitude*</label>
+              <label htmlFor="longitude" className="block mb-1">Longitude</label>
               <input
                 type="number"
                 id="longitude"
                 name="longitude"
                 value={formData.longitude}
                 onChange={handleChange}
-                required
+                // required
                 step="any"
                 className="w-full p-2 border rounded"
               />
@@ -133,7 +133,7 @@ export default function CreateProjectForm() {
                 name="primary_commodity"
                 value={formData.primary_commodity}
                 onChange={handleChange}
-                required
+                // required
                 className="w-full p-2 border rounded"
               >
                 <option value="">Select...</option>
@@ -159,23 +159,19 @@ export default function CreateProjectForm() {
             </div>
           </div>
 
-          {/* Product and Status */}
-          <div className="space-y-4">
+            {/* Product and Status */}
+            <div className="space-y-4">
             <div>
               <label htmlFor="product" className="block mb-1">Product*</label>
-              <select
-                id="product"
-                name="product"
-                value={formData.product}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Select...</option>
-                {PRODUCT_OPTIONS.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
+              <input
+              type="text"
+              id="product"
+              name="product"
+              value={formData.product}
+              onChange={handleChange}
+              // required
+              className="w-full p-2 border rounded"
+              />
             </div>
             <div>
               <label htmlFor="project_status" className="block mb-1">Project Status*</label>

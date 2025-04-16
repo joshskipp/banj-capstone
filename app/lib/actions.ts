@@ -86,7 +86,7 @@ export async function updateProject(project: {
   project_status: string;
 }) {
   // Validate input
-  if (!project.project_id || !project.project_name || !project.latitude || !project.longitude) {
+  if (!project.project_id || !project.project_name ) {
     throw new Error('Missing or invalid fields');
   }
   console.log('input validated...');

@@ -76,6 +76,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <p className="text-sm text-red-700">
                                 <strong>Approval Status Warning:</strong> This project is not approved for external use.
                             </p>
+                            <p>
+                                <strong>Reviewer Notes: </strong> 
+                                {/* if review_notes is null Display the following message. */}
+                                {p.review_notes ? p.review_notes : "This Project has not been reviewed at this stage."}
+                                
+                            </p>
                         </div>
                     </div>
                 </div>
