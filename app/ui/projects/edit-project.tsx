@@ -27,7 +27,7 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function EditProjectForm({ project }: { project: any }) {
+export default function EditProjectForm({ project, session }: { project: any, session: any }) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     project_id: '',
@@ -41,6 +41,8 @@ export default function EditProjectForm({ project }: { project: any }) {
     project_status: 'Publicly announced'
   });
 
+  const user_session = session;
+  console.log(user_session.id);
   useEffect(() => {
     if (project) {
       setFormData({
@@ -62,7 +64,7 @@ export default function EditProjectForm({ project }: { project: any }) {
     e.preventDefault();
     try {
       console.log("Running function updateProject");
-      await updateProject(formData);
+      await updateProject(formData, user_session.id);
       console.log("Redirect");
       router.push(`/dashboard/projects/${project.project_id}`);
     } catch (error) {

@@ -11,34 +11,35 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
         return <div>Error loading audit history</div>;
     }
     
+    
     return (
     <div>
         <h2>Audit History for <em><Link className="text-blue-500 hover:text-blue-700 hover:underline" href={`/dashboard/projects/${id}`}>{project.project_name}</Link></em></h2>
         <p>Audit history is a record of all changes made to the project. It is useful for tracking changes and for debugging.</p>
         
-        <div className='flex flex-col gap-2 bg-gray-200 p-2 rounded-md'>
+        <div className='flex flex-col gap-2 p-2'>
         {audit.length == 0 ? (
                     <p>No audit history found</p>
                 ) : (
                     
                     audit.map((record: any) => (
                         
-                    <div className='flex flex-col gap-2 bg-gray-100 p-2 rounded-md' key={record.audit_id}>
-                        <div className='flex flex-row gap-2'>
+                    <div className='flex flex-col px-[.2rem] pt-[.4rem] pb-0; bg-white border-[.1rem] border-solid border-[#bfbfbf] border-l-[0.5rem]' key={record.audit_id}>
+                        <div className='flex flex-row gap-2 border-b-[.1rem] border-dashed border-[#bfbfbf]'>
                             <p>Changed by: <strong>{record.name}</strong></p>
                             <p>Changed at: <strong>{new Date(record.timestamp).toLocaleString()}</strong></p>
                         </div>
                         <p><strong>Fields affected:</strong><br /> {JSON.stringify((JSON.parse(record.data).fields_affected), null, 2)}</p>
-                        <div className='flex flex-row justify-between gap-2'>
+                        <div className='flex flex-row justify-between gap-[0.2rem]'>
                             <div className='w-1/2'>
                                 <p><strong>Old values:</strong></p>
-                                <textarea className='w-full h-24 bg-gray-100 p-2 rounded-md' readOnly
-                                    value={JSON.stringify((JSON.parse(record.data).old_value), null, 2)}>
+                                <textarea className='w-full h-32 p-[0.2rem] border-[.05rem] border-solid border-[#bfbfbf] text-xs' readOnly
+                                    value={JSON.stringify((JSON.parse(record.data).previous_value), null, 2)}>
                                 </textarea>
                             </div>
                             <div className='w-1/2'>
                             <p><strong>New values:</strong></p>
-                            <textarea className='w-full h-24 bg-gray-100 p-2 rounded-md' readOnly
+                            <textarea className='w-full h-32 p-[0.2rem] border-[.05rem] border-solid border-[#bfbfbf] text-xs' readOnly
                                 value={JSON.stringify((JSON.parse(record.data).new_value), null, 2)}>
                             </textarea>
                             </div>

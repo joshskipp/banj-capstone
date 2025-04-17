@@ -3,7 +3,7 @@ import { AuditData, AuditRecord } from "@/app/lib/definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, {ssl: 'require'});
 
-export async function writeAudit(sqlResult: any, user_id: string) {
+export async function writeAudit(sqlResult: any, user_id: string, prev_value?: any) {
     // Write Audit Record
 
     // Get fields affected
@@ -12,6 +12,8 @@ export async function writeAudit(sqlResult: any, user_id: string) {
       fields_affected.push(key);
     }
 
+    // Get old value
+    console.log('prev_value:',prev_value);
 
     // Get Project ID if exitsts
     let project_id;
@@ -23,7 +25,7 @@ export async function writeAudit(sqlResult: any, user_id: string) {
 
     const auditData: AuditData = {
         project_id: sqlResult[0].project_id,
-        previous_value: ['nil'],
+        previous_value: prev_value,
         new_value: sqlResult,
         fields_affected: fields_affected
     }
