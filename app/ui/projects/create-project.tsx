@@ -27,8 +27,10 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function CreateProjectForm() {
+
+export default function CreateProjectForm(session: any) {
   const router = useRouter();
+
   const [formData, setFormData] = useState({
     project_name: '',
     asx_code: '',
@@ -39,10 +41,12 @@ export default function CreateProjectForm() {
     product: '',
     project_status: 'Publicly announced'
   });
+  const user_session = session;
+  console.log(user_session.session.name);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await createProject(formData);
+    e.preventDefault();     
+    await createProject(formData, user_session.session.id);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

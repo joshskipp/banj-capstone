@@ -3,17 +3,35 @@ import { AuditData, AuditRecord } from "@/app/lib/definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, {ssl: 'require'});
 
-export async function writeAudit(auditData: AuditRecord) {
-    // //     project_id: string,
-    // previous_value: string[],
-    // new_value: string[],
-    // fields_affected: string[], *//
-    const project_id = auditData.project_id;
-    const user_id = auditData.user_id;
-    const data = auditData.data;
+export async function writeAudit(sqlResult: any, user_id: string) {
+    // Write Audit Record
+
+    // Get fields affected
+    let fields_affected = [];
+    for (const key in sqlResult[0]) {
+      fields_affected.push(key);
+    }
+
+
+    // Get Project ID if exitsts
+    let project_id;
+    if (sqlResult[0].project_id) {
+        project_id = sqlResult[0].project_id;
+    } else {
+        project_id = null;
+    }
+
+    const auditData: AuditData = {
+        project_id: sqlResult[0].project_id,
+        previous_value: ['nil'],
+        new_value: sqlResult,
+        fields_affected: fields_affected
+    }
+
 
     try {
-        await sql`INSERT INTO audits (project_id, user_id, data) VALUES (${project_id}, ${user_id}, ${JSON.stringify(data)})`;
+        await sql`INSERT INTO audits (project_id, user_id, data) VALUES (${project_id}, ${user_id}, ${JSON.stringify(auditData)})`;
+        return "Sucess";
     } catch (error) {
         console.error('Error writing audit record:', error);
         throw error;

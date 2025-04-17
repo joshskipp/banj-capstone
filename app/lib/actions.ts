@@ -9,7 +9,6 @@ import postgres from 'postgres';
 import { fetchProjectById } from './data';
 
 import { writeAudit } from '@/app/lib/writedb/write-audit';
-import { AuditData, AuditRecord } from '@/app/lib/definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -44,7 +43,7 @@ export async function createProject(formData: {
   secondary_commodity: string;
   product: string;
   project_status: string;
-}) {
+}, user_id: string) {
   try {
     // Create a new project
     const result = await sql`
@@ -55,7 +54,8 @@ export async function createProject(formData: {
         primary_commodity,
         secondary_commodity,
         product,
-        project_status
+        project_status,
+        created_by
       )
       VALUES (
         ${formData.project_name}, 
@@ -64,25 +64,16 @@ export async function createProject(formData: {
         ${formData.primary_commodity},
         ${formData.secondary_commodity},
         ${formData.product},
-        ${formData.project_status}
+        ${formData.project_status},
+        ${user_id}
       )
-        RETURNING project_id
+        RETURNING *
     `;
-    const project_id = result[0].project_id;
     
-    // Write an audit record
-    const auditData: AuditData = {
-      project_id: project_id,
-      previous_value: [],
-      new_value: [formData.project_name, formData.latitude, formData.longitude, formData.primary_commodity, formData.secondary_commodity, formData.product, formData.project_status],
-      fields_affected: ['project_name', 'latitude', 'longitude', 'primary_commodity', 'secondary_commodity', 'product', 'project_status']
-    };
-    const auditRecord: AuditRecord = {
-      user_id: 'baa69ef5-f0b8-4244-a52d-96b6113d064d',
-      project_id: project_id,
-      data: JSON.stringify(auditData)
-    };
-    await writeAudit(auditRecord);
+    // Write the audit record
+    const auditResult = await writeAudit(result, user_id);
+    console.log('auditResult:',auditResult);
+
 
   } catch (error) {
     console.error('Error creating project:', error);
