@@ -8,6 +8,9 @@ import { redirect } from 'next/navigation';
 import postgres from 'postgres';
 import { fetchProjectById } from './data';
 
+import { writeAudit } from '@/app/lib/writedb/write-audit';
+import { AuditData, AuditRecord } from '@/app/lib/definitions';
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function authenticate(
@@ -43,7 +46,8 @@ export async function createProject(formData: {
   project_status: string;
 }) {
   try {
-    await sql`
+    // Create a new project
+    const result = await sql`
       INSERT INTO projects (
         project_name, 
         latitude, 
@@ -62,7 +66,24 @@ export async function createProject(formData: {
         ${formData.product},
         ${formData.project_status}
       )
+        RETURNING project_id
     `;
+    const project_id = result[0].project_id;
+    
+    // Write an audit record
+    const auditData: AuditData = {
+      project_id: project_id,
+      previous_value: [],
+      new_value: [formData.project_name, formData.latitude, formData.longitude, formData.primary_commodity, formData.secondary_commodity, formData.product, formData.project_status],
+      fields_affected: ['project_name', 'latitude', 'longitude', 'primary_commodity', 'secondary_commodity', 'product', 'project_status']
+    };
+    const auditRecord: AuditRecord = {
+      user_id: 'baa69ef5-f0b8-4244-a52d-96b6113d064d',
+      project_id: project_id,
+      data: JSON.stringify(auditData)
+    };
+    await writeAudit(auditRecord);
+
   } catch (error) {
     console.error('Error creating project:', error);
     throw new Error('Failed to create project');
