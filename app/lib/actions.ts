@@ -182,11 +182,13 @@ export async function createAttachment(prevState: any, formData: FormData) {
     return { success: false, message: 'Failed to create attachment' };
   }
 }
-
+// Review a project
+// this function changes approved by which may be a loggic error, perhaps an extra reviewd by field in addition to approved by is needed
 export async function updateProjectReviewStatus(formData: {
   project_id: string;
   approved_status: string;
   review_notes?: string;
+  reviewed_by?: string;
 }) {
   try {
       await sql`
@@ -194,6 +196,7 @@ export async function updateProjectReviewStatus(formData: {
           SET 
               approved_status = ${formData.approved_status},
               review_notes = ${formData.review_notes || null},
+              reviewed_by = ${formData.reviewed_by || null},
               updated_at = NOW()
           WHERE project_id = ${formData.project_id}
       `;

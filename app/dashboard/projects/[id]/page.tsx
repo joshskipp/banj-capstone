@@ -161,6 +161,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
                             <li><b>Approval Status:</b> {p.approved_status}</li>
+                            <li><b>Review By: </b> {p.reviewed_by}</li>
                         </ul>
                     </div>
 

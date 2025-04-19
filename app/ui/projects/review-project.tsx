@@ -4,6 +4,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateProjectReviewStatus } from '@/app/lib/actions';
+// import { GetSession } from '@/app/lib/get-session';
+// import { useSession } from 'next-auth/react';
 
 const REVIEW_STATUS_OPTIONS = [
     { value: 'update in progress', label: 'Update in Progress' },
@@ -14,12 +16,23 @@ const REVIEW_STATUS_OPTIONS = [
     { value: 'Approved for External Use', label: 'Approved for External Use' },
 ];
 
-export default function ReviewProjectForm({ project }: { project: any }) {
+export default function ReviewProjectForm({ 
+    project,
+    reviewerName 
+}: { 
+    project: any;
+    reviewerName: string;
+}) {
+    
     const router = useRouter();
+    // const currentSession = GetSession(); // Returns null if not logged in, otherwise gets Session.
+    
+    // const { data: session } = useSession(); // Ensure session is available for user info
     const [formData, setFormData] = useState({
         project_id: project.project_id,
         approved_status: project.approved_status,
-        review_notes: project.review_notes || ''
+        review_notes: project.review_notes || '',
+        reviewed_by: reviewerName || 'error-getting-USER'
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
