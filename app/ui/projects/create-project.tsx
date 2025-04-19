@@ -1,9 +1,10 @@
-// app/ui/projects/create-form.tsx
+// app/ui/projects/create-project.tsx
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createProject } from '@/app/lib/actions';
+import { create } from 'domain';
 
 const COMMODITY_OPTIONS = [
   'Gold', 'Silver', 'Copper', 'Iron', 'Nickel',
@@ -32,7 +33,7 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function CreateProjectForm() {
+export default function CreateProjectForm({ reviewerName }: { reviewerName: string }) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     project_name: '',
@@ -43,12 +44,16 @@ export default function CreateProjectForm() {
     secondary_commodity: '',
     product: '',
     project_status: 'Publicly announced',
-    approved_status: 'Update in Progress'
+    approved_status: 'Update in Progress',
+    created_by: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createProject(formData);
+    await createProject({
+      ...formData,
+      created_by: reviewerName // Pass the creator's name
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

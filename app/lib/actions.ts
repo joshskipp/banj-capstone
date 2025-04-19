@@ -42,6 +42,7 @@ export async function createProject(formData: {
   product: string;
   project_status: string;
   approved_status: string;
+  created_by: string;
 }) {
   try {
     await sql`
@@ -53,7 +54,10 @@ export async function createProject(formData: {
         secondary_commodity,
         product,
         project_status,
-        approved_status
+        approved_status,
+        created_by,     
+        created_at,
+        updated_at
       )
       VALUES (
         ${formData.project_name}, 
@@ -63,7 +67,10 @@ export async function createProject(formData: {
         ${formData.secondary_commodity},
         ${formData.product},
         ${formData.project_status},
-        ${formData.approved_status}        
+        ${formData.approved_status},
+        ${formData.created_by},
+        NOW(),
+        NOW()        
       )
     `;
   } catch (error) {
@@ -84,49 +91,53 @@ export async function updateProject(project: {
   secondary_commodity: string;
   product: string;
   project_status: string;
-}) {
-  // Validate input
-  if (!project.project_id || !project.project_name ) {
-    throw new Error('Missing or invalid fields');
-  }
-  console.log('input validated...');
-
-  const latitude = parseFloat(project.latitude);
-  const longitude = parseFloat(project.longitude);
-
-  if (isNaN(latitude) || isNaN(longitude)) {
-    throw new Error('Invalid latitude or longitude');
-  }
-  console.log('attempting to update project');
-  try {
-    const existingProject = await fetchProjectById(project.project_id);
-    if (!existingProject) {
-      throw new Error('Project not found');
+  updated_by: string;
+  updated_at: string;
+  }) {
+    // Validate input
+    if (!project.project_id || !project.project_name ) {
+      throw new Error('Missing or invalid fields');
     }
+    console.log('input validated...');
 
-    await sql`
-      UPDATE projects
-      SET 
-        project_name = ${project.project_name}, 
-        latitude = ${latitude}, 
-        longitude = ${longitude},
-        primary_commodity = ${project.primary_commodity},
-        secondary_commodity = ${project.secondary_commodity},
-        product = ${project.product},
-        project_status = ${project.project_status}
-      WHERE project_id = ${project.project_id}
-    `;
-    console.log("updated database");
-  } catch (error) {
+    const latitude = parseFloat(project.latitude);
+    const longitude = parseFloat(project.longitude);
 
-    console.error('Error updating project');
+    if (isNaN(latitude) || isNaN(longitude)) {
+      throw new Error('Invalid latitude or longitude');
+    }
+    console.log('attempting to update project');
+    try {
+      const existingProject = await fetchProjectById(project.project_id);
+      if (!existingProject) {
+        throw new Error('Project not found');
+      }
 
-    console.error('Error updating project:', error);
-    throw new Error('Failed to update project');
-  }
-  // Cannot run redirect. Redirect internally throws an error so it should be called outside of try/catch blocks
-  revalidatePath('/dashboard/projects')
-    //redirect(`/dashboard/projects/${project.project_id}`)
+      await sql`
+        UPDATE projects
+        SET 
+          project_name = ${project.project_name}, 
+          latitude = ${latitude}, 
+          longitude = ${longitude},
+          primary_commodity = ${project.primary_commodity},
+          secondary_commodity = ${project.secondary_commodity},
+          product = ${project.product},
+          project_status = ${project.project_status},
+          updated_by = ${project.updated_by},
+          updated_at = NOW()
+        WHERE project_id = ${project.project_id}
+      `;
+      console.log("updated database");
+    } catch (error) {
+
+      console.error('Error updating project');
+
+      console.error('Error updating project:', error);
+      throw new Error('Failed to update project');
+    }
+    // Cannot run redirect. Redirect internally throws an error so it should be called outside of try/catch blocks
+    revalidatePath('/dashboard/projects')
+      //redirect(`/dashboard/projects/${project.project_id}`)
 
 }
 

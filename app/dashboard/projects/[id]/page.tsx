@@ -161,7 +161,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
                             <li><b>Approval Status:</b> {p.approved_status}</li>
-                            <li><b>Review By: </b> {p.reviewed_by}</li>
                         </ul>
                     </div>
 
@@ -171,10 +170,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         <ul className="space-y-2">
                             <li><b>Key Events:</b> TOBeImplemented</li>
                             <li><b>Created at:</b> {p.created_at?.toLocaleString()}</li>
-                            <li><b>Created by:</b> TOBeImplemented {p.created_by}</li>
+                            <li><b>Created by:</b> {p.created_by || 'Error No creator?'}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
                             <li><b>Approved by:</b> {p.approved_by || 'Not approved'}</li>
                             <li><b>Approved at:</b> {p.approved_at?.toLocaleString()}</li>
+                            <li><b>Last Updated By: </b> {p.updated_by || 'Never Updated'}</li>
+                            <li><b>Review By: </b> {p.reviewed_by || 'Never Reviewed'}</li>
                         </ul>
                     </div>
                 </div>

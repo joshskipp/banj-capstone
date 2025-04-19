@@ -27,7 +27,10 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function EditProjectForm({ project }: { project: any }) {
+export default function EditProjectForm({ project, reviewerName }: { 
+  project: any;
+  reviewerName: string;
+}) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     project_id: '',
@@ -38,7 +41,9 @@ export default function EditProjectForm({ project }: { project: any }) {
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
-    project_status: 'Publicly announced'
+    project_status: 'Publicly announced',
+    updated_by: reviewerName,
+    updated_at: new Date().toISOString()
   });
 
   useEffect(() => {
@@ -52,8 +57,10 @@ export default function EditProjectForm({ project }: { project: any }) {
         primary_commodity: project.primary_commodity || '',
         secondary_commodity: project.secondary_commodity || '',
         product: project.product || '',
-        project_status: project.project_status || 'Publicly announced'
-      });
+        project_status: project.project_status || 'Publicly announced',
+        updated_by: reviewerName,
+        updated_at: new Date().toISOString()
+     });
     }
   }, [project]);
 
@@ -62,7 +69,10 @@ export default function EditProjectForm({ project }: { project: any }) {
     e.preventDefault();
     try {
       console.log("Running function updateProject");
-      await updateProject(formData);
+      await updateProject({
+        ...formData,
+        updated_by: reviewerName // Pass the editors's name as a prop
+      });
       console.log("Redirect");
       router.push(`/dashboard/projects/${project.project_id}`);
     } catch (error) {
