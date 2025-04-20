@@ -3,12 +3,19 @@
 import { useFormState } from 'react-dom';
 import { createAttachment } from '@/app/lib/actions';
 
-export default function UploadAttachmentForm({ projectId }: { projectId: string }) {
+export default function UploadAttachmentForm({ 
+  projectId,
+  userId 
+}: { 
+  projectId: string;
+  userId: string;
+}) {
   const [state, formAction] = useFormState(createAttachment, null);
 
   return (
     <form action={formAction} className="space-y-4 mb-6">
       <input type="hidden" name="project_id" value={projectId} />
+      <input type="hidden" name="user_id" value={userId} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="link_name" className="block text-sm font-medium text-gray-700 mb-1">Link Name</label>

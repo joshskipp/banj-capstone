@@ -172,7 +172,6 @@ export async function deleteProject(id: string) {
 
 // Attachments
 // Create a new attachment
-
 export async function createAttachment(prevState: any, formData: FormData) {
   const project_id = formData.get('project_id') as string;
   const link_name = formData.get('link_name') as string;
@@ -180,17 +179,33 @@ export async function createAttachment(prevState: any, formData: FormData) {
   const file_name = formData.get('file_name') as string;
   const file_url = formData.get('file_url') as string;
   const notes = formData.get('notes') as string;
-  const created_by = 'no-userTBI'; // Replace with actual user ID from session
+  const created_by = formData.get('user_id') as string || 'Unknown'; // Replace with actual user ID from session
 
   try {
     await sql`
       INSERT INTO attachments (project_id, link_name, link_url, file_name, file_url, notes, created_by)
       VALUES (${project_id}, ${link_name}, ${link_url}, ${file_name}, ${file_url}, ${notes}, ${created_by})
     `;
+    revalidatePath(`/dashboard/projects/${project_id}`);
     return { success: true, message: 'Attachment created successfully!' };
   } catch (error) {
     console.error('Error creating attachment:', error);
     return { success: false, message: 'Failed to create attachment' };
+  }
+}
+
+// Delete an attachment
+export async function deleteAttachment(id: string) {
+  
+  try {
+    await sql`
+      DELETE FROM attachments WHERE attachment_id = ${id}
+    `;
+    revalidatePath('/dashboard/projects/');
+    return { success: true, message: 'Attachment deleted successfully!' };
+  } catch (error) {
+    console.error('Error deleting attachment:', error);
+    return { success: false, message: 'Failed to delete attachment' };
   }
 }
 // Review a project
@@ -218,21 +233,4 @@ export async function updateProjectReviewStatus(formData: {
   revalidatePath(`/dashboard/projects/${formData.project_id}`);
   // revalidatePath('/dashboard/projects');
 }
-
-// delete an attachment - NOT TESTED
-export async function deleteAttachment(id: string) {
-  try {
-    await sql`
-      DELETE FROM attachments WHERE attachment_id = ${id}
-    `;
-  } catch (error) {
-    console.error('Error deleting attachment:', error);
-    throw new Error('Failed to delete attachment');
-  }
-  console.log(`Attachment with ID: ${id} deleted successfully.`);
-  // revalidatePath('/dashboard/projects')
-}
-//   redirect(`/dashboard/projects/${project.project_id}`)
-// }
-
 

@@ -8,23 +8,8 @@ import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 import Databox from "@/app/ui/devtools/databox";
 // import {Metadata, ResolvingMetadata} from 'next';
 import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
-
-// type Props = {
-//     params: Promise<{ id: string }>
-//     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-// }
-
-// export async function generateMetadata(
-//     {params, searchParams}: Props,
-//     parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//     const id = (await params).id;
-//     const project = await fetchProjectById(id);
-//
-//     return {
-//         title: `${project.project_name}`,
-//     }
-// }
+import { auth } from "@/auth";
+// 
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -32,6 +17,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     const p = await fetchProjectById(id);
     const cp = await fetchProjectsCommoditites(id);
     const attachments = await fetchAttachmentsByProjectId(id);
+    const session = await auth();
+
 
     if (!p) {
         notFound();
@@ -47,22 +34,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     return (
         <main>
              {/* Add Review Status Banner */}
-             {/* {p.approved_status === 'not_approved' && (
-                <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
-                    <div className="flex">
-                        <div className="flex-shrink-0">
-                            <svg className="h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                            </svg>
-                        </div>
-                        <div className="ml-3">
-                            <p className="text-sm text-yellow-700">
-                                <strong>Pending Re-review</strong>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )} */}
+            
             {/* Add Review Status Banner */}
             {p.approved_status !== 'Approved for External Use' && (
                 <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
@@ -86,6 +58,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
                         )}
+
             {p.approved_status === 'Under review' && (
                 <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
                     <div className="flex">
@@ -121,7 +94,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
             )}
 
             {/* EDITS/ DELETE and Review*/}
-            <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+            <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md"> {/* Main container */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-800">{p.project_name}</h2>
@@ -261,8 +234,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </summary>
 
                         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                            <UploadAttachmentForm projectId={id}/>
-
+                            <UploadAttachmentForm projectId={id}
+                                        userId={session?.user?.id || ''} // Pass the user ID from the session if available
+                            />
                             {attachments.length > 0 ? (
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {attachments.map((attachment) => (
@@ -304,7 +278,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
 
                 <div className="mb-6">
-                    <details className="group [&_summary::-webkit-details-marker]:hidden">
+                    <details className="group [&_summary::-webkit-details-marker]:hidden"> {/* Key Events */}
                         <summary
                             className="flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200">
                             <h3 className="font-semibold text-lg">Key Events ({key_events.length})</h3>
