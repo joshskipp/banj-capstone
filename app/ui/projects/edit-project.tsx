@@ -113,7 +113,7 @@ export default function EditProjectForm({ project, reviewerName }: {
             </div>
 
             <div>
-              <label htmlFor="asx_code" className="block mb-1">ASX Code</label>
+              <label htmlFor="asx_code" className="block mb-1">Company</label>
               <input
                 type="text"
                 id="asx_code"
@@ -131,7 +131,7 @@ export default function EditProjectForm({ project, reviewerName }: {
           {/* Coordinates */}
           <div className="space-y-4">
             <div>
-              <label htmlFor="latitude" className="block mb-1">Latitude*</label>
+              <label htmlFor="latitude" className="block mb-1">Latitude</label>
               <input
                 type="number"
                 id="latitude"
@@ -144,7 +144,7 @@ export default function EditProjectForm({ project, reviewerName }: {
               />
             </div>
             <div>
-              <label htmlFor="longitude" className="block mb-1">Longitude*</label>
+              <label htmlFor="longitude" className="block mb-1">Longitude</label>
               <input
                 type="number"
                 id="longitude"
@@ -198,20 +198,17 @@ export default function EditProjectForm({ project, reviewerName }: {
           {/* Product and Status */}
           <div className="space-y-4">
             <div>
-              <label htmlFor="product" className="block mb-1">Product*</label>
-              <select
+              <label htmlFor="product" className="block mb-1">Product</label>
+                <input
+                type="text"
                 id="product"
                 name="product"
                 value={formData.product}
                 onChange={handleChange}
                 required
                 className="w-full p-2 border rounded"
-              >
-                <option value="">Select...</option>
-                {PRODUCT_OPTIONS.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
+                placeholder="Enter product"
+                />
             </div>
             <div>
               <label htmlFor="project_status" className="block mb-1">Project Status*</label>

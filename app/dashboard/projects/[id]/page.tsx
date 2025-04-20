@@ -146,7 +146,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Created by:</b> {p.created_by || 'Error No creator?'}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
                             <li><b>Approved by:</b> {p.approved_by || 'Not approved'}</li>
-                            <li><b>Approved at:</b> {p.approved_at?.toLocaleString()}</li>
+                            <li><b>Last Approval:</b> {p.approved_at?.toLocaleString()}</li>
                             <li><b>Last Updated By: </b> {p.updated_by || 'Never Updated'}</li>
                             <li><b>Review By: </b> {p.reviewed_by || 'Never Reviewed'}</li>
                         </ul>
