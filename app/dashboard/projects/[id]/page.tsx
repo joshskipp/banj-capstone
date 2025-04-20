@@ -147,7 +147,14 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <h3 className="font-semibold text-lg mb-3">Metadata</h3>
                         <ul className="space-y-2">
-                            <li><b>Key Events:</b> TOBeImplemented</li>
+                            <li>
+                                <Link 
+                                    href="/dashboard/keyevents" 
+                                    className="hover:underline"
+                                >
+                                    <b>Last Key Event:</b> {key_events.length > 0 ? `${key_events[0].event_date.toLocaleDateString()} - ${key_events[0].event_details}` : 'No key events available'}
+                                </Link>
+                            </li>
                             <li><b>Created at:</b> {p.created_at?.toLocaleString()}</li>
                             <li><b>Created by:</b> {p.created_by || 'Error No creator?'}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
@@ -241,7 +248,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
                         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                             <UploadAttachmentForm projectId={id}
-                                        userId={session?.user?.id || ''} // Pass the user ID from the session if available
+                                        userId={session?.user?.name || ''} // Pass the user ID from the session if available
                             />
                             {attachments.length > 0 ? (
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -341,7 +348,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 <hr/>
 
                 <hr className="my-3 border-black"/>
+                <Link href="/dashboard/keyevents">
                 <h3>Key Events</h3>
+                </Link>
                 {/* Displays key events, if there aren't any, display a meaningful message */}
                 {key_events[0] != null ? key_events.map((k) => {
                     return (
