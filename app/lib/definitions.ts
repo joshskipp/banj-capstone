@@ -1,6 +1,19 @@
 // This file contains type definitions for your data.
 // It describes the shape of the data, and what data type each property should accept.
 
+export type AuditData= {
+    project_id: string,
+    previous_value: string[],
+    new_value: string[],
+    fields_affected: string[],
+}
+
+export type AuditRecord = {
+    user_id: string,
+    project_id: string,
+    data: string,
+}
+
 export type User = {
     id: string;
     name: string;

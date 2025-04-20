@@ -69,6 +69,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             Edit Project
                         </Link>
                         <DeleteProjectButton projectId={id}/>
+                        <Link href={`/dashboard/projects/${id}/audit`}>
+                            <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
+                                Audit History
+                            </Button>
+                        </Link>
                     </div>
 
                 </div>

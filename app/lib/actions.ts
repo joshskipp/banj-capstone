@@ -8,6 +8,8 @@ import { redirect } from 'next/navigation';
 import postgres from 'postgres';
 import { fetchProjectById } from './data';
 
+import { writeAudit } from '@/app/lib/writedb/write-audit';
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function authenticate(
@@ -41,9 +43,10 @@ export async function createProject(formData: {
   secondary_commodity: string;
   product: string;
   project_status: string;
-}) {
+}, user_id: string) {
   try {
-    await sql`
+    // Create a new project
+    const result = await sql`
       INSERT INTO projects (
         project_name, 
         latitude, 
@@ -51,7 +54,8 @@ export async function createProject(formData: {
         primary_commodity,
         secondary_commodity,
         product,
-        project_status
+        project_status,
+        created_by
       )
       VALUES (
         ${formData.project_name}, 
@@ -60,9 +64,17 @@ export async function createProject(formData: {
         ${formData.primary_commodity},
         ${formData.secondary_commodity},
         ${formData.product},
-        ${formData.project_status}
+        ${formData.project_status},
+        ${user_id}
       )
+        RETURNING *
     `;
+    
+    // Write the audit record
+    const auditResult = await writeAudit(result, user_id);
+    console.log('auditResult:',auditResult);
+
+
   } catch (error) {
     console.error('Error creating project:', error);
     throw new Error('Failed to create project');
@@ -81,7 +93,7 @@ export async function updateProject(project: {
   secondary_commodity: string;
   product: string;
   project_status: string;
-}) {
+},user_id: string) {
   // Validate input
   if (!project.project_id || !project.project_name || !project.latitude || !project.longitude) {
     throw new Error('Missing or invalid fields');
@@ -101,7 +113,9 @@ export async function updateProject(project: {
       throw new Error('Project not found');
     }
 
-    await sql`
+    const old_value = await fetchProjectById(project.project_id);
+    
+    const result = await sql`
       UPDATE projects
       SET 
         project_name = ${project.project_name}, 
@@ -112,8 +126,13 @@ export async function updateProject(project: {
         product = ${project.product},
         project_status = ${project.project_status}
       WHERE project_id = ${project.project_id}
-    `;
+    RETURNING *`;
     console.log("updated database");
+
+    // Write the audit record
+    const auditResult = await writeAudit(result, user_id, old_value);
+    console.log('auditResult:',auditResult);
+
   } catch (error) {
 
     console.error('Error updating project');
