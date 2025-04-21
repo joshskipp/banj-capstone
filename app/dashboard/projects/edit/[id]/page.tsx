@@ -15,7 +15,7 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
 
   return (
     <div>
-      <h1>DEVELOPMENT Edit Project</h1>
+      <h1>Edit Project</h1>
       <EditProjectForm project={project} />
       <br />
       <Link href="/dashboard/projects">

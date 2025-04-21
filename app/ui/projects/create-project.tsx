@@ -53,8 +53,8 @@ export default function CreateProjectForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
-      <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-white">
+    <div className="flex justify-center items-center min-h-screen bg-[#f8f5f6]">
+      <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-[#f8f5f6]">
         <div className="flex flex-col gap-6">
 
           {/* Required Section */}
