@@ -169,7 +169,7 @@ export default function DashboardSkeleton() {
       <hr className="mb-4" />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-8 mb-4">
         <div className="md:col-span-2 lg:col-span-4">
-          
+          <ProductivityChart />
         </div>
         <div className="md:col-span-2 lg:col-span-4">
           <Productivity />

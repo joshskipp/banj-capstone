@@ -1,75 +1,58 @@
-// components/GridComponent.tsx
-"use client";
+'use client';
 
-import { AgGridReact } from "ag-grid-react";
-import { useEffect, useState, useRef } from "react";
-import type { ColDef } from "ag-grid-community";
-import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule, GridOptions } from "ag-grid-community";
-import { fetchAllProjects } from "@/app/lib/data";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { fetchAllProjects } from '@/app/lib/data';
 
+export default function ProductivityChart() {
+  const [stats, setStats] = useState({
+    total: 0,
+    new: 0,
+    internal: 0,
+    external: 0
+  });
 
-// Register AG-Grid modules
-ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, QuickFilterModule]);
-
-const ProductivityChart = () => {
-  const [rowData, setRowData] = useState<any[]>([]);
-  const gridRef = useRef<any>(null); // Reference to the AG-Grid instance
-
-  // Fetch row data
   useEffect(() => {
-    fetchAllProjects()
-      .then(data => setRowData(data))
-      .catch(error => console.error('Failed to fetch rowData:', error));
+    const fetchData = async () => {
+      const projects = await fetchAllProjects();
+
+      const total = projects.length;
+      const newProjects = projects.filter(p => p.project_status === 'new').length;
+      const approvedInternal = projects.filter(p => p.approved_status === 'Internal Use').length;
+      const approvedExternal = projects.filter(p => p.approved_status === 'External Use').length;
+
+      setStats({
+        total,
+        new: newProjects,
+        internal: approvedInternal,
+        external: approvedExternal
+      });
+    };
+
+    fetchData();
   }, []);
 
-  const gridOptions: GridOptions = {
-    onRowClicked: (event: { data: { project_id: any; }; }) => {
-      redirect(`/dashboard/projects/${event.data.project_id}`);
-    },
-  };
-
-  // Column definitions
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    { field: "project_name", width: 300, headerName: "Project Name", sortable: true },
-    { field: "updated_at", width: 300, headerName: "Last Updated", sortable: true },
-    { field: "productivity_score", width: 150, headerName: "Productivity Score", sortable: true },
-  ]);
-
-  // Create chart automatically when data is loaded
-  useEffect(() => {
-    if (gridRef.current && rowData.length > 0) {
-      const gridApi = gridRef.current.api;
-      const chartOptions = {
-        chartType: 'bar', // Can be changed to 'line', 'pie', etc.
-        cellRange: {
-          startRow: 0,
-          endRow: rowData.length - 1,
-          columns: ['project_name', 'productivity_score'], // Columns to plot in the chart
-        },
-        chartContainer: document.getElementById('chartContainer')!, // The container to render the chart
-      };
-      gridApi.createRangeChart(chartOptions); // Create chart based on the grid's data
-    }
-  }, [rowData]); // Re-run this effect when rowData changes
-
   return (
-    <div>
-      <div style={{ width: "100%", height: "50vh" }}>
-        <AgGridReact
-          ref={gridRef}
-          gridOptions={gridOptions}
-          rowData={rowData}
-          columnDefs={columnDefs}
-          enableCharts={true} // Enable AG-Grid charting feature
-          domLayout="autoHeight"
-        />
+    <div className="grid grid-cols-2 gap-4">
+      {/* Each card */}
+      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+        <span className="text-sm text-gray-500">Total Projects</span>
+        <span className="text-2xl font-bold">{stats.total}</span>
       </div>
 
-      {/* Container for the chart */}
-      <div id="chartContainer" style={{ height: 400, width: '100%' }} />
+      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+        <span className="text-sm text-gray-500">New Projects</span>
+        <span className="text-2xl font-bold">{stats.new}</span>
+      </div>
+
+      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+        <span className="text-sm text-gray-500">Internal Approved</span>
+        <span className="text-2xl font-bold">{stats.internal}</span>
+      </div>
+
+      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+        <span className="text-sm text-gray-500">External Approved</span>
+        <span className="text-2xl font-bold">{stats.external}</span>
+      </div>
     </div>
   );
-};
-
-export default ProductivityChart;
+}

@@ -54,28 +54,21 @@ const GridComponent = () => {
 
             
             <Link href="/dashboard/projects/create">
-                <Button 
-                    className="flex items-center gap-2 bg-[#C0C0C0] text-black hover:bg-[#C0C0C0]"
-                >
-                    <PlusCircleIcon className="w-5 h-5 text-black" />
+                <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                    <PlusCircleIcon className="w-5 h-5 text-white" />
                     Add Project
                 </Button>
             </Link>
 
             <Link href="/dashboard/projects/searchresults">
-                <Button 
-                    className="flex items-center gap-2 bg-[#C0C0C0] text-black hover:bg-[#C0C0C0]"
-                >
-                    <MagnifyingGlassIcon className="w-5 h-5 text-black" />
+                <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                    <MagnifyingGlassIcon className="w-5 h-5 text-white" />
                     Search Projects
                 </Button>
             </Link>
 
-            <Button 
-                onClick={exportToCsv}
-                className="flex items-center gap-2 bg-[#C0C0C0] text-black hover:bg-[#C0C0C0]"
-            >
-                <ArrowDownTrayIcon className="w-5 h-5 text-black" />
+            <Button onClick={exportToCsv} className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                <ArrowDownTrayIcon className="w-5 h-5 text-white" />
                 Export Projects
             </Button>
 
