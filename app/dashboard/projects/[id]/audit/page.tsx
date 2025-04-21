@@ -40,7 +40,7 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
                             <div className='w-1/2'>
                             <p><strong>New values:</strong></p>
                             <textarea className='w-full h-32 p-[0.2rem] border-[.05rem] border-solid border-[#bfbfbf] text-xs' readOnly
-                                value={JSON.stringify((JSON.parse(record.data).new_value), null, 2)}>
+                                value={JSON.stringify((JSON.parse(record.data).new_value[0]), null, 2)}>
                             </textarea>
                             </div>
                         </div>
