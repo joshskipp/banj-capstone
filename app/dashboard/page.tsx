@@ -18,8 +18,6 @@ export default async function Page(props: {
     return (
         <div>
             <h2><strong>Dashboard</strong></h2>
-
-            <h3 className="mb-4"><strong>Shortcuts</strong></h3>
             
             <div className="w-full">
                 <DashboardSkeleton />

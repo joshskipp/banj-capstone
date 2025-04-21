@@ -53,15 +53,32 @@ const GridComponent = () => {
             <div className="mb-4" style={{ display: 'flex', gap: '1rem', fontSize: '10px' }}>
 
             
-                <Link href="/dashboard/projects/create">
-                <PlusCircleIcon title="Add Project" className="w-7 h-7"/>
-                </Link>  
+            <Link href="/dashboard/projects/create">
+                <Button 
+                    className="flex items-center gap-2 bg-[#C0C0C0] text-black hover:bg-[#C0C0C0]"
+                >
+                    <PlusCircleIcon className="w-5 h-5 text-black" />
+                    Add Project
+                </Button>
+            </Link>
 
-                <Link href="/dashboard/projects/searchresults">
-                <MagnifyingGlassIcon title="Search Projects" className="w-7 h-7"/>
-                </Link>             
+            <Link href="/dashboard/projects/searchresults">
+                <Button 
+                    className="flex items-center gap-2 bg-[#C0C0C0] text-black hover:bg-[#C0C0C0]"
+                >
+                    <MagnifyingGlassIcon className="w-5 h-5 text-black" />
+                    Search Projects
+                </Button>
+            </Link>
 
-                <ArrowDownTrayIcon title="Export Projects" onClick={exportToCsv} className="w-7 h-7"/>
+            <Button 
+                onClick={exportToCsv}
+                className="flex items-center gap-2 bg-[#C0C0C0] text-black hover:bg-[#C0C0C0]"
+            >
+                <ArrowDownTrayIcon className="w-5 h-5 text-black" />
+                Export Projects
+            </Button>
+
                 
             </div>
 
