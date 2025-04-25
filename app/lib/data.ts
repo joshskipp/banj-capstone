@@ -162,15 +162,13 @@ export async function fetchProjectsPages(query: string) {
 export async function fetchFilteredCompanies(
   query: string,
   currentPage: number,  ) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
     const companies = await sql`
       SELECT * FROM companies
       WHERE
-        companies.company_name ILIKE ${`%${query}%`} OR
+        companies.company_name ILIKE ${`%${query}%`}
       ORDER BY companies.updated_at DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
     return companies;
