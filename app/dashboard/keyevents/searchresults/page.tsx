@@ -1,4 +1,4 @@
-import { fetchFilteredCompanies  } from "@/app/lib/data"
+import { fetchFilteredKeyEvents  } from "@/app/lib/data"
 import Search from '@/app/ui/search/search';
 
 
@@ -15,7 +15,7 @@ export default async function Page(props: {
     const currentPage = Number(searchParams?.page) || 1;
 
 
-    const SearchedCompanies = await fetchFilteredCompanies(query, currentPage);
+    const SearchedKeyEvents = await fetchFilteredKeyEvents(query, currentPage);
 
 
     return (
@@ -28,15 +28,15 @@ export default async function Page(props: {
                     <Search />
                 </div>
                 
-                {SearchedCompanies.map((company, i) => {
+                {SearchedKeyEvents.map((key_event, i) => {
                     return (
-                        <div key={company.company_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
-                            <strong>{company.company_name}</strong><br />
-                            ID: {company.company_id}<br />
-                            Notes:{company.notes}<br />
+                        <div key={key_event.event_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
+                            <strong>{key_event.event_details}</strong><br />
+                            ID: {key_event.event_id}<br />
+                            Date:{key_event.event_date.toLocaleString()}<br />
                             <br />
                             {/* Constructing the link using the project_id */}
-                            <a href={`/dashboard/companies/${company.company_id}`}>
+                            <a href={`/dashboard/keyevents/${key_event.event_id}`}>
                                 More...
                             </a>
                         </div>

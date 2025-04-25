@@ -178,6 +178,24 @@ export async function fetchFilteredCompanies(
   }
 }
 
+export async function fetchFilteredKeyEvents(
+  query: string,
+  currentPage: number,  ) {
+
+  try {
+    const key_events = await sql`
+      SELECT * FROM key_events
+      WHERE
+        key_events.event_details ILIKE ${`%${query}%`}
+      ORDER BY key_events.event_date DESC
+    `;
+
+    return key_events;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch events.');
+  }
+}
 
 // FROM TEMPLATE
 //
