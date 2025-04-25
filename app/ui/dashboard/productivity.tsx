@@ -32,7 +32,7 @@ const Productivity = () => {
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     { field: "project_name", width: 300, headerName: "Project Name", sortable: true },
     { field: "updated_at", width: 300, headerName: "Last Updated", sortable: true },
-    { field: "productivity_score", width: 150, headerName: "Productivity Score", sortable: true },
+    { field: "approved_status", width: 150, headerName: "Approval", sortable: true },
   ]);
 
   // Create chart automatically when data is loaded
