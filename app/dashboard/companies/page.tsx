@@ -1,7 +1,7 @@
 import { fetchAllCompanies } from "@/app/lib/fetchdb/fetch-companies";
 import CompaniesDataGrid from "@/app/ui/companies/datagrid";
 import { Button } from "@/app/ui/button";
-import { PlusCircleIcon} from "@heroicons/react/24/outline";
+import { PlusCircleIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Databox from "@/app/ui/devtools/databox";
 
@@ -36,8 +36,15 @@ export default async function Page() {
             <h2>Companies</h2>
                 <Link href="/dashboard/companies/new">
                 <Button className="-[12rem]">
-                <PlusCircleIcon className="w-8"/>
-                New Company
+                    <PlusCircleIcon className="w-8"/>
+                    New Company
+                </Button>
+                </Link>
+
+                <Link href="/dashboard/companies/searchresults">
+                <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                    <MagnifyingGlassIcon className="w-5 h-5 text-white" />
+                    Search Projects
                 </Button>
                 </Link>
             </div>

@@ -16,9 +16,9 @@ export default function ProductivityChart() {
       const projects = await fetchAllProjects();
 
       const total = projects.length;
-      const newProjects = projects.filter(p => p.project_status === 'new').length;
-      const approvedInternal = projects.filter(p => p.approved_status === 'Internal Use').length;
-      const approvedExternal = projects.filter(p => p.approved_status === 'External Use').length;
+      const newProjects = projects.filter(project => project.approved_status === 'new').length;
+      const approvedInternal = projects.filter(project => project.approved_status === 'Internal Use').length;
+      const approvedExternal = projects.filter(project => project.approved_status === 'External Use').length;
 
       setStats({
         total,
@@ -34,22 +34,22 @@ export default function ProductivityChart() {
   return (
     <div className="grid grid-cols-2 gap-4">
       {/* Each card */}
-      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+      <div className="bg-gray-100 rounded-lg shadow p-2 flex flex-col items-center justify-center aspect-square w-24">
         <span className="text-sm text-gray-500">Total Projects</span>
         <span className="text-2xl font-bold">{stats.total}</span>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+      <div className="bg-gray-100 rounded-lg shadow p-2 flex flex-col items-center justify-center aspect-square w-24">
         <span className="text-sm text-gray-500">New Projects</span>
         <span className="text-2xl font-bold">{stats.new}</span>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+      <div className="bg-gray-100 rounded-lg shadow p-2 flex flex-col items-center justify-center aspect-square w-24">
         <span className="text-sm text-gray-500">Internal Approved</span>
         <span className="text-2xl font-bold">{stats.internal}</span>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-4 flex flex-col items-center justify-center aspect-square">
+      <div className="bg-gray-100 rounded-lg shadow p-2 flex flex-col items-center justify-center aspect-square w-24">
         <span className="text-sm text-gray-500">External Approved</span>
         <span className="text-2xl font-bold">{stats.external}</span>
       </div>

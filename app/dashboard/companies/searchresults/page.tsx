@@ -1,5 +1,4 @@
 import { fetchFilteredCompanies  } from "@/app/lib/data"
-import { fetchProjectsPages } from '@/app/lib/data';
 import Search from '@/app/ui/search/search';
 
 
@@ -14,11 +13,9 @@ export default async function Page(props: {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const totalPages = await fetchProjectsPages(query);
 
 
     const SearchedCompanies = await fetchFilteredCompanies(query, currentPage);
-    const Pagination = await fetchProjectsPages(query);
 
 
     return (

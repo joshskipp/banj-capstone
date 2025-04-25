@@ -18,7 +18,7 @@ const Productivity = () => {
   // Fetch row data
   useEffect(() => {
     fetchAllProjects()
-      .then(data => setRowData(data))
+      .then(data => setRowData(data.slice(0, 15)))
       .catch(error => console.error('Failed to fetch rowData:', error));
   }, []);
 

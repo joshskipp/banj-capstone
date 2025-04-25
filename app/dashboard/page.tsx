@@ -3,7 +3,6 @@ import { fetchProjectsPages } from '@/app/lib/data';
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
 import DashboardSkeleton from "../ui/skeletons-old";
-import NewsReel from "../ui/dashboard/keyeventsreel";
 import { fetchKeyEvents } from "../lib/fetchdb/fetch-keyevents";
 
 
