@@ -20,8 +20,9 @@ export default async function Page(){
                 <h2><strong>Company List</strong></h2>
                 <p>Projects are a foundational data type that represent individual critical minerals initiatives. Projects serve as the central node connecting other data types such as Commodities, Companies, and Key Events</p>
             </div>
-
             
+            <GridComponent />
+           <Databox rawData={AllCompanies} />
         </main>
     )
 }
