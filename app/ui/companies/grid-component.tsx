@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
 import { themeQuartz } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule} from "ag-grid-community";
-import { fetchAllCompanies } from "@/app/lib/fetchdb/fetch-companies";
+import { fetchAllCompanies } from "@/app/lib/data";
 import { redirect } from "next/navigation";
 import Link from 'next/link';
 import { Button } from '../button';
