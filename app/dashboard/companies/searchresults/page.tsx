@@ -1,5 +1,4 @@
-import { fetchAllProjects, fetchFilteredProjects  } from "@/app/lib/data"
-import { fetchProjectsPages } from '@/app/lib/data';
+import { fetchFilteredCompanies  } from "@/app/lib/data"
 import Search from '@/app/ui/search/search';
 
 
@@ -14,12 +13,9 @@ export default async function Page(props: {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const totalPages = await fetchProjectsPages(query);
 
 
-    const AllProjects = await fetchAllProjects();
-    const SearchedProjects = await fetchFilteredProjects(query, currentPage);
-    const Pagination = await fetchProjectsPages(query);
+    const SearchedCompanies = await fetchFilteredCompanies(query, currentPage);
 
 
     return (
@@ -32,18 +28,15 @@ export default async function Page(props: {
                     <Search />
                 </div>
                 
-                {SearchedProjects.map((project, i) => {
+                {SearchedCompanies.map((company, i) => {
                     return (
-                        <div key={project.project_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
-                            <strong>{project.project_name}</strong><br />
-                            ID: {project.project_id}<br />
-                            Product:{project.product}<br />
-                            Primary Commodity: {project.primary_commodity}<br />
-                            Coordinates: {project.latitude}, {project.longitude}<br />
-                            Status: {project.approved_status}
+                        <div key={company.company_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
+                            <strong>{company.company_name}</strong><br />
+                            ID: {company.company_id}<br />
+                            Notes:{company.notes}<br />
                             <br />
                             {/* Constructing the link using the project_id */}
-                            <a href={`/dashboard/projects/${project.project_id}`}>
+                            <a href={`/dashboard/companies/${company.company_id}`}>
                                 More...
                             </a>
                         </div>

@@ -1,4 +1,6 @@
 import {fetchKeyEvents} from "@/app/lib/fetchdb/fetch-keyevents";
+import { Button } from "@/app/ui/button";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default async function Page() {
@@ -19,6 +21,12 @@ export default async function Page() {
                         >
                             <button className={"fluent-default-button"}>
                                 Add Key Event
+                            </button>
+                        </Link>
+
+                        <Link href="/dashboard/keyevents/searchresults">
+                            <button className="fluent-default-button">
+                                Search
                             </button>
                         </Link>
                     </div>

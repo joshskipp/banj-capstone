@@ -38,6 +38,16 @@ export async function fetchUserCount() {
     }
 }
 
+export async function fetchAllCompanies() {
+    try {
+        const data = await sql`SELECT * FROM companies`
+        return data;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch companies.');
+    }
+}
+
 export async function fetchAllCommodities() {
     try {
         const data = await sql`
@@ -157,9 +167,45 @@ export async function fetchProjectsPages(query: string) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch total number of projects.');
       }
-    }
+}
 
+export async function fetchFilteredCompanies(
+  query: string,
+  currentPage: number,  ) {
 
+  try {
+    const companies = await sql`
+      SELECT * FROM companies
+      WHERE
+        companies.company_name ILIKE ${`%${query}%`}
+      ORDER BY companies.updated_at DESC
+    `;
+
+    return companies;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch companies.');
+  }
+}
+
+export async function fetchFilteredKeyEvents(
+  query: string,
+  currentPage: number,  ) {
+
+  try {
+    const key_events = await sql`
+      SELECT * FROM key_events
+      WHERE
+        key_events.event_details ILIKE ${`%${query}%`}
+      ORDER BY key_events.event_date DESC
+    `;
+
+    return key_events;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch events.');
+  }
+}
 
 // FROM TEMPLATE
 //

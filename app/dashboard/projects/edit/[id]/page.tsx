@@ -1,4 +1,3 @@
-// app/dashboard/projects/edit/[id]/page.tsx
 import { fetchProjectById } from "@/app/lib/data";
 import EditProjectForm from "@/app/ui/projects/edit-project";
 import Link from "next/link";
@@ -20,7 +19,7 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
 
   return (
     <div>
-      <h1>DEVELOPMENT Edit Project</h1>
+      <h1>Edit Project</h1>
       <EditProjectForm project={project} reviewerName={reviewerName} session={session} />
       <br />
       <Link href="/dashboard/projects">

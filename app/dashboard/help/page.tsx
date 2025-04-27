@@ -5,14 +5,12 @@ import { useState } from 'react';
 export default function Page() {
   const [activeSection, setActiveSection] = useState<string>('welcome'); // Tracks the active section
 
-  // Function to handle the section change
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
   };
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
       <aside className="w-64 bg-[#1f4656] text-white p-4 border-r border-[#7a232a]">
         <nav>
           <ul className="space-y-4">
@@ -58,17 +56,16 @@ export default function Page() {
             </li>
             <li>
               <button
-                onClick={() => handleSectionChange('help')}
+                onClick={() => handleSectionChange('download')}
                 className="text-lg hover:text-[#7a232a] mt-4 w-full text-left"
               >
-                Help
+                Download
               </button>
             </li>
           </ul>
         </nav>
       </aside>
-
-      {/* Main content area */}
+      
       <div className="flex-1 overflow-hidden flex">
         {/* Main Content */}
         <main className="flex-1 p-6 bg-[#f8f8f8] overflow-auto">
@@ -111,14 +108,24 @@ export default function Page() {
           </div>
         )}
 
-        {activeSection === 'help' && (
+        {activeSection === 'download' && (
           <div className="w-full p-6">
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">FAQs</h3>
-              <ul className="list-disc pl-5">
-                <li>How do I change my password? Go to Settings &gt; Profile.</li>
-              </ul>
-            </div>
+            Click below to download the User Guide for more detailed information
+            <div className="mb-4">
+            <button
+              onClick={() => {
+                const element = document.createElement("a");
+                const file = new Blob(["Download User Guide"], { type: 'text/plain' });
+                element.href = URL.createObjectURL(file);
+                element.download = "example.txt";
+                document.body.appendChild(element); // Required for Firefox
+                element.click();
+              }}
+              className="bg-[#1f4656] hover:bg-[#163340] text-white py-2 px-4 rounded"
+            >
+              Download File
+            </button>
+          </div>
           </div>
         )}
       </div>
