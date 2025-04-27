@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/app/ui/button";
 import { GetSession } from "@/app/lib/get-session";
+import { activeSession } from "@/app/lib/utils/activeSession";
 
 export default async function Page(props: { params: Promise<{ id: string }>}) {
     const params = await props.params;
@@ -20,7 +21,7 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
   return (
     <div>
       <h1>DEVELOPMENT Edit Project</h1>
-      <EditProjectForm project={project} reviewerName={reviewerName} />
+      <EditProjectForm project={project} reviewerName={reviewerName} session={session} />
       <br />
       <Link href="/dashboard/projects">
       <Button>

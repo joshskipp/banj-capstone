@@ -27,8 +27,8 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function EditProjectForm({ project, reviewerName }: { 
-  project: any;
+export default function EditProjectForm({ project, reviewerName, session }: { 
+  project: any, session: any;
   reviewerName: string;
 }) {
   const router = useRouter();
@@ -46,6 +46,8 @@ export default function EditProjectForm({ project, reviewerName }: {
     updated_at: new Date().toISOString()
   });
 
+  const user_session = session;
+  console.log(user_session.id);
   useEffect(() => {
     if (project) {
       setFormData({
@@ -72,7 +74,7 @@ export default function EditProjectForm({ project, reviewerName }: {
       await updateProject({
         ...formData,
         updated_by: reviewerName // Pass the editors's name as a prop
-      });
+      }, user_session.id);
       console.log("Redirect");
       router.push(`/dashboard/projects/${project.project_id}`);
     } catch (error) {

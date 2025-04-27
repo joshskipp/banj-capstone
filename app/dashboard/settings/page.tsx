@@ -2,6 +2,7 @@ import {fetchAllUsers, fetchUserCount} from "@/app/lib/data";
 import { CommandLineIcon } from '@heroicons/react/24/outline';
 import NewUserForm from '@/app/ui/settings/new-user-form';
 import CurrentUser from '@/app/ui/settings/current-user';
+import ChangePasswordForm from '@/app/ui/settings/change-password'
 
 export default async function Page() {
     const allUsers = await fetchAllUsers();
@@ -35,6 +36,10 @@ export default async function Page() {
                     <div key={user.id} className="p-2 bg-gray-200 bg-opacity-35 rounded-lg hover:bg-white">
                         <p><strong>{user.name}</strong> ({user.email}) <br />
                         <small>{user.id}</small></p>
+                        {user.name != "system-nouser" ?
+                        <ChangePasswordForm user_id={user.id} />
+                        : <p>Cannot change password for this user.</p>
+                        }
                     </div>
                 ))}
                     <h4>New User</h4>

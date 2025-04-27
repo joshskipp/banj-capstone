@@ -33,8 +33,14 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
+<<<<<<< HEAD
 export default function CreateProjectForm({ reviewerName }: { reviewerName: string }) {
+=======
+
+export default function CreateProjectForm(session: any) {
+>>>>>>> origin/preview
   const router = useRouter();
+
   const [formData, setFormData] = useState({
     project_name: '',
     asx_code: '',
@@ -47,13 +53,20 @@ export default function CreateProjectForm({ reviewerName }: { reviewerName: stri
     approved_status: 'Update in Progress',
     created_by: ''
   });
+  const user_session = session;
+  console.log(user_session.session.name);
 
   const handleSubmit = async (e: React.FormEvent) => {
+<<<<<<< HEAD
     e.preventDefault();
     await createProject({
       ...formData,
       created_by: reviewerName // Pass the creator's name
     });
+=======
+    e.preventDefault();     
+    await createProject(formData, user_session.session.id);
+>>>>>>> origin/preview
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
