@@ -70,12 +70,36 @@ export function HelpSkeleton() {
   );
 }
 
-export function SearchSkeleton() {
+export function ProjectSearchSkeleton() {
   return (
     <Link href="/dashboard/projects/searchresults">
       <div>
         <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
-        <h2 className="text-xl text-white font-semibold">Search</h2>
+        <h2 className="text-xl text-white font-semibold">Search Projects</h2>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function CompanySearchSkeleton() {
+  return (
+    <Link href="/dashboard/companies/searchresults">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Search Companies</h2>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function EventSearchSkeleton() {
+  return (
+    <Link href="/dashboard/keyevents/searchresults">
+      <div>
+        <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+        <h2 className="text-xl text-white font-semibold">Search Events</h2>
         </div>
       </div>
     </Link>
@@ -159,9 +183,12 @@ export default function DashboardSkeleton() {
       </div>
 
       <h3 className="mb-4"><strong>Tools/Help</strong></h3>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2 mb-8">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <HelpSkeleton />
-        <SearchSkeleton />
+        <ProjectSearchSkeleton />
+        <CompanySearchSkeleton />
+        <EventSearchSkeleton />
+
       </div>
 
       <h3 className="mb-2"><strong>Productivity</strong></h3>

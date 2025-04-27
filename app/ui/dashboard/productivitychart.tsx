@@ -35,23 +35,23 @@ export default function ProductivityChart() {
     <div className="grid grid-cols-2 gap-4">
       {/* Each card */}
       <div className="bg-gray-100 rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
-        <span className="text-lg text-gray-500">Total Projects</span>
-        <span className="text-2xl font-bold">{stats.total}</span>
+        <span className="text-lg text-white">Total Projects</span>
+        <span className="text-2xl text-white font-bold">{stats.total}</span>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
-        <span className="text-lg text-gray-500">New Projects</span>
-        <span className="text-2xl font-bold">{stats.new}</span>
+      <div className="bg-[#1f4656] hover:bg-[#2b6173] rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
+        <span className="text-lg text-white">New Projects</span>
+        <span className="text-2xl text-white font-bold">{stats.new}</span>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
-        <span className="text-lg text-gray-500">Approved for Internal Use</span>
-        <span className="text-2xl font-bold">{stats.internal}</span>
+      <div className="bg-[#1f4656] hover:bg-[#2b6173] rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
+        <span className="text-lg text-white">Approved for Internal Use</span>
+        <span className="text-2xl text-white font-bold">{stats.internal}</span>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
-        <span className="text-lg text-gray-500">Approved for External Use</span>
-        <span className="text-2xl font-bold">{stats.external}</span>
+      <div className="bg-[#1f4656] hover:bg-[#2b6173] rounded-lg shadow p-6 flex flex-col items-center justify-center aspect-square">
+        <span className="text-lg text-white">Approved for External Use</span>
+        <span className="text-2xl text-white font-bold">{stats.external}</span>
       </div>
     </div>
   );

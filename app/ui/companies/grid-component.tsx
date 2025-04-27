@@ -32,7 +32,7 @@ const GridComponent = () => {
     const [columnDefs] = useState<ColDef[]>([
         { field: "company_id", width: 300, headerName: "ID" },
         { field: "company_name", width: 300, headerName: "Company Name", filter: "agTextColumnFilter", sortable: true},
-        { field: "asx", width: 300, headerName: "ASX Code", filter: "agTextColumnFilter",sortable: true },
+        { field: "asx_code", width: 300, headerName: "ASX Code", filter: "agTextColumnFilter",sortable: true },
         { field: "notes", maxWidth: 120, headerName: "Notes", sortable: true },
         { field: "created_at", maxWidth: 120, headerName: "Created At", sortable: true },
         { field: "updated_at", maxWidth: 150, headerName: "Last Updated", filter: "agTextColumnFilter",sortable: true }
