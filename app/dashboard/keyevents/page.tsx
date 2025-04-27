@@ -26,7 +26,7 @@ export default async function Page() {
 
                         <Link href="/dashboard/keyevents/searchresults">
                             <button className="fluent-default-button">
-                                Search Projects
+                                Search
                             </button>
                         </Link>
                     </div>
