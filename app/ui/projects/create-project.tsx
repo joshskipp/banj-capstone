@@ -21,6 +21,11 @@ const PRODUCT_OPTIONS = [
   'Vanadium pentoxide, high-purity alumina'
 ];
 
+const Review_STATUS_OPTIONS = [
+  'Update in Progress',
+  'Ready for Review'
+]
+
 const PROJECT_STATUS_OPTIONS = [
   'Publicly announced',
   'Definitive feasibility',
@@ -28,7 +33,7 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function CreateProjectForm() {
+export default function CreateProjectForm({ reviewerName, session }: { reviewerName: string; session: any }) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     project_name: '',
@@ -38,12 +43,14 @@ export default function CreateProjectForm() {
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
-    project_status: 'Publicly announced'
+    project_status: 'Publicly announced',
+    approved_status: 'Update in Progress',
+    created_by: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await createProject(formData);
+    e.preventDefault();     
+    await createProject(formData, session.id);
     router.push('/dashboard/projects'); // Optional: navigate after submit
   };
 

@@ -1,5 +1,5 @@
 # BANJ Prospector
-Version `0.0.0 3`
+Development Alpha, Build `0.0.0 4`
 
 
 ## Technologies

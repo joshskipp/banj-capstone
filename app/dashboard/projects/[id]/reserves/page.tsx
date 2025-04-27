@@ -35,6 +35,7 @@ export default async function Page(props: { params: Promise<{id: string}>}) {
             <h3>Reserves for Project: {p.project_name}</h3>
 
             <h3>New Reserve Record</h3>
+            <p>The Commodities need to be linked</p>
             <NewReservesForm commodities={commoditiesArray} project_id={p.project_id} session={session} />
         </main>
     )

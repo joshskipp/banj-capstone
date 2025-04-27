@@ -1,3 +1,4 @@
+// app/ui/projects/edit-form.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -28,7 +29,10 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function EditProjectForm({ project }: { project: any }) {
+export default function EditProjectForm({ project, reviewerName, session }: { 
+  project: any, session: any;
+  reviewerName: string;
+}) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     project_id: '',
@@ -39,9 +43,13 @@ export default function EditProjectForm({ project }: { project: any }) {
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
-    project_status: 'Publicly announced'
+    project_status: 'Publicly announced',
+    updated_by: reviewerName,
+    updated_at: new Date().toISOString()
   });
 
+  const user_session = session;
+  console.log(user_session.id);
   useEffect(() => {
     if (project) {
       setFormData({
@@ -53,15 +61,22 @@ export default function EditProjectForm({ project }: { project: any }) {
         primary_commodity: project.primary_commodity || '',
         secondary_commodity: project.secondary_commodity || '',
         product: project.product || '',
-        project_status: project.project_status || 'Publicly announced'
-      });
+        project_status: project.project_status || 'Publicly announced',
+        updated_by: reviewerName,
+        updated_at: new Date().toISOString()
+     });
     }
   }, [project]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateProject(formData);
+      console.log("Running function updateProject");
+      await updateProject({
+        ...formData,
+        updated_by: reviewerName // Pass the editors's name as a prop
+      }, user_session.id);
+      console.log("Redirect");
       router.push(`/dashboard/projects/${project.project_id}`);
     } catch (error) {
       console.error('Error updating project:', error);

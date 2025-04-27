@@ -2,29 +2,16 @@ import {fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId
 import DeleteProjectButton from "@/app/ui/projects/delete-project";
 import {notFound} from 'next/navigation';
 import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
+import CreateComment from "@/app/ui/projects/create-comment";
 import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 import Databox from "@/app/ui/devtools/databox";
 // import {Metadata, ResolvingMetadata} from 'next';
 import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
-
-// type Props = {
-//     params: Promise<{ id: string }>
-//     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-// }
-
-// export async function generateMetadata(
-//     {params, searchParams}: Props,
-//     parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//     const id = (await params).id;
-//     const project = await fetchProjectById(id);
-//
-//     return {
-//         title: `${project.project_name}`,
-//     }
-// }
+import { auth } from "@/auth"
+import ProjectComments from "@/app/ui/projects/project-comments";
+// 
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -32,6 +19,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     const p = await fetchProjectById(id);
     const cp = await fetchProjectsCommoditites(id);
     const attachments = await fetchAttachmentsByProjectId(id);
+    const session = await auth();
+
 
     if (!p) {
         notFound();
@@ -39,6 +28,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     const key_events = await fetchKeyEventsByProjectID(id);
 
+    
     /**
      * Fetch Project Reserves
      */
@@ -46,7 +36,74 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     return (
         <main>
-            <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+             {/* Add Review Status Banner */}
+            
+            {/* Add Review Status Banner */}
+            {p.approved_status !== 'Approved for External Use' && (
+                <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm text-red-700">
+                                <strong>Approval Status Warning:</strong> This project is not approved for external use.
+                            </p>
+                            <p>
+                                <strong>Reviewer Notes: </strong> 
+                                {/* if review_notes is null Display the following message. */}
+                                {p.review_notes ? p.review_notes : "This Project has not been reviewed at this stage."}
+                                
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                        )}
+
+            {p.approved_status === 'Under review' && (
+                <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm text-yellow-700">
+                                <strong>Approval Status:</strong> This project is currently in review at this time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {p.approved_status === 'Approved for External Use' && (
+                <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm text-green-700">
+                                <strong>Approval Status:</strong> This project is <strong>approved for external use.</strong>
+                            </p>
+                            <p>
+                                <strong>Reviewer Notes: </strong> 
+                                {/* if review_notes is null Display the following message. */}
+                                {p.review_notes ? p.review_notes : "This Project has not been reviewed at this stage."}
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* EDITS/ DELETE and Review*/}
+            <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md"> {/* Main container */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-800">{p.project_name}</h2>
@@ -59,10 +116,25 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         >
                             Edit Project
                         </Link>
+
+                        <Link
+                            href={`/dashboard/projects/review/${id}`}
+                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                        >
+                            Review Project
+                        </Link>
+                        
                         <DeleteProjectButton projectId={id}/>
+                        <Link href={`/dashboard/projects/${id}/audit`}>
+                            <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
+                                Audit History
+                            </Button>
+                        </Link>
                     </div>
 
                 </div>
+
+                {/* Details */}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div className="bg-gray-50 p-4 rounded-lg">
@@ -71,7 +143,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Product:</b> {p.product}</li>
                             <li><b>Latitude:</b> {p.latitude}</li>
                             <li><b>Longitude:</b> {p.longitude}</li>
-                            <li><b>ASX:</b> {p.asx}</li>
                             <li><b>Primary Commodity:</b> {p.primary_commodity}</li>
                             <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
@@ -83,12 +154,21 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <h3 className="font-semibold text-lg mb-3">Metadata</h3>
                         <ul className="space-y-2">
-                            <li><b>Key Events:</b> TOBeImplemented</li>
+                            <li>
+                                <Link 
+                                    href="/dashboard/keyevents" 
+                                    className="hover:underline"
+                                >
+                                    <b>Last Key Event:</b> {key_events.length > 0 ? `${key_events[0].event_date.toLocaleDateString()} - ${key_events[0].event_details}` : 'No key events available'}
+                                </Link>
+                            </li>
                             <li><b>Created at:</b> {p.created_at?.toLocaleString()}</li>
-                            <li><b>Created by:</b> TOBeImplemented {p.created_by}</li>
+                            <li><b>Created by:</b> {p.created_by || 'Error No creator?'}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
                             <li><b>Approved by:</b> {p.approved_by || 'Not approved'}</li>
-                            <li><b>Approved at:</b> {p.approved_at?.toLocaleString()}</li>
+                            <li><b>Last Approval:</b> {p.approved_at?.toLocaleString()}</li>
+                            <li><b>Last Updated By: </b> {p.updated_by || 'Never Updated'}</li>
+                            <li><b>Review By: </b> {p.reviewed_by || 'Never Reviewed'}</li>
                         </ul>
                     </div>
                 </div>
@@ -174,8 +254,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </summary>
 
                         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                            <UploadAttachmentForm projectId={id}/>
-
+                            <UploadAttachmentForm projectId={id}
+                                        userId={session?.user?.name || ''} // Pass the user ID from the session if available
+                            />
                             {attachments.length > 0 ? (
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {attachments.map((attachment) => (
@@ -217,7 +298,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
 
                 <div className="mb-6">
-                    <details className="group [&_summary::-webkit-details-marker]:hidden">
+                    <details className="group [&_summary::-webkit-details-marker]:hidden"> {/* Key Events */}
                         <summary
                             className="flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200">
                             <h3 className="font-semibold text-lg">Key Events ({key_events.length})</h3>
@@ -264,6 +345,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </details>
                 </div>
 
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h2>Comments</h2>
+                    <CreateComment session={session} project_id={p.project_id} />
+                    <ProjectComments project_id={p.project_id} />
+                </div>
+
 
                 <Link href="/dashboard/projects">
                     <Button>
@@ -274,7 +361,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 <hr/>
 
                 <hr className="my-3 border-black"/>
+                <Link href="/dashboard/keyevents">
                 <h3>Key Events</h3>
+                </Link>
                 {/* Displays key events, if there aren't any, display a meaningful message */}
                 {key_events[0] != null ? key_events.map((k) => {
                     return (

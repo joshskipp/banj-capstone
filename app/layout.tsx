@@ -1,7 +1,9 @@
+// app/layout.tsx
 import '@/app/ui/global.css';
 import {lato} from '@/app/ui/fonts';
 import {VersionBadge} from "@/app/ui/version-badge";
 import {GetSession} from "@/app/lib/get-session"
+// import { SessionProvider } from 'next-auth/react';
 import {signOut} from "@/auth";
 import {PowerIcon, KeyIcon} from "@heroicons/react/24/outline";
 
@@ -23,9 +25,9 @@ export default async function RootLayout({
 }) {
     const currentSession = await GetSession(); // Returns null if not logged in, otherwise gets Session.
 
+
     return (
         <html lang="en">
-
         <body className={`${lato.className} antialiased`}>
         <div className="flex flex-col min-h-[90vh] bg-[#f8f5f6]">
             <div className="flex flex-col w-full">
