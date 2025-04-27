@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Page() {
   const [activeSection, setActiveSection] = useState<string>('welcome'); // Tracks the active section
 
   const handleSectionChange = (section: string) => {
