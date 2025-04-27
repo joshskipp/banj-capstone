@@ -18,7 +18,7 @@ export default async function Page(){
         <main>
             <div className="mb-4">
                 <h2><strong>Company List</strong></h2>
-                <p>Projects are a foundational data type that represent individual critical minerals initiatives. Projects serve as the central node connecting other data types such as Commodities, Companies, and Key Events</p>
+                <p>Companies are the organisations that own, operate, or invest in critical minerals projects</p>
             </div>
             
             <GridComponent />
