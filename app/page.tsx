@@ -10,8 +10,10 @@ export default function Page() {
         <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
         <div className={styles.shape} />
             <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to Prospector.</strong> The in house Queensland Resources Project Data management solution.</p>
+                <strong>Codename Prospector</strong><br />
+                Resources project data capture application for Queensland Georesources Intelligence Unit.</p>
             <p>brought to you by <strong>BANJ</strong>.</p>
+
           <Link
             href="/dashboard"
             className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"

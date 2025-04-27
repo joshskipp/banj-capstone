@@ -2,13 +2,15 @@ import {fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId
 import DeleteProjectButton from "@/app/ui/projects/delete-project";
 import {notFound} from 'next/navigation';
 import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
+import CreateComment from "@/app/ui/projects/create-comment";
 import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 import Databox from "@/app/ui/devtools/databox";
 // import {Metadata, ResolvingMetadata} from 'next';
 import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
-import { auth } from "@/auth";
+import { auth } from "@/auth"
+import ProjectComments from "@/app/ui/projects/project-comments";
 // 
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
@@ -26,6 +28,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     const key_events = await fetchKeyEventsByProjectID(id);
 
+    
     /**
      * Fetch Project Reserves
      */
@@ -122,6 +125,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </Link>
                         
                         <DeleteProjectButton projectId={id}/>
+                        <Link href={`/dashboard/projects/${id}/audit`}>
+                            <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
+                                Audit History
+                            </Button>
+                        </Link>
                     </div>
 
                 </div>
@@ -135,7 +143,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Product:</b> {p.product}</li>
                             <li><b>Latitude:</b> {p.latitude}</li>
                             <li><b>Longitude:</b> {p.longitude}</li>
-                            <li><b>ASX:</b> {p.asx}</li>
                             <li><b>Primary Commodity:</b> {p.primary_commodity}</li>
                             <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
@@ -336,6 +343,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             )}
                         </div>
                     </details>
+                </div>
+
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h2>Comments</h2>
+                    <CreateComment session={session} project_id={p.project_id} />
+                    <ProjectComments project_id={p.project_id} />
                 </div>
 
 

@@ -25,9 +25,9 @@ export default async function RootLayout({
 }) {
     const currentSession = await GetSession(); // Returns null if not logged in, otherwise gets Session.
 
+
     return (
         <html lang="en">
-
         <body className={`${lato.className} antialiased`}>
         <div className="flex flex-col min-h-[90vh] bg-[#f8f5f6]">
             <div className="flex flex-col w-full">
