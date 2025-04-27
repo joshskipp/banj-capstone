@@ -23,11 +23,11 @@ export default async function Page() {
                                 Add Key Event
                             </button>
                         </Link>
+
                         <Link href="/dashboard/keyevents/searchresults">
-                            <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
-                            <MagnifyingGlassIcon className="w-5 h-5 text-white" />
-                            Search Projects
-                            </Button>
+                            <button className="fluent-default-button">
+                                Search Projects
+                            </button>
                         </Link>
                     </div>
                 </div>

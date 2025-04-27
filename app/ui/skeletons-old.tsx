@@ -175,6 +175,7 @@ export default function DashboardSkeleton() {
   return (
     <>
       <h3 className="mb-4"><strong>Shortcuts</strong></h3>
+      <hr className="mb-4" />
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <CreateProjectSkeleton />
         <CreateCommoditySkeleton />
@@ -188,16 +189,17 @@ export default function DashboardSkeleton() {
         <ProjectSearchSkeleton />
         <CompanySearchSkeleton />
         <EventSearchSkeleton />
-
       </div>
 
       <h3 className="mb-2"><strong>Productivity</strong></h3>
       <hr className="mb-4" />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-8 mb-4">
         <div className="md:col-span-2 lg:col-span-4">
+          <h3 className="mb-2"><strong>Summary</strong></h3>
           <ProductivityChart />
         </div>
         <div className="md:col-span-2 lg:col-span-4">
+          <h3 className="mb-2"><strong>Recent Updates</strong></h3>
           <Productivity />
         </div>
       </div>
