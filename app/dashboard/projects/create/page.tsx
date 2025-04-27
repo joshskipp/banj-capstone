@@ -8,7 +8,6 @@ export default async function Page() {
     const session = await GetSession();
     const reviewerName = session?.name || '';
 
-
     return (
         <div>
             <h1>Create Project</h1>

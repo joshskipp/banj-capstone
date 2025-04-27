@@ -33,7 +33,7 @@ const PROJECT_STATUS_OPTIONS = [
   'Completed'
 ];
 
-export default function CreateProjectForm({ reviewerName, session }: { reviewerName: string, session: any }) {
+export default function CreateProjectForm({ reviewerName, session }: { reviewerName: string; session: any }) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     project_name: '',
@@ -49,11 +49,8 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await createProject({
-      ...formData,
-      created_by: reviewerName // Pass the creator's name
-    }, session.id);
+    e.preventDefault();     
+    await createProject(formData, session.id);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

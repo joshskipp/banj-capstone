@@ -73,7 +73,8 @@ export async function createProject(formData: {
         ${formData.approved_status},
         ${formData.created_by},
         NOW(),
-        NOW()
+        NOW()        
+
       )
         RETURNING *
     `;
