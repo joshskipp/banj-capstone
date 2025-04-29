@@ -21,10 +21,10 @@ const PRODUCT_OPTIONS = [
   'Vanadium pentoxide, high-purity alumina'
 ];
 
-const Review_STATUS_OPTIONS = [
+const REVIEW_STATUS_OPTIONS = [
   'Update in Progress',
   'Ready for Review'
-]
+];
 
 const PROJECT_STATUS_OPTIONS = [
   'Publicly announced',
@@ -45,13 +45,13 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
     product: '',
     project_status: 'Publicly announced',
     approved_status: 'Update in Progress',
-    created_by: ''
+    created_by: reviewerName || 'error-getting-USER',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();     
     await createProject(formData, session.id);
-    router.push('/dashboard/projects'); // Optional: navigate after submit
+    router.push('/dashboard/projects');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -62,12 +62,11 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#f8f5f6]">
       <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-[#f8f5f6]">
-        <div className="flex flex-col gap-6">
-
-          {/* Required Section */}
-          <fieldset>
-            <legend className="font-semibold mb-4 text-lg">Required</legend>
-
+        <h2 className="text-xl font-bold mb-6">Create New Project</h2>
+        
+        <div className="flex flex-col gap-4">
+          {/* Project Name */}
+          <div>
             <label htmlFor="project_name" className="block mb-1">Project Name*</label>
             <input
               type="text"
@@ -76,85 +75,12 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               value={formData.project_name}
               onChange={handleChange}
               required
-              placeholder="Enter Project Name"
               className="w-full p-2 border rounded"
             />
+          </div>
 
-            <label htmlFor="latitude" className="block mt-4 mb-1">Latitude*</label>
-            <input
-              type="number"
-              id="latitude"
-              name="latitude"
-              value={formData.latitude}
-              onChange={handleChange}
-              required
-              step="any"
-              placeholder="Enter Latitude"
-              className="w-full p-2 border rounded"
-            />
-
-            <label htmlFor="longitude" className="block mt-4 mb-1">Longitude*</label>
-            <input
-              type="number"
-              id="longitude"
-              name="longitude"
-              value={formData.longitude}
-              onChange={handleChange}
-              required
-              step="any"
-              placeholder="Enter Longitude"
-              className="w-full p-2 border rounded"
-            />
-
-            <label htmlFor="primary_commodity" className="block mt-4 mb-1">Primary Commodity*</label>
-            <select
-              id="primary_commodity"
-              name="primary_commodity"
-              value={formData.primary_commodity}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Select...</option>
-              {COMMODITY_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-
-            <label htmlFor="product" className="block mt-4 mb-1">Product*</label>
-            <select
-              id="product"
-              name="product"
-              value={formData.product}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Select...</option>
-              {PRODUCT_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-
-            <label htmlFor="project_status" className="block mt-4 mb-1">Project Status*</label>
-            <select
-              id="project_status"
-              name="project_status"
-              value={formData.project_status}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded"
-            >
-              {PROJECT_STATUS_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </fieldset>
-
-          {/* Optional Section */}
-          <fieldset>
-            <legend className="font-semibold mb-4 text-lg">Optional</legend>
-
+          {/* ASX Code */}
+          <div>
             <label htmlFor="asx_code" className="block mb-1">ASX Code</label>
             <input
               type="text"
@@ -164,11 +90,58 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               onChange={handleChange}
               maxLength={3}
               pattern="[A-Za-z]{3}"
-              placeholder="Enter 3-letter ASX code"
+              title="3-letter ASX code"
               className="w-full p-2 border rounded"
             />
+          </div>
 
-            <label htmlFor="secondary_commodity" className="block mt-4 mb-1">Secondary Commodity</label>
+          {/* Coordinates */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="latitude" className="block mb-1">Latitude</label>
+              <input
+                type="number"
+                id="latitude"
+                name="latitude"
+                value={formData.latitude}
+                onChange={handleChange}
+                step="any"
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label htmlFor="longitude" className="block mb-1">Longitude</label>
+              <input
+                type="number"
+                id="longitude"
+                name="longitude"
+                value={formData.longitude}
+                onChange={handleChange}
+                step="any"
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+
+          {/* Commodities */}
+          <div>
+            <label htmlFor="primary_commodity" className="block mb-1">Primary Commodity*</label>
+            <select
+              id="primary_commodity"
+              name="primary_commodity"
+              value={formData.primary_commodity}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              <option value="">Select...</option>
+              {COMMODITY_OPTIONS.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="secondary_commodity" className="block mb-1">Secondary Commodity</label>
             <select
               id="secondary_commodity"
               name="secondary_commodity"
@@ -181,14 +154,61 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
-          </fieldset>
+          </div>
+
+          {/* Product */}
+          <div>
+            <label htmlFor="product" className="block mb-1">Product*</label>
+            <input
+              type="text"
+              id="product"
+              name="product"
+              value={formData.product}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          {/* Project Status */}
+          <div>
+            <label htmlFor="project_status" className="block mb-1">Project Status*</label>
+            <select
+              id="project_status"
+              name="project_status"
+              value={formData.project_status}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border rounded"
+            >
+              {PROJECT_STATUS_OPTIONS.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Review Status */}
+          <div>
+            <label htmlFor="approved_status" className="block mb-1">Review Status</label>
+            <select
+              id="approved_status"
+              name="approved_status"
+              value={formData.approved_status}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              {REVIEW_STATUS_OPTIONS.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
 
           {/* Submit Button */}
-          <Button type="submit" className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
-            <PlusCircleIcon className="w-6" />
-            Create
-          </Button>
-
+          <div className="pt-4">
+            <Button type="submit" className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+              <PlusCircleIcon className="w-6" />
+              Create Project
+            </Button>
+          </div>
         </div>
       </form>
     </div>
