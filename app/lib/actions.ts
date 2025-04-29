@@ -252,3 +252,53 @@ export async function updateProjectReviewStatus(formData: {
   // revalidatePath('/dashboard/projects');
 }
 
+// Create a new commodity
+export async function createCommodity(formData: {
+  commodity_name: string;
+  element: string;
+  notes: string;
+  units_of_measure: string;
+  created_by: string;
+}, user_id: string) {
+  try {
+    // Create a new commodity
+    const result = await sql`
+      INSERT INTO commodities (
+        commodity_name, 
+        element,
+        notes,
+        units_of_measure,
+        created_by,     
+        created_at,
+        updated_at,
+        approved_status,  
+        approved_by,      
+        approved_at       
+      )
+      VALUES (
+        ${formData.commodity_name}, 
+        ${formData.element}, 
+        ${formData.notes},
+        ${formData.units_of_measure},
+        ${formData.created_by},
+        NOW(),
+        NOW(),
+        'approved',       
+        null,             
+        NOW()              
+      )
+      RETURNING *
+    `;
+    
+    // Write the audit record
+    // const auditResult = await writeAudit(result, user_id);
+    // console.log('auditResult:', auditResult);
+
+  } catch (error) {
+    console.error('Error creating commodity:', JSON.stringify(error, null, 2));
+
+    throw new Error('Failed to create commodity');
+  }
+  revalidatePath('/dashboard/commodities');
+  redirect('/dashboard/commodities');
+}
