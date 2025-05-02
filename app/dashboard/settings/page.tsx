@@ -3,6 +3,9 @@ import { CommandLineIcon } from '@heroicons/react/24/outline';
 import NewUserForm from '@/app/ui/settings/new-user-form';
 import CurrentUser from '@/app/ui/settings/current-user';
 import ChangePasswordForm from '@/app/ui/settings/change-password'
+import ChangePermissionForm from "@/app/ui/settings/change-permissions";
+import { activeSession } from "@/app/lib/utils/activeSession";
+
 
 export default async function Page() {
     const allUsers = await fetchAllUsers();
@@ -10,11 +13,13 @@ export default async function Page() {
 
     const user = await CurrentUser();
 
+    const currentUser = await activeSession();
+    console.log(currentUser);
+    
     return (
         <div className="flex flex-col gap-10">
-
             <div>
-                <p>Hello <strong>{user?.name}</strong></p>
+                <p>Hello <strong>{currentUser?.toString()}</strong></p>
             <h2>Settings</h2>
             <p>Regular settings goes here</p>
             </div>
@@ -37,9 +42,11 @@ export default async function Page() {
                         <p><strong>{user.name}</strong> ({user.email}) <br />
                         <small>{user.id}</small></p>
                         {user.name != "system-nouser" ?
-                        <ChangePasswordForm user_id={user.id} />
+                        <div><ChangePasswordForm user_id={user.id} />
+                        <ChangePermissionForm user_id={user.id} user_permissions={user.permissions} /></div>
                         : <p>Cannot change password for this user.</p>
                         }
+                        <small><b>Permissions:</b> {JSON.stringify(user.permissions)}</small>
                     </div>
                 ))}
                     <h4>New User</h4>

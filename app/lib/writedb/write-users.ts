@@ -13,6 +13,9 @@ const FormSchema = z.object({
     email: z.string(),
     password: z.string(),
     passwordConfirm: z.string(),
+    permissionReview: z.boolean(),
+    permissionAnalyst: z.boolean(),
+    permissionAdmin: z.boolean(),
 }).refine((data) => data.password === data.passwordConfirm, {
     message: `Passwords don't match`,
     path: ["confirmPassword"],
@@ -21,23 +24,33 @@ const FormSchema = z.object({
 const CreateUser = FormSchema;
 
 export async function createUser(formData: FormData) {
-    const {name, email, password} = CreateUser.parse({
+    const ParsedUser = CreateUser.parse({
         name: formData.get('name'),
         email: formData.get('email'),
         password: formData.get('password'),
         passwordConfirm: formData.get('passwordConfirm'),
+        permissionReview: formData.get('permissions-review') === null ? false : true,
+        permissionAnalyst: formData.get('permissions-analyst') === null ? false : true,
+        permissionAdmin: formData.get('permissions-admin') === null ? false : true,
     });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const ParsedUserPermissions = {
+        reviewer: ParsedUser.permissionReview,
+        anyalyst: ParsedUser.permissionAnalyst,
+        admin: ParsedUser.permissionAdmin
+    }
 
-    await sql`INSERT INTO users (name, email, password)
-              VALUES (${name}, ${email}, ${hashedPassword});`
+    console.log(ParsedUser);
+    console.log(ParsedUserPermissions);
+
+    const hashedPassword = await bcrypt.hash(ParsedUser.password, 10);
+
+    await sql`INSERT INTO users (name, email, password, permissions) 
+              VALUES (${ParsedUser.name}, ${ParsedUser.email}, ${hashedPassword}, ${sql.json(ParsedUserPermissions)});`
 
     revalidatePath('/dashboard/settings');
     redirect(`/dashboard/settings`);
-    // return {
-    //     message: 'user created',
-    // };
+
 }
 
 const updateUserPasswordSchema = z.object({
@@ -69,4 +82,38 @@ export async function updateUserPassword(formData: FormData) {
     } else {
         console.error('Validation errors:', result.error.errors);
     }
+}
+
+
+const updatePermisionsSchema = z.object({
+    user_id: z.string(),
+    permissionReview: z.boolean(),
+    permissionAnalyst: z.boolean(),
+    permissionAdmin: z.boolean()
+})
+
+
+export async function updateUserPermissions(formData: FormData) {
+
+    const ParsedUser = {
+        user_id: formData.get('user-id'),
+        permissionReview: formData.get('permissions-review') === null ? false : true,
+        permissionAnalyst: formData.get('permissions-analyst') === null ? false : true,
+        permissionAdmin: formData.get('permissions-admin') === null ? false : true,
+    }
+
+    const UserPermissions = {
+        reviewer: ParsedUser.permissionReview,
+        anyalyst: ParsedUser.permissionAnalyst,
+        admin: ParsedUser.permissionAdmin
+    }
+
+    console.log(ParsedUser)
+    await sql`UPDATE users
+                    SET permissions = ${sql.json(UserPermissions)}
+                    WHERE id=${String(ParsedUser.user_id)}`
+
+        revalidatePath('/dashboard/settings');
+        redirect(`/dashboard/settings`);
+
 }
