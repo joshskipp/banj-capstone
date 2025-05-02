@@ -15,30 +15,30 @@ export default async function Page() {
     const user = await CurrentUser();
     const currentUser = await activeSession();
 
-    const permissions = await getPermissions(currentUser?.id || '');
-    console.log(permissions);
+    const u_per = await getPermissions(currentUser?.id || '');
 
     return (
         <div className="flex flex-col gap-10">
             <div>
                 <p>Hello <strong>{currentUser?.name?.toString()}</strong></p>
-                <p><b>Permissions:</b> {JSON.stringify(permissions)}</p>
+                <p><b>Permissions:</b> {JSON.stringify(u_per.admin)}</p>
                 
-            <h2>Settings</h2>
+            <h2>User Settings</h2>
             <p>Regular settings goes here</p>
             </div>
 
-
-            <div className="border-2 rounded-xl overflow-hidden">
+            {/* User Role Check: Admins can see Application Settings */}
+            { u_per.admin == true ? (                
+                <div className="border-2 rounded-xl overflow-hidden">
                 <div className="flex items-center p-1 pl-2 gap-2 bg-[#214656] text-white">
                     <CommandLineIcon className="w-8"/>
-                    <h3>Dev Settings....</h3>
+                    <h3>Admin Settings</h3>
                 </div>
 
                 <div className="p-2">
-                <p>Proceed with Caution</p>
 
-                <h4>Users</h4>
+
+                <h4></h4>
                 <p>Total users: {userCount}</p>
                 <p><strong>List of all users</strong></p>
                 { allUsers.map(user => (
@@ -57,6 +57,11 @@ export default async function Page() {
                     <NewUserForm />
                 </div>
                 </div>
+                
+                ) : (
+                <> </>
+                )}
+            
         </div>
     )
 }
