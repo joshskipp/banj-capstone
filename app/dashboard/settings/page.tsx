@@ -5,6 +5,7 @@ import CurrentUser from '@/app/ui/settings/current-user';
 import ChangePasswordForm from '@/app/ui/settings/change-password'
 import ChangePermissionForm from "@/app/ui/settings/change-permissions";
 import { activeSession } from "@/app/lib/utils/activeSession";
+import { getPermissions } from "@/app/lib/utils/getPermissions";
 
 
 export default async function Page() {
@@ -12,14 +13,17 @@ export default async function Page() {
     const userCount = await fetchUserCount();
 
     const user = await CurrentUser();
-
     const currentUser = await activeSession();
-    console.log(currentUser);
-    
+
+    const permissions = await getPermissions(currentUser?.id || '');
+    console.log(permissions);
+
     return (
         <div className="flex flex-col gap-10">
             <div>
-                <p>Hello <strong>{currentUser?.toString()}</strong></p>
+                <p>Hello <strong>{currentUser?.name?.toString()}</strong></p>
+                <p><b>Permissions:</b> {JSON.stringify(permissions)}</p>
+                
             <h2>Settings</h2>
             <p>Regular settings goes here</p>
             </div>
