@@ -19,15 +19,44 @@ export default async function Page() {
 
     return (
         <div className="flex flex-col gap-10">
-            <div>
-                <p>Hello <strong>{currentUser?.name?.toString()}</strong></p>
-                <p><b>Permissions:</b> {JSON.stringify(u_per.admin)}</p>
-                
-            <h2>User Settings</h2>
-            <p>Regular settings goes here</p>
+
+            {/* User Settings */}
+            <div className="border-2 rounded-xl overflow-hidden">
+                <div className="flex items-center p-1 pl-2 gap-2 bg-[#214656] text-white">
+                    {/* <CommandLineIcon className="w-8"/> */}
+                    <h3>User Settings</h3>
+                </div>
+
+                <div className="p-2 flex flex-row justify-between">
+                    <div>
+                        <h3>{user?.name}</h3>
+                        <ul className="list-disc list-inside">
+                            <li><b>ID:</b> {user?.id}</li>
+                            <li><b>Name:</b> {user?.name}</li>
+                            <li><b>Login Email:</b> {user?.email}</li>
+                        </ul>
+
+                        {user?.id && <ChangePasswordForm user_id={user.id} />}
+                    </div>
+                <div className="p-2">
+                    <h4>Permissions</h4>
+                    <p> Your role is assigned by the administrator.</p>
+                    <p className="m-4 align-center">
+                {/*  Display permissions */}
+                { Object.entries(u_per).map(([type, value]) => {
+                if (value === true) {
+                    return <span key={type} className="p-2 bg-gray-300 rounded text-sm uppercase m-1">{type}</span>
+                }
+                return null;
+                })}
+                </p>
+                </div>
+
+                </div>
             </div>
 
             {/* User Role Check: Admins can see Application Settings */}
+
             { u_per.admin == true ? (                
                 <div className="border-2 rounded-xl overflow-hidden">
                 <div className="flex items-center p-1 pl-2 gap-2 bg-[#214656] text-white">
@@ -37,8 +66,6 @@ export default async function Page() {
 
                 <div className="p-2">
 
-
-                <h4></h4>
                 <p>Total users: {userCount}</p>
                 <p><strong>List of all users</strong></p>
                 { allUsers.map(user => (
@@ -53,7 +80,6 @@ export default async function Page() {
                         <small><b>Permissions:</b> {JSON.stringify(user.permissions)}</small>
                     </div>
                 ))}
-                    <h4>New User</h4>
                     <NewUserForm />
                 </div>
                 </div>
