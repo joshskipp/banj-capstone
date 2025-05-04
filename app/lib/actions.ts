@@ -34,7 +34,6 @@ export async function authenticate(
 
   
 // Create a new project
-// Create a new project
 export async function createProject(formData: {
   project_name: string;
   latitude: string;
