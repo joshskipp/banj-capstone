@@ -98,6 +98,12 @@ export default function Page() {
             It will also enhance the department's ability to track significant events and support the Department’s goal of attracting investment to the state’s critical minerals sector. 
             This will support the global transition to green energy technologies.
             In the following sections, we will outline the key functionalities required for a standard user as well as the different roles that will be encompassed in the application. 
+
+            To launch the Prospector web application:
+
+            You must use a specific Prospector account provided to you by the Georesources Intelligence unit.
+            If you do not have an account, please contact the system administrator or a member of the Georesources Intelligence team.
+
           </div>
         )}
 

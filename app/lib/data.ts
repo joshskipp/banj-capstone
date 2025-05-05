@@ -16,6 +16,23 @@ export async function fetchAllProjects() {
   }
 }
 
+export async function fetchAllProjectsData(id: string) {
+  try {
+      const data = await sql`
+          select 
+          pc.project_id, pc.isprimary, pc.issecondary, commodities.commodity_name, pc.commodity_id
+          from project_commodities as pc
+          inner join Commodities on pc.commodity_id = commodities.commodity_id
+          where pc.project_id = ${id};
+          `
+      return data;
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch projects for commodity.');
+  }
+
+}
+
 export async function fetchAllArchivedProjects() {
   try{
     const
