@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createProject } from '@/app/lib/actions';
+import { fetchAllCommodities } from '@/app/lib/data';
 import { Button } from "@/app/ui/button";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-const COMMODITY_OPTIONS = [
-  'Gold', 'Silver', 'Copper', 'Iron', 'Nickel',
-  'Zinc', 'Lead', 'Uranium', 'Lithium', 'Cobalt'
-];
+// const COMMODITY_OPTIONS = [
+//   'Gold', 'Silver', 'Copper', 'Iron', 'Nickel',
+//   'Zinc', 'Lead', 'Uranium', 'Lithium', 'Cobalt'
+// ];
 
 const PRODUCT_OPTIONS = [
   'Graphite concentrate',
@@ -35,6 +36,11 @@ const PROJECT_STATUS_OPTIONS = [
 
 export default function CreateProjectForm({ reviewerName, session }: { reviewerName: string; session: any }) {
   const router = useRouter();
+  const [commodities, setCommodities] = useState<Array<{
+    commodity_id: string;
+    commodity_name: string; }>>([]);
+    
+  const [loading, setLoading] = useState(true); // Loading state for commodities
   const [formData, setFormData] = useState({
     project_name: '',
     asx_code: '',
@@ -48,6 +54,28 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
     created_by: reviewerName || 'error-getting-USER',
   });
 
+   // Fetch commodities on component mount
+   useEffect(() => {
+    const loadCommodities = async () => {
+      try {
+        const commoditiesData = await fetchAllCommodities();
+    
+        // Explicitly map each row to the expected format
+        const formatted = commoditiesData.map((row: any) => ({
+          commodity_id: row.commodity_id,
+          commodity_name: row.commodity_name
+        }));
+    
+        setCommodities(formatted);
+      } catch (error) {
+        console.error('Failed to load commodities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadCommodities();
+  }, []);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();     
     await createProject(formData, session.id);
@@ -79,7 +107,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
             />
           </div>
 
-          {/* ASX Code */}
+          {/* ASX Code
           <div>
             <label htmlFor="asx_code" className="block mb-1">ASX Code</label>
             <input
@@ -93,7 +121,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               title="3-letter ASX code"
               className="w-full p-2 border rounded"
             />
-          </div>
+          </div> */}
 
           {/* Coordinates */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -122,20 +150,23 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               />
             </div>
           </div>
-
-          {/* Commodities */}
-          <div>
+{/* Commodities */}
+<div>
             <label htmlFor="primary_commodity" className="block mb-1">Primary Commodity*</label>
             <select
               id="primary_commodity"
               name="primary_commodity"
               value={formData.primary_commodity}
               onChange={handleChange}
+              required
               className="w-full p-2 border rounded"
+              disabled={loading}
             >
               <option value="">Select...</option>
-              {COMMODITY_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
+              {commodities.map(commodity => (
+                <option key={commodity.commodity_id} value={commodity.commodity_name}>
+                  {commodity.commodity_name}
+                </option>
               ))}
             </select>
           </div>
@@ -148,10 +179,13 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               value={formData.secondary_commodity}
               onChange={handleChange}
               className="w-full p-2 border rounded"
+              disabled={loading}
             >
               <option value="">None</option>
-              {COMMODITY_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
+              {commodities.map(commodity => (
+                <option key={commodity.commodity_id} value={commodity.commodity_name}>
+                  {commodity.commodity_name}
+                </option>
               ))}
             </select>
           </div>
