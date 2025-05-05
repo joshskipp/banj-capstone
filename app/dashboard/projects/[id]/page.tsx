@@ -6,12 +6,14 @@ import CreateComment from "@/app/ui/projects/create-comment";
 import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
-import Databox from "@/app/ui/devtools/databox";
 // import {Metadata, ResolvingMetadata} from 'next';
-import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
+import {fetchReserves, fetchProductions} from "@/app/lib/fetchdb/fetch-projects";
+import { fetchAllCommodities } from "@/app/lib/fetchdb/fetch-commodities";
 import { auth } from "@/auth"
 import ProjectComments from "@/app/ui/projects/project-comments";
-// 
+import { AddProjectCommodity } from "@/app/lib/writedb/write-commodities";
+import ProjectReserves from "@/app/ui/projects/project-reserves";
+import ProjectProductions from "@/app/ui/projects/newProductionsForm";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -21,18 +23,23 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     const attachments = await fetchAttachmentsByProjectId(id);
     const session = await auth();
 
-
     if (!p) {
         notFound();
     }
 
     const key_events = await fetchKeyEventsByProjectID(id);
+    const commodity_list = await fetchAllCommodities();
 
+    // Filter out the full list of commodities, of the current project commodities, to prevent adding duplicate commodities to the project.
+    const filtered_commod = commodity_list.filter(commodity => 
+        !cp.some(projectCommodity => projectCommodity.commodity_id === commodity.commodity_id)
+    );
     
     /**
      * Fetch Project Reserves
      */
     const pReserves = await fetchReserves(id);
+    const pProduction = await fetchProductions(id);
 
     return (
         <main>
@@ -127,7 +134,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         <DeleteProjectButton projectId={id}/>
                         <Link href={`/dashboard/projects/${id}/audit`}>
                             <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
-                                Audit History
+                                Activity Log
                             </Button>
                         </Link>
                     </div>
@@ -179,46 +186,70 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 <div className="flex flex-row my-2 gap-2 rounded-md">
                     <div className="w-1/2 p-3 bg-gray-200 rounded-md">
                         <h3>Reserves</h3>
-                        <Link href={`/dashboard/projects/${p.project_id}/reserves`}><u>Add Reserves Record</u></Link>
                         {pReserves.map((r) => {
                             return (
-                                <div key={r.commodity_id}>
-                                    <div className="grid grid-cols-2 p-[2px] border-[1px] border-gray-600">
-                                        <strong className={""}>{r.commodity_name}</strong>
-                                        <p><em>Approval Status: '{r.approved_status}'</em></p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>Tonnage</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>{r.tonnage}</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>Units of Measure</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>{r.units_of_measurement}</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>Grade</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>{r.grade}</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>Estimate Date</p>
-                                        <p className={"border-t-[1px] border-t-gray-600"}>{r.estimate_date.toLocaleString()}</p>
-                                        <p className={"col-span-2 border-t-[1px] border-t-gray-600"}>Notes</p>
-                                        <p className={"col-span-2 border-t-[1px] border-t-gray-600"}>{r.notes}</p>
-                                    </div>
-                                    <div className={"text-sm"}>
-                                        <small>
-                                            <strong>Created
-                                                at</strong> {r.created_at.toLocaleString()} by <strong>{r.name}</strong><br/>
-                                            <strong>Updated at</strong> {r.updated_at.toLocaleString()}<br/>
-                                            <strong>Approved
-                                                at</strong> {r.approved_at.toLocaleString()} by <strong>{r.approved_by}</strong></small>
-                                    </div>
-
-                                </div>
+                                <ProjectReserves
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name} 
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    estimate_date={r.estimate_date}
+                                    grade={r.grade}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
                             )
                         })}
                     </div>
                     <div className="w-1/2 p-3 bg-gray-200 rounded-md">
                         <h3>Productions</h3>
-
+                        {pProduction.map((r) => {
+                            return (
+                                <ProjectProductions
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name}
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    start_date={r.start_date}
+                                    end_date={r.end_date}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
+                            )
+                        })}
                     </div>
                 </div>
 
 
-                <div className="mb-6">
-                    <h3 className="font-semibold text-lg mb-3">Commodities</h3>
+                <div className="mb-6 flex flex-row items-start gap-2">
+
+                    <form action={AddProjectCommodity}>
+                        <fieldset className="bg-gray-50 rounded-lg border-none flex flex-col"><legend>Add Commoditity to Project</legend>
+                        <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
+                        <select id="commodity" defaultValue="" required name="commodity">
+                        <option  value="" disabled >Select your option</option>
+                            {filtered_commod.map((commod) => {
+                            return (
+                            <option key={commod.commodity_id} value={commod.commodity_id}>{commod.commodity_name}</option>
+                            )
+                            })}
+                        </select>
+                        <div className="flex flex-row items-center gap-2">
+                            <input type="radio" id="primary" name="primary_or_secondary" value="primary"  required /><label htmlFor="primary">Primary</label>
+                            <input type="radio" id="secondary" name="primary_or_secondary" value="secondary" required /><label htmlFor="secondary">Secondary</label>    
+                        </div>
+                        <div className="flex flex-row gap-2">
+                            <button type="submit" className="p-2 bg-blue-500 text-white rounded-lg w-full">Add</button>
+                            <button type="reset" className="p-2 bg-gray-500 text-white rounded-lg w-full">Clear</button>
+                        </div>
+                        </fieldset>
+                    </form>
+
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {cp.map((cp) => {
                             let val: string = "";
@@ -357,22 +388,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         Back to Projects
                     </Button>
                 </Link>
-                <Databox rawData={cp}/>
-                <hr/>
 
-                <hr className="my-3 border-black"/>
-                <Link href="/dashboard/keyevents">
-                <h3>Key Events</h3>
-                </Link>
-                {/* Displays key events, if there aren't any, display a meaningful message */}
-                {key_events[0] != null ? key_events.map((k) => {
-                    return (
-                        <div key={k.event_id}>
-                            <p>{k.event_date.toLocaleDateString()} - <strong>{k.event_details}</strong></p>
-                        </div>
-                    )
-                }) : (<p>No key events</p>)}
-                <Databox rawData={key_events}/>
             </div>
         </main>
     );
