@@ -7,12 +7,13 @@ import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 // import {Metadata, ResolvingMetadata} from 'next';
-import {fetchReserves} from "@/app/lib/fetchdb/fetch-projects";
+import {fetchReserves, fetchProductions} from "@/app/lib/fetchdb/fetch-projects";
 import { fetchAllCommodities } from "@/app/lib/fetchdb/fetch-commodities";
 import { auth } from "@/auth"
 import ProjectComments from "@/app/ui/projects/project-comments";
 import { AddProjectCommodity } from "@/app/lib/writedb/write-commodities";
 import ProjectReserves from "@/app/ui/projects/project-reserves";
+import ProjectProductions from "@/app/ui/projects/newProductionsForm";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -38,6 +39,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
      * Fetch Project Reserves
      */
     const pReserves = await fetchReserves(id);
+    const pProduction = await fetchProductions(id);
 
     return (
         <main>
@@ -186,7 +188,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         <h3>Reserves</h3>
                         {pReserves.map((r) => {
                             return (
-                                <ProjectReserves 
+                                <ProjectReserves
                                     key={r.commodity_id}
                                     project_id={r.project_id}
                                     commodity_id={r.commodity_id}
@@ -203,7 +205,22 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                     <div className="w-1/2 p-3 bg-gray-200 rounded-md">
                         <h3>Productions</h3>
-
+                        {pProduction.map((r) => {
+                            return (
+                                <ProjectProductions
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name}
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    start_date={r.start_date}
+                                    end_date={r.end_date}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
+                            )
+                        })}
                     </div>
                 </div>
 

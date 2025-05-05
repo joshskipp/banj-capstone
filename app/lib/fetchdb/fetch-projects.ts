@@ -32,7 +32,12 @@ export async function fetchReserves(project_id: string ) {
  */
 export async function fetchProductions(project_id: string) {
     try {
-        return await sql`SELECT * FROM Productions WHERE project_id = ${project_id}`;
+        return await
+            sql`
+                SELECT p.*, commodities.commodity_name
+                FROM Productions p
+                JOIN commodities on p.commodity_id = commodities.commodity_id
+                WHERE project_id = ${project_id}`;
     } catch (error) {
         console.error("Database Error: " + error + "\n Failed to fetch reserves from database for project: " + project_id);
         throw new Error("Failed to fetch reserves from database for project: " + project_id);

@@ -108,3 +108,38 @@ export async function updateReserves(formData: FormData) {
     revalidatePath(`/dashboard/projects/${UpdateReserves.project_id}`);
     redirect(`/dashboard/projects/${UpdateReserves.project_id}`);
 }
+
+export async function updateProduction(formData: FormData) {
+    console.log(formData);
+
+    const UpdateProduction = {
+        project_id: formData.get('project_id'),
+        commodity_id: formData.get('commodity_id'),
+        tonnage: formData.get('tonnage'),
+        units_of_measurement: formData.get('units_of_measurement'),
+        start_date: formData.get('start_date'),
+        end_date: formData.get('end_date'),
+        notes: formData.get('notes')
+    }
+
+    try {
+        await sql`
+            Update productions
+            Set tonnage = ${UpdateProduction.tonnage ? String(UpdateProduction.tonnage) : null},
+                units_of_measurement = ${UpdateProduction.units_of_measurement ? String(UpdateProduction.units_of_measurement) : null},
+                start_date = ${UpdateProduction.start_date ? new Date(UpdateProduction.start_date as string) : null},
+                end_date = ${UpdateProduction.end_date ? new Date(UpdateProduction.end_date as string) : null},
+                notes = ${UpdateProduction.notes ? String(UpdateProduction.notes) : null},
+                updated_at = now()
+            Where project_id = ${UpdateProduction.project_id ? String(UpdateProduction.project_id) : null}
+            And commodity_id = ${UpdateProduction.commodity_id ? String(UpdateProduction.commodity_id) : null};
+        `
+    } catch (error) {
+        console.error('Error writing record:', error);
+        throw error;
+    }
+
+    revalidatePath(`/dashboard/projects/${UpdateProduction.project_id}`);
+    redirect(`/dashboard/projects/${UpdateProduction.project_id}`);
+}
+
