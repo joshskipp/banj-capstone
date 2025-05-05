@@ -24,34 +24,50 @@ export default function Page() {
             </li>
             <li>
               <button
-                onClick={() => handleSectionChange('creatingEditingData')}
+                onClick={() => handleSectionChange('datalists')}
                 className="text-lg hover:text-[#7a232a] w-full text-left"
               >
-                Creating/Editing Data
+                Data Lists
               </button>
             </li>
             <li>
               <button
-                onClick={() => handleSectionChange('searchingFiltering')}
+                onClick={() => handleSectionChange('projects')}
                 className="text-lg hover:text-[#7a232a] w-full text-left"
               >
-                Searching and Filtering
+                Projects
               </button>
             </li>
             <li>
               <button
-                onClick={() => handleSectionChange('exporting')}
+                onClick={() => handleSectionChange('commodities')}
                 className="text-lg hover:text-[#7a232a] w-full text-left"
               >
-                Exporting
+                Commodities
               </button>
             </li>
             <li>
               <button
-                onClick={() => handleSectionChange('reviewing')}
+                onClick={() => handleSectionChange('companies')}
                 className="text-lg hover:text-[#7a232a] w-full text-left"
               >
-                Reviewing
+                Companies
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('keyevents')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Key Events
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleSectionChange('review')}
+                className="text-lg hover:text-[#7a232a] w-full text-left"
+              >
+                Reviewing Data
               </button>
             </li>
             <li>
@@ -77,31 +93,50 @@ export default function Page() {
           <div className="w-full p-6">
             <h2>Welcome to Prospector</h2>
 
+            Welcome to Prospector, the web application designed to streamline the collection, validation, and analysis of critical mineral project data across Queensland.
+            The application will transform unstructured data into a structured format and integrate vital information into the Azure Synapse data warehouse. 
+            It will also enhance the department's ability to track significant events and support the Department’s goal of attracting investment to the state’s critical minerals sector. 
+            This will support the global transition to green energy technologies.
+            In the following sections, we will outline the key functionalities required for a standard user as well as the different roles that will be encompassed in the application. 
           </div>
         )}
 
-        {activeSection === 'creatingEditingData' && (
+        {activeSection === 'datalists' && (
           <div className="w-full p-6">
-            <h2>Creating/Editing Data</h2>
+            <h2>Data in Prospector</h2>
 
           </div>
         )}
 
-        {activeSection === 'searchingFiltering' && (
+        {activeSection === 'projects' && (
           <div className="w-full p-6">
-            <h2>Searching and Filtering</h2>
+            <h2>Projects</h2>
 
           </div>
         )}
 
-        {activeSection === 'exporting' && (
+        {activeSection === 'commodities' && (
           <div className="w-full p-6">
-            <h2>Exporting</h2>
+            <h2>Commodities</h2>
 
           </div>
         )}
 
-        {activeSection === 'reviewing' && (
+        {activeSection === 'companies' && (
+          <div className="w-full p-6">
+            <h2>Companies</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'keyevents' && (
+          <div className="w-full p-6">
+            <h2>Key Events</h2>
+
+          </div>
+        )}
+
+        {activeSection === 'review' && (
           <div className="w-full p-6">
             <h2>Reviewing</h2>
 

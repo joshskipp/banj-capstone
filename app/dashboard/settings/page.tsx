@@ -3,6 +3,7 @@ import { CommandLineIcon } from '@heroicons/react/24/outline';
 import NewUserForm from '@/app/ui/settings/new-user-form';
 import CurrentUser from '@/app/ui/settings/current-user';
 import ChangePasswordForm from '@/app/ui/settings/change-password'
+import Link from "next/link";
 
 export default async function Page() {
     const allUsers = await fetchAllUsers();
@@ -17,6 +18,13 @@ export default async function Page() {
                 <p>Hello <strong>{user?.name}</strong></p>
             <h2>Settings</h2>
             <p>Regular settings goes here</p>
+            <Link href="/dashboard/archived">
+                <div>
+                    <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
+                    <h2 className="text-xl text-white font-semibold">Archived Projects</h2>
+                    </div>
+                </div>
+            </Link>
             </div>
 
 

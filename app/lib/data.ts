@@ -16,6 +16,19 @@ export async function fetchAllProjects() {
   }
 }
 
+export async function fetchAllArchivedProjects() {
+  try{
+    const
+        data = await sql`
+      SELECT * FROM projects
+      where approved_status = 'Archived';`
+    return data;
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch all projects data.');
+  }
+}
+
 export async function fetchAllUsers() {
     try {
         const data = await sql`
@@ -46,6 +59,16 @@ export async function fetchAllCompanies() {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch companies.');
     }
+}
+
+export async function fetchAllEvents() {
+  try {
+      const data = await sql`SELECT * FROM key_events`
+      return data;
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch events.');
+  }
 }
 
 export async function fetchAllCommodities() {

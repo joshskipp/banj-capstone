@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
 import { themeQuartz } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule} from "ag-grid-community";
-import { fetchAllProjects } from "@/app/lib/data";
+import { fetchAllArchivedProjects } from "@/app/lib/data";
 import { redirect } from "next/navigation";
 import Link from 'next/link';
 import { Button } from '../button';
@@ -20,7 +20,7 @@ const GridComponent = () => {
     const gridRef = useRef<AgGridReact>(null); // Add a ref for the grid
 
     useEffect(() => {
-        fetchAllProjects()
+        fetchAllArchivedProjects()
             .then(data => setRowData(data))
             .catch(error => console.error('Failed to fetch rowData:', error));
     }, []);
@@ -57,22 +57,8 @@ const GridComponent = () => {
         <div style={{ width: "100%", height: "70vh" }}>
 
             <div className="mb-4" style={{ display: 'flex', gap: '1rem', fontSize: '10px' }}>
-
             
-            <Link href="/dashboard/projects/create">
-                <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
-                    <PlusCircleIcon className="w-5 h-5 text-white" />
-                    Add Project
-                </Button>
-            </Link>
-
-            <Link href="/dashboard/projects/searchresults">
-                <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
-                    <MagnifyingGlassIcon className="w-5 h-5 text-white" />
-                    Search Projects
-                </Button>
-            </Link>
-
+            
             <Button onClick={exportToCsv} className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
                 <ArrowDownTrayIcon className="w-5 h-5 text-white" />
                 Export Projects

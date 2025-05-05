@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import type { ColDef } from "ag-grid-community";
 import { themeQuartz } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule} from "ag-grid-community";
-import { fetchAllProjects } from "@/app/lib/data";
+import { fetchAllEvents } from "@/app/lib/data";
 import { redirect } from "next/navigation";
 import Link from 'next/link';
 import { Button } from '../button';
@@ -20,36 +20,27 @@ const GridComponent = () => {
     const gridRef = useRef<AgGridReact>(null); // Add a ref for the grid
 
     useEffect(() => {
-        fetchAllProjects()
+        fetchAllEvents()
             .then(data => setRowData(data))
             .catch(error => console.error('Failed to fetch rowData:', error));
     }, []);
 
     const gridOptions = {
-        onRowClicked: (event: { data: { project_id: any; }; }) => { redirect(`/dashboard/projects/${event.data.project_id}`); }
+        onRowClicked: (event: { data: { event_id: any; }; }) => { redirect(`/dashboard/keyevents/${event.data.event_id}`); }
     };
 
     const [columnDefs] = useState<ColDef[]>([
-        { field: "project_name", width: 300, headerName: "Project Name", filter: "agTextColumnFilter", sortable: true},
-        { field: "approved_status", maxWidth: 150, headerName: "Approval",filter: "agTextColumnFilter", sortable: true },
-        { field: "product", width: 300, headerName: "Product", filter: "agTextColumnFilter",sortable: true },
-        { field: "approved_at", maxWidth: 150, headerName: "Last Approved", filter: "agDateColumnFilter", sortable: true },
-        { field: "project_status", maxWidth: 150, headerName: "Status", filter: "agTextColumnFilter", sortable: true },
-        { field: "created_by", maxWidth: 150, headerName: "Created By", filter: "agTextColumnFilter", sortable: true },
-        { field: "created_at", maxWidth: 150, headerName: "Created At", filter: "agTextColumnFilter", sortable: true },
-        { field: "updated_by", maxWidth: 150, headerName: "Last Updated By", filter: "agTextColumnFilter", sortable: true },
-        { field: "updated_at", maxWidth: 150, headerName: "Last Updated", filter: "agTextColumnFilter",sortable: true },
-        { field: "primary_commodity", maxWidth: 150, headerName: "Commodity", sortable: true },
-        { field: "project_id", width: 300, headerName: "ID" },
-        { field: "latitude", maxWidth: 120, sortable: true },
-        { field: "longitude", maxWidth: 120, sortable: true },
+        { field: "event_id", width: 300, headerName: "ID" },
+        { field: "event_details", width: 300, headerName: "Event", filter: "agTextColumnFilter", sortable: true},
+        { field: "event_date", width: 300, headerName: "Event Date", filter: "agTextColumnFilter",sortable: true },
+        { field: "created_by", maxWidth: 120, headerName: "Created By", sortable: true },
+        { field: "created_at", maxWidth: 120, headerName: "Created At", sortable: true },
     ]);
 
     // Function to export data to CSV
     const exportToCsv = () => {
         if (gridRef.current?.api) {
             gridRef.current.api.exportDataAsCsv();
-            
         }
     };
 
@@ -59,23 +50,23 @@ const GridComponent = () => {
             <div className="mb-4" style={{ display: 'flex', gap: '1rem', fontSize: '10px' }}>
 
             
-            <Link href="/dashboard/projects/create">
+            <Link href="/dashboard/keyevents/create">
                 <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
                     <PlusCircleIcon className="w-5 h-5 text-white" />
-                    Add Project
+                    Add Event
                 </Button>
             </Link>
 
-            <Link href="/dashboard/projects/searchresults">
+            <Link href="/dashboard/keyevents/searchresults">
                 <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
                     <MagnifyingGlassIcon className="w-5 h-5 text-white" />
-                    Search Projects
+                    Search Events
                 </Button>
             </Link>
 
             <Button onClick={exportToCsv} className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
                 <ArrowDownTrayIcon className="w-5 h-5 text-white" />
-                Export Projects
+                Export Events
             </Button>
 
                 
