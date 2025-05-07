@@ -36,9 +36,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     return (
         <main>
-             {/* Add Review Status Banner */}
             
             {/* Add Review Status Banner */}
+             {/* Generated css, Tailwindcss */} 
             {p.approved_status !== 'Approved for External Use' && (
                 <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
                     <div className="flex">
@@ -71,8 +71,25 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             </svg>
                         </div>
                         <div className="ml-3">
-                            <p className="text-sm text-yellow-700">
+                            <p>
                                 <strong>Approval Status:</strong> This project is currently in review at this time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {p.approved_status === 'Update in Progress' && (
+                <div className="bg-orange-100 border-l-4 border-orange-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p>
+                                <strong>DRAFT: </strong> This project <strong>HAS NOT</strong> been finalized or approved yet.
                             </p>
                         </div>
                     </div>

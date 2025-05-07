@@ -200,6 +200,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
+            <p>Leave field as 'Update In Progress' if project is in drafting stage.</p>
           </div>
 
           {/* Submit Button */}
