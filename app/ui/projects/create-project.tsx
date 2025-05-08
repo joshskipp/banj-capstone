@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createProject } from '@/app/lib/actions';
-import { fetchAllCommodities } from '@/app/lib/data';
+import { fetchAllCommodities, fetchAllCompanies } from '@/app/lib/data';
 import { Button } from "@/app/ui/button";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
@@ -43,7 +43,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
   const [loading, setLoading] = useState(true); // Loading state for commodities
   const [formData, setFormData] = useState({
     project_name: '',
-    asx_code: '',
+    // asx_code: '',
     latitude: '',
     longitude: '',
     primary_commodity: '',

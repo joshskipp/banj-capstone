@@ -37,13 +37,14 @@ export default function EditProjectForm({ project, reviewerName, session }: {
   const [formData, setFormData] = useState({
     project_id: '',
     project_name: '',
-    asx_code: '',
+    // asx_code: '',
     latitude: '',
     longitude: '',
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
     project_status: 'Publicly announced',
+    approved_status: 'Update in Progress',
     updated_by: reviewerName,
     updated_at: new Date().toISOString()
   });
@@ -55,13 +56,15 @@ export default function EditProjectForm({ project, reviewerName, session }: {
       setFormData({
         project_id: project.project_id,
         project_name: project.project_name || '',
-        asx_code: project.asx_code || '',
+        // asx_code: project.asx_code || '',
         latitude: project.latitude?.toString() || '',
         longitude: project.longitude?.toString() || '',
         primary_commodity: project.primary_commodity || '',
         secondary_commodity: project.secondary_commodity || '',
         product: project.product || '',
         project_status: project.project_status || 'Publicly announced',
+        approved_status: project.approved_status || 'Update in Progress',
+
         updated_by: reviewerName,
         updated_at: new Date().toISOString()
      });
@@ -140,7 +143,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               className="w-full p-2 border rounded"
             />
 
-            <label htmlFor="primary_commodity" className="block mt-4 mb-1">Primary Commodity*</label>
+            {/* <label htmlFor="primary_commodity" className="block mt-4 mb-1">Primary Commodity*</label>
             <select
               id="primary_commodity"
               name="primary_commodity"
@@ -153,7 +156,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               {COMMODITY_OPTIONS.map(option => (
                 <option key={option} value={option}>{option}</option>
               ))}
-            </select>
+            </select> */}
 
             <label htmlFor="product" className="block mt-4 mb-1">Product*</label>
             <select
@@ -183,13 +186,26 @@ export default function EditProjectForm({ project, reviewerName, session }: {
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
+
+            <label htmlFor="approved_status" className="block mt-4 mb-1">Review Status</label>
+            <select
+              id="approved_status"
+              name="approved_status"
+              value={formData.approved_status}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              <option value="Update in Progress">Update in Progress</option>
+              <option value="Ready for Review">Ready for Review</option>
+            </select>
+
           </fieldset>
 
           {/* Optional Section */}
           <fieldset>
             <legend className="font-semibold mb-4 text-lg">Optional</legend>
 
-            <label htmlFor="asx_code" className="block mb-1">ASX Code</label>
+            {/* <label htmlFor="asx_code" className="block mb-1">ASX Code</label>
             <input
               type="text"
               id="asx_code"
@@ -200,9 +216,9 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               pattern="[A-Za-z]{3}"
               placeholder="Enter 3-letter ASX code"
               className="w-full p-2 border rounded"
-            />
+            /> */}
 
-            <label htmlFor="secondary_commodity" className="block mt-4 mb-1">Secondary Commodity</label>
+            {/* <label htmlFor="secondary_commodity" className="block mt-4 mb-1">Secondary Commodity</label>
             <select
               id="secondary_commodity"
               name="secondary_commodity"
@@ -214,7 +230,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               {COMMODITY_OPTIONS.map(option => (
                 <option key={option} value={option}>{option}</option>
               ))}
-            </select>
+            </select> */}
           </fieldset>
 
           {/* Submit Button */}
