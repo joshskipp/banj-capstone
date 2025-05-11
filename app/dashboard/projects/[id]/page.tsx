@@ -88,7 +88,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
             )}
 
-            {p.approved_status === 'Approved for External Use' && (
+            {p.approved_status === 'Approved for External Use' || p.approved_status === 'Approved for Internal Use' && (
                 <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
