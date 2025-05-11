@@ -14,6 +14,8 @@ import ProjectComments from "@/app/ui/projects/project-comments";
 import { AddProjectCommodity } from "@/app/lib/writedb/write-commodities";
 import ProjectReserves from "@/app/ui/projects/project-reserves";
 import ProjectProductions from "@/app/ui/projects/newProductionsForm";
+import { getPermissions } from "@/app/lib/utils/getPermissions";
+
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -22,7 +24,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     const cp = await fetchProjectsCommoditites(id);
     const attachments = await fetchAttachmentsByProjectId(id);
     const session = await auth();
-
+    const permissions = await getPermissions(session?.user?.id || '');
     if (!p) {
         notFound();
     }
@@ -124,19 +126,24 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             Edit Project
                         </Link>
 
+                        {permissions.reviewer && (
                         <Link
                             href={`/dashboard/projects/review/${id}`}
                             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
                         >
                             Review Project
                         </Link>
-                        
+                        )}
+
                         <DeleteProjectButton projectId={id}/>
+
+                        {permissions.admin && (
                         <Link href={`/dashboard/projects/${id}/audit`}>
                             <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
                                 Activity Log
                             </Button>
                         </Link>
+                        )}
                     </div>
 
                 </div>
@@ -173,9 +180,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Created at:</b> {p.created_at?.toLocaleString()}</li>
                             <li><b>Created by:</b> {p.created_by || 'Error No creator?'}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
-                            <li><b>Approved by:</b> {p.approved_by || 'Not approved'}</li>
-                            <li><b>Last Approval:</b> {p.approved_at?.toLocaleString()}</li>
-                            <li><b>Last Updated By: </b> {p.updated_by || 'Never Updated'}</li>
+                            <li><b>Last Approved by:</b> {p.approved_by || 'Not approved'}</li>
+                            <li><b>Last Approval at:</b> {p.approved_at?.toLocaleString()}</li>
+                            <li><b>Last Edit By: </b> {p.updated_by || 'Never Updated'}</li>
                             <li><b>Review By: </b> {p.reviewed_by || 'Never Reviewed'}</li>
                         </ul>
                     </div>

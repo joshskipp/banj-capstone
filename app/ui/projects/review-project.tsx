@@ -32,7 +32,9 @@ export default function ReviewProjectForm({
         project_id: project.project_id,
         approved_status: project.approved_status,
         review_notes: project.review_notes || '',
-        reviewed_by: reviewerName || 'error-getting-USER'
+        reviewed_by: reviewerName || 'error-getting-USER',
+        approved_by: project.approved_by || null,
+        approved_at: project.approved_at || null
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -48,7 +50,18 @@ export default function ReviewProjectForm({
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        
+        if (name === 'approved_status') {
+            const isApproved = value === 'Approved for Internal Use' || value === 'Approved for External Use';
+            setFormData({ 
+                ...formData, 
+                approved_status: value,
+                approved_by: isApproved ? reviewerName || 'error-getting-USER' : null,
+                approved_at: isApproved ? new Date().toISOString() : null
+            });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     return (
