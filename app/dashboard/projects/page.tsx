@@ -1,4 +1,4 @@
-import { fetchAllProjects } from "@/app/lib/data";
+import { fetchAllProjects, fetchAllProjectsData } from "@/app/lib/data";
 import Link from "next/link";
 import GridComponent from "@/app/ui/projects/grid-component";
 import { Button } from "@/app/ui/button";
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 
 export default async function Page(){
-    const AllProjects = await fetchAllProjects();
+    const AllProjects = await fetchAllProjectsData();
     
 
     return (

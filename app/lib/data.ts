@@ -16,6 +16,24 @@ export async function fetchAllProjects() {
   }
 }
 
+export async function fetchAllProjectsData() {
+  try{
+    const
+        data = await sql`
+        SELECT p.*, 
+        string_agg(DISTINCT CASE WHEN pc.isprimary THEN c.commodity_name END, ', ') AS primary_commodities,
+        string_agg(DISTINCT CASE WHEN pc.issecondary THEN c.commodity_name END, ', ') AS secondary_commodities
+        FROM projects p
+        LEFT JOIN project_commodities pc ON p.project_id = pc.project_id
+        LEFT JOIN commodities c ON pc.commodity_id = c.commodity_id
+        GROUP BY p.project_id`
+    return data;
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch all projects data.');
+  }
+}
+
 export async function fetchAllUsers() {
     try {
         const data = await sql`
