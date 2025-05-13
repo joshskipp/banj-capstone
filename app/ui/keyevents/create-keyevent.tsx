@@ -27,16 +27,16 @@ export default function CreateKeyEvent(
                 <input type="hidden" id="user_id" name="user_id" value={user_id} />
 
                 <label>Event Name</label>
-                <textarea id={"event_name"} name={"event_name"}></textarea>
+                <input type='text' id={"event_name"} name={"event_name"} />
                 
                 <label>Event Date</label>
-                <input type="date" id="event_date" name="event_date" required className={"w-fit"}></input>
+                <input type="date" id="event_date" name="event_date" required className={"w-fit"}/>
 
                 <label>Event Details</label>
-                <textarea id={"event_details"} name={"event_details"}></textarea>
+                <input type='text'  id={"event_details"} name={"event_details"} />
 
                 <label>Source/URL</label>
-                <textarea id={"event_source"} name={"event_source"}>
+                <input type='text' id={"event_source"} name={"event_source"}/>
 
                 <label>Related Project</label>
                 <select id="project_id" name="project_id">
@@ -44,8 +44,6 @@ export default function CreateKeyEvent(
                         <option key={p.project_id} value={p.project_id}>{p.project_name}</option>
                     ))}
                 </select>
-
-                </textarea>
             </fieldset>
 
             <button type="submit" className="fluent-primary-button">Create KeyEvent</button>

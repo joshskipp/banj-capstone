@@ -15,7 +15,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
                 <div className="flex space-x-2">
                         <Link
-                            href={`/dashboard/keyevents/edit/${id}`}
+                            href={`/dashboard/keyevents/${k.event_id}/edit`}
                             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                         >
                             Edit Project
