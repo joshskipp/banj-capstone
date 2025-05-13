@@ -301,3 +301,20 @@ export async function createCommodity(formData: {
   revalidatePath('/dashboard/commodities');
   redirect('/dashboard/commodities');
 }
+
+// Archive a project (Replacement of deleteProject)
+export async function archiveProject(projectId: string) {
+  try {
+    await sql`
+      UPDATE projects
+      SET approved_status = 'Archived',
+          updated_at = NOW()
+      WHERE project_id = ${projectId}
+    `;
+  } catch (error) {
+    console.error('Error archiving project:', error);
+    throw new Error('Failed to archive project');
+  }
+
+  revalidatePath('/dashboard/projects');
+}
