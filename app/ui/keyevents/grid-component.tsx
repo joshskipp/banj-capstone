@@ -31,10 +31,13 @@ const GridComponent = () => {
 
     const [columnDefs] = useState<ColDef[]>([
         { field: "event_id", width: 300, headerName: "ID" },
+        { field: "event_name", width: 300, headerName: "Title", filter: "agTextColumnFilter", sortable: true},
         { field: "event_details", width: 300, headerName: "Event", filter: "agTextColumnFilter", sortable: true},
         { field: "event_date", width: 300, headerName: "Event Date", filter: "agTextColumnFilter",sortable: true },
         { field: "created_by", maxWidth: 120, headerName: "Created By", sortable: true },
         { field: "created_at", maxWidth: 120, headerName: "Created At", sortable: true },
+        { field: "event_source", width: 300, headerName: "Source/URL", filter: "agTextColumnFilter",sortable: true },
+        { field: "project", width: 300, headerName: "Related Project", filter: "agTextColumnFilter",sortable: true },
     ]);
 
     // Function to export data to CSV

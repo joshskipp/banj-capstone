@@ -78,6 +78,13 @@ const GridComponent = () => {
                 Export Projects
             </Button>
 
+            <Link href="/dashboard/archived">
+                <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                    <MagnifyingGlassIcon className="w-5 h-5 text-white" />
+                    Archived Projects
+                </Button>
+            </Link>
+
                 
             </div>
 

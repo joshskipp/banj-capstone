@@ -16,7 +16,7 @@ export default function ProductivityChart() {
       const projects = await fetchAllProjects();
 
       const total = projects.length;
-      const readyProjects = projects.filter(project => project.approved_status === 'Ready for review').length;
+      const readyProjects = projects.filter(project => project.approved_status === 'Ready for Review').length;
       const approvedInternal = projects.filter(project => project.approved_status === 'Approved for Internal Use').length;
       const approvedExternal = projects.filter(project => project.approved_status === 'Approved for External Use').length;
 

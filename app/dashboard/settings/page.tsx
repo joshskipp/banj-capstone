@@ -18,13 +18,6 @@ export default async function Page() {
                 <p>Hello <strong>{user?.name}</strong></p>
             <h2>Settings</h2>
             <p>Regular settings goes here</p>
-            <Link href="/dashboard/archived">
-                <div>
-                    <div className="flex items-center justify-center truncate rounded-xl bg-[#1f4656] px-4 py-8 hover:bg-[#2b6173]">
-                    <h2 className="text-xl text-white font-semibold">Archived Projects</h2>
-                    </div>
-                </div>
-            </Link>
             </div>
 
 
