@@ -22,10 +22,13 @@ export async function fetchAllProjectsData() {
         data = await sql`
         SELECT p.*, 
         string_agg(DISTINCT CASE WHEN pc.isprimary THEN c.commodity_name END, ', ') AS primary_commodities,
-        string_agg(DISTINCT CASE WHEN pc.issecondary THEN c.commodity_name END, ', ') AS secondary_commodities
+        string_agg(DISTINCT CASE WHEN pc.issecondary THEN c.commodity_name END, ', ') AS secondary_commodities,
+        string_agg(DISTINCT co.company_name, ', ') AS company
         FROM projects p
         LEFT JOIN project_commodities pc ON p.project_id = pc.project_id
         LEFT JOIN commodities c ON pc.commodity_id = c.commodity_id
+        LEFT JOIN company_projects cpr ON p.project_id = cpr.project_id
+        LEFT JOIN companies co ON cpr.company_id = co.company_id
         GROUP BY p.project_id`
     return data;
   } catch (error) {

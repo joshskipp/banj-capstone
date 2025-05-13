@@ -7,13 +7,16 @@ import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 // import {Metadata, ResolvingMetadata} from 'next';
-import {fetchReserves, fetchProductions} from "@/app/lib/fetchdb/fetch-projects";
+import {fetchReserves, fetchProductions, fetchProjectCompanies} from "@/app/lib/fetchdb/fetch-projects";
 import { fetchAllCommodities } from "@/app/lib/fetchdb/fetch-commodities";
 import { auth } from "@/auth"
 import ProjectComments from "@/app/ui/projects/project-comments";
 import { AddProjectCommodity } from "@/app/lib/writedb/write-commodities";
 import ProjectReserves from "@/app/ui/projects/project-reserves";
 import ProjectProductions from "@/app/ui/projects/newProductionsForm";
+import { fetchAllCompanies } from "@/app/lib/fetchdb/fetch-companies";
+import { AddProjectCompany, RemoveProjectCompany } from "@/app/lib/writedb/write-projects";
+import RemoveCompanyRef from "@/app/ui/projects/removeProjectCompany";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -29,11 +32,19 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     const key_events = await fetchKeyEventsByProjectID(id);
     const commodity_list = await fetchAllCommodities();
-
+    const company_list = await fetchAllCompanies();
+    const project_companies = await fetchProjectCompanies(id);
     // Filter out the full list of commodities, of the current project commodities, to prevent adding duplicate commodities to the project.
     const filtered_commod = commodity_list.filter(commodity => 
         !cp.some(projectCommodity => projectCommodity.commodity_id === commodity.commodity_id)
     );
+
+    const filtered_companies = company_list.filter(company => 
+        !project_companies.some(projectCompany => projectCompany.company_id === company.company_id)
+    );
+    
+
+    //
     
     /**
      * Fetch Project Reserves
@@ -150,11 +161,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Product:</b> {p.product}</li>
                             <li><b>Latitude:</b> {p.latitude}</li>
                             <li><b>Longitude:</b> {p.longitude}</li>
-                            <li><b>Primary Commodity:</b> {p.primary_commodity}</li>
-                            <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
+                            <li><b>Primary Commodity:</b> {cp.map((c) => { return (<span key={c.commodity_id}>{c.isecondary ? `${c.commodity_name}` : <></>}</span>)})}</li>
+                            <li><b>Secondary Commodity:</b> {cp.map((c) => { return (<span key={c.commodity_id}>{c.issecondary ? `${c.commodity_name}` : <></>}</span>)})}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
                             <li><b>Approval Status:</b> {p.approved_status}</li>
-                            <li><b>Company:</b> <strong>Not Yet Implemented</strong></li>
+                            <li><b>Company:</b> {project_companies.map((c) => { return (<p>{c.company_name}</p>)})} </li>
                         </ul>
                     </div>
 
@@ -227,7 +238,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
 
                 <div className="mb-6 flex flex-row items-start gap-2">
-
                     <form action={AddProjectCommodity}>
                         <fieldset className="bg-gray-50 rounded-lg border-none flex flex-col"><legend>Add Commoditity to Project</legend>
                         <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
@@ -375,6 +385,46 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             )}
                         </div>
                     </details>
+                </div>
+
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h2>Companies</h2>
+                    <div className="flex flex-row items-start gap-2">
+                    <form action={AddProjectCompany}>
+                        <fieldset className="bg-gray-100 rounded-lg border-none flex flex-col"><legend>Link Company to Project</legend>
+                        <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
+                        <select id="company_id" defaultValue="" required name="company_id">
+                        <option  value="" disabled >Select your option</option>
+                            {filtered_companies.map((company:any) => {
+                            return (
+                            <option key={company.company_id} value={company.company_id}>{company.company_name}</option>
+                            )
+                            })}
+                        </select>
+                        <div className="flex flex-row gap-2">
+                            <button type="submit" className="p-2 my-2 bg-blue-500 text-white rounded-lg w-full">Add</button>
+                            <button type="reset" className="p-2 my-2 bg-gray-500 text-white rounded-lg w-full">Clear</button>
+                        </div>
+                        </fieldset>
+                    </form>
+
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                        {project_companies.map((pc) => {
+                            return (
+                                <div key={pc.company_id} className="bg-gray-200 p-3 rounded-lg flex flex-row justify-between gap-2">
+                                    
+                                        <Link href={`/dashboard/companies/${pc.company_id}`} className="text-blue-600 hover:underline">
+                                            <strong>{pc.company_name}</strong>
+                                        </Link>
+                                        <small>
+                                        {pc.asx_code ? `$${pc.asx_code}` : ``}</small>
+                                        <RemoveCompanyRef projectId={p.project_id} companyID={pc.company_id} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                    </div>
                 </div>
 
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg">

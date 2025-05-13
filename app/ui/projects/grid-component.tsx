@@ -31,6 +31,7 @@ const GridComponent = () => {
 
     const [columnDefs] = useState<ColDef[]>([
         { field: "project_name", width: 300, headerName: "Project Name", filter: "agTextColumnFilter", sortable: true},
+        { field: "company", maxWidth: 150, headerName: "Company", filter: "agTextColumnFilter", sortable: true },
         { field: "primary_commodities", maxWidth: 150, headerName: "Primary Commodities", filter: "agTextColumnFilter", sortable: true },
         { field: "secondary_commodities", maxWidth: 150, headerName: "Secondary Commodities", filter: "agTextColumnFilter", sortable: true },
         { field: "product", width: 300, headerName: "Product", filter: "agTextColumnFilter",sortable: true },
@@ -41,10 +42,9 @@ const GridComponent = () => {
         { field: "updated_at", maxWidth: 150, headerName: "Last Updated", filter: "agTextColumnFilter",sortable: true },
         { field: "created_by", maxWidth: 150, headerName: "Created By", filter: "agTextColumnFilter", sortable: true },
         { field: "created_at", maxWidth: 150, headerName: "Created At", filter: "agTextColumnFilter", sortable: true },
-        //{ field: "primary_commodity", maxWidth: 150, headerName: "Commodity (ptable)", sortable: true },
         // { field: "project_id", width: 300, headerName: "ID" },
-        // { field: "latitude", maxWidth: 120, sortable: true },
-        // { field: "longitude", maxWidth: 120, sortable: true },
+        { field: "latitude", maxWidth: 120, sortable: true },
+        { field: "longitude", maxWidth: 120, sortable: true },
     ]);
 
     // Function to export data to CSV
