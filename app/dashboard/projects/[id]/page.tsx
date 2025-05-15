@@ -54,10 +54,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     return (
         <main>
-             {/* Add Review Status Banner */}
+             
             
-            {/* Add Review Status Banner */}
-            {(p.approved_status !== 'Approved for External Use' || p.approved_status === 'Approved for Internal Use') && (
+            {/* Add Review Status Banner - Warning */}
+            {(p.approved_status !== 'Approved for External Use' && p.approved_status !== 'Approved for Internal Use') && (
                 <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
@@ -67,7 +67,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm text-red-700">
-                                <strong>Approval Status Warning:</strong> This project is not approved for external use.
+                                <strong>Approval Status Warning:</strong> This project is not approved.
                             </p>
                             <p>
                                 <strong>Reviewer Notes: </strong> 
@@ -80,7 +80,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
                         )}
-
+                {/*  Add Review Status Banner - Under Review */}
             {p.approved_status === 'Under review' && (
                 <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
                     <div className="flex">
@@ -97,7 +97,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
             )}
-
+            
+                {/* Add Review Status Banner - Approved */} 
             {(p.approved_status === 'Approved for External Use' || p.approved_status === 'Approved for Internal Use') && (
                 <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
                     <div className="flex">
@@ -121,7 +122,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
             )}
     
-                {/* Add Review Status Banner */}    
+                {/* Add Review Status Banner  - Archived*/}    
             {p.approved_status === 'Archived' && (
                 <div className="bg-gray-100 border-l-4 border-gray-500 p-4 mb-4">
                     <div className="flex">
