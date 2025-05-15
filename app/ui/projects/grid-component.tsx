@@ -50,8 +50,9 @@ const GridComponent = () => {
     // Function to export data to CSV
     const exportToCsv = () => {
         if (gridRef.current?.api) {
-            gridRef.current.api.exportDataAsCsv();
-            
+            const dateTime = new Date().toISOString().replace(/[:.-]/g, '_');
+            const fileName = `projects_export_${dateTime}.csv`;
+            gridRef.current.api.exportDataAsCsv({ fileName });
         }
     };
 

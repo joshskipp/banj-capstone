@@ -40,7 +40,9 @@ const CommoditiesGrid = () => {
 
     const exportToCsv = () => {
         if (gridRef.current?.api) {
-            gridRef.current.api.exportDataAsCsv();
+            const dateTime = new Date().toISOString().replace(/[:.-]/g, '_');
+            const fileName = `commodities_export_${dateTime}.csv`;
+            gridRef.current.api.exportDataAsCsv({ fileName });
         }
     };
 

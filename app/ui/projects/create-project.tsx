@@ -54,13 +54,13 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
     created_by: reviewerName || 'error-getting-USER',
   });
 
-   // Fetch commodities on component mount
+   // Fetch commodities from the database
    useEffect(() => {
     const loadCommodities = async () => {
       try {
         const commoditiesData = await fetchAllCommodities();
     
-        // Explicitly map each row to the expected format
+        // Format the data to match commodities
         const formatted = commoditiesData.map((row: any) => ({
           commodity_id: row.commodity_id,
           commodity_name: row.commodity_name
@@ -150,7 +150,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               />
             </div>
           </div>
-{/* Commodities */}
+          {/* Commodities */}
 <div>
             <label htmlFor="primary_commodity" className="block mb-1">Primary Commodity*</label>
             <select

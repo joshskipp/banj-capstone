@@ -1,5 +1,4 @@
 import {fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId} from "@/app/lib/data";
-import DeleteProjectButton from "@/app/ui/projects/delete-project";
 import {notFound} from 'next/navigation';
 import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
 import CreateComment from "@/app/ui/projects/create-comment";
@@ -58,7 +57,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
              {/* Add Review Status Banner */}
             
             {/* Add Review Status Banner */}
-            {p.approved_status !== 'Approved for External Use' && (
+            {(p.approved_status !== 'Approved for External Use' || p.approved_status === 'Approved for Internal Use') && (
                 <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
@@ -74,6 +73,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                                 <strong>Reviewer Notes: </strong> 
                                 {/* if review_notes is null Display the following message. */}
                                 {p.review_notes ? p.review_notes : "This Project has not been reviewed at this stage."}
+                                <br></br>This project status is <strong>{p.approved_status} </strong>
                                 
                             </p>
                         </div>
@@ -98,7 +98,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
             )}
 
-            {p.approved_status === 'Approved for External Use' || p.approved_status === 'Approved for Internal Use' && (
+            {(p.approved_status === 'Approved for External Use' || p.approved_status === 'Approved for Internal Use') && (
                 <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
@@ -108,7 +108,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm text-green-700">
-                                <strong>Approval Status:</strong> This project is <strong>approved for external use.</strong>
+                                <strong>Approval Status:</strong> This project is <strong>{p.approved_status}</strong>
                             </p>
                             <p>
                                 <strong>Reviewer Notes: </strong> 
@@ -120,8 +120,27 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
             )}
-
-            {/* EDITS/ DELETE and Review*/}
+    
+                {/* Add Review Status Banner */}    
+            {p.approved_status === 'Archived' && (
+                <div className="bg-gray-100 border-l-4 border-gray-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                                <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                    </div>
+                                    <div className="ml-3">
+                                        <p className="text-sm text-gray-700">
+                                            <strong>Approval Status:</strong> This project is <strong>{p.approved_status}</strong>
+                                        </p>
+                                    </div>  
+                    </div>
+                </div>
+            )}
+                                    
+                                        
+            {/* Buttons */}
             <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md"> {/* Main container */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
@@ -145,7 +164,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </Link>
                         )}
 
-                        <DeleteProjectButton projectId={id}/>
 
                         {permissions.admin && (
                         <Link href={`/dashboard/projects/${id}/audit`}>

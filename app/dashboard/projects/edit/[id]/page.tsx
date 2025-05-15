@@ -19,14 +19,14 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
 
   return (
     <div>
-      <h1>Edit Project</h1>
+      <h1>Edit Project as "{reviewerName}"</h1>
+      <Link href={`/dashboard/projects/${id}`}>    
+                <Button>
+                    Back to Project
+                </Button>
+            </Link>
       <EditProjectForm project={project} reviewerName={reviewerName} session={session} />
       <br />
-      <Link href="/dashboard/projects">
-      <Button>
-        Back to Projects
-        </Button>
-      </Link>
     </div>
   );
 }
