@@ -159,7 +159,6 @@ export async function updateProject(project: {
 }
 
 // Delete an existing project
-// To Be DEBUGGED - try catch creates ussues where the page errors out put the action is still completed (The 'delete' is carried out before the page error)
 export async function deleteProject(id: string) {
   try {
     // Delete related records in the attachments table
@@ -226,12 +225,14 @@ export async function deleteAttachment(id: string) {
   }
 }
 // Review a project
-// this function changes approved by which may be a loggic error, perhaps an extra reviewd by field in addition to approved by is needed
+// The approved fields are generated, cant claim to understand how this sql works yet. Basically only sets if the user approves a project, doesn't update NOT NULL fields otherwise.
 export async function updateProjectReviewStatus(formData: {
   project_id: string;
   approved_status: string;
   review_notes?: string;
   reviewed_by?: string;
+  approved_by?: string | null;
+  approved_at?: string | null;
 }) {
   try {
       await sql`
@@ -240,6 +241,8 @@ export async function updateProjectReviewStatus(formData: {
               approved_status = ${formData.approved_status},
               review_notes = ${formData.review_notes || null},
               reviewed_by = ${formData.reviewed_by || null},
+              ${formData.approved_by ? sql`approved_by = ${formData.approved_by},` : sql``}
+              ${formData.approved_at ? sql`approved_at = ${new Date(formData.approved_at).toISOString()},` : sql``}
               updated_at = NOW()
           WHERE project_id = ${formData.project_id}
       `;
@@ -248,7 +251,6 @@ export async function updateProjectReviewStatus(formData: {
       throw new Error('Failed to update project review');
   }
   revalidatePath(`/dashboard/projects/${formData.project_id}`);
-  // revalidatePath('/dashboard/projects');
 }
 
 // Create a new commodity
