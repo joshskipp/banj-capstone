@@ -62,19 +62,12 @@ export default function EditKeyEventForm({ keyevent, projectOptions }: EditFormP
                 />
 
                 <label>Related Project</label>
-                <select
-                    id="project_id"
-                    name="project_id"
-                    defaultValue={keyevent.project_id}
-                    required
-                >
-                    {projectOptions.map((p) => (
-                        <option key={p.project_id} value={p.project_id}>
-                            {p.project_name}
-                        </option>
-                    ))}
-                </select>
-            </fieldset>
+                    <select id="project_id" name="project_id">
+                        {projectOptions.map((p) => (
+                            <option key={p.project_id} value={p.project_id}>{p.project_name}</option>
+                        ))}
+                    </select>
+                </fieldset>
 
             <button type="submit" className="fluent-primary-button mt-4">
                 Edit KeyEvent
