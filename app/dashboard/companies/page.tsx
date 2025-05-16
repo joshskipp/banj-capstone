@@ -22,7 +22,8 @@ export default async function Page(){
             </div>
             
             <GridComponent />
-           <Databox rawData={AllCompanies} />
+            <br /><br />
+           {/* <Databox rawData={AllCompanies} /> */}
         </main>
     )
 }

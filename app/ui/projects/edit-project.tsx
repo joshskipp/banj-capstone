@@ -90,7 +90,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f8f5f6]">
+    <div className="flex justify-center items-center ">
       <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-[#f8f5f6]">
         <div className="flex flex-col gap-6">
 
@@ -183,12 +183,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
         </div>
         
       </form>
-      
-        <Link href="/dashboard/projects/${project.project_id}">
-      <Button>
-        Back to Projects
-        </Button>
-      </Link>
+    
     </div>
   );
 }

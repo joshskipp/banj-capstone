@@ -12,16 +12,17 @@ export default async function Page() {
             <h2>Commodities</h2>
             <p>Commodities are materials/minerals that are collected by resource projects. They can be assigned to the projects as the primary or secondary commodity.</p>
 
-            <div className="flex w-full flex-row justify-end my-2">
+            <CommoditiesGrid />
+            <br /> <br />
+            {/* <div className="flex w-full flex-row ">
                 <Link href="/dashboard/commodities/new">
                     <Button className="w-[12rem] flex gap-2">
                         <PlusCircleIcon className="w-8" />
                         New Commodity
                     </Button>
                 </Link>
-            </div>
+            </div> */}
 
-            <CommoditiesGrid />
         </main>
     );
 }
