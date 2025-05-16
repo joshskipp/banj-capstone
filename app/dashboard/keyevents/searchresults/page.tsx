@@ -31,7 +31,7 @@ export default async function Page(props: {
                 {SearchedKeyEvents.map((key_event, i) => {
                     return (
                         <div key={key_event.event_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
-                            <strong>{key_event.event_details}</strong><br />
+                            <strong>{key_event.event_name}</strong><br />
                             ID: {key_event.event_id}<br />
                             Date:{key_event.event_date.toLocaleString()}<br />
                             <br />

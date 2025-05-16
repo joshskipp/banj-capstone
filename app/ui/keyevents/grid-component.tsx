@@ -37,7 +37,7 @@ const GridComponent = () => {
         { field: "created_by", maxWidth: 120, headerName: "Created By", sortable: true },
         { field: "created_at", maxWidth: 120, headerName: "Created At", sortable: true },
         { field: "event_source", width: 300, headerName: "Source/URL", filter: "agTextColumnFilter",sortable: true },
-        { field: "project", width: 300, headerName: "Related Project", filter: "agTextColumnFilter",sortable: true },
+        { field: "project_id", width: 300, headerName: "Related Project", filter: "agTextColumnFilter",sortable: true },
     ]);
 
     // Function to export data to CSV
