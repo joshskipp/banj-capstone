@@ -219,48 +219,50 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
                 <hr className="my-3 border-black"/>
 
-
-                <div className="flex flex-row my-2 gap-2 rounded-md">
-                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
-                        <h3>Reserves</h3>
-                        {pReserves.map((r) => {
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h2>Companies</h2>
+                    <div className="flex flex-row items-start gap-2">
+                    <form action={AddProjectCompany}>
+                        <fieldset className="bg-gray-100 rounded-lg border-none flex flex-col"><legend>Link Company to Project</legend>
+                        <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
+                        <select id="company_id" defaultValue="" required name="company_id">
+                        <option  value="" disabled >Select your option</option>
+                            {filtered_companies.map((company:any) => {
                             return (
-                                <ProjectReserves
-                                    key={r.commodity_id}
-                                    project_id={r.project_id}
-                                    commodity_id={r.commodity_id}
-                                    commodity_name={r.commodity_name} 
-                                    tonnage={r.tonnage}
-                                    units_of_measurement={r.units_of_measurement}
-                                    estimate_date={r.estimate_date}
-                                    grade={r.grade}
-                                    notes={r.notes}
-                                    updated_at={r.updated_at}
-                                />
+                            <option key={company.company_id} value={company.company_id}>{company.company_name}</option>
                             )
+                            })}
+                        </select>
+                        <div className="flex flex-row gap-2">
+                            <button type="submit" className="p-2 my-2 bg-blue-500 text-white rounded-lg w-full">Add</button>
+                            <button type="reset" className="p-2 my-2 bg-gray-500 text-white rounded-lg w-full">Clear</button>
+                        </div>
+                        </fieldset>
+                    </form>
+
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                        {project_companies.map((pc) => {
+                            return (
+                                <div key={pc.company_id} className="bg-gray-200 p-3 rounded-lg flex flex-row justify-between gap-2">
+                                    
+                                        <Link href={`/dashboard/companies/${pc.company_id}`} className="text-blue-600 hover:underline">
+                                            <strong>{pc.company_name}</strong>
+                                        </Link>
+                                        <small>
+                                        {pc.asx_code ? `$${pc.asx_code}` : ``}</small>
+                                        <RemoveCompanyRef projectId={p.project_id} companyID={pc.company_id} />
+                                </div>
+                            );
                         })}
                     </div>
-                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
-                        <h3>Productions</h3>
-                        {pProduction.map((r) => {
-                            return (
-                                <ProjectProductions
-                                    key={r.commodity_id}
-                                    project_id={r.project_id}
-                                    commodity_id={r.commodity_id}
-                                    commodity_name={r.commodity_name}
-                                    tonnage={r.tonnage}
-                                    units_of_measurement={r.units_of_measurement}
-                                    start_date={r.start_date}
-                                    end_date={r.end_date}
-                                    notes={r.notes}
-                                    updated_at={r.updated_at}
-                                />
-                            )
-                        })}
                     </div>
                 </div>
 
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+
+                    <p><strong>Note:  Changes to the Projects Commodities will reset the review status.</strong></p>
+                </div>
 
                 <div className="mb-6 flex flex-row items-start gap-2">
                     <form action={AddProjectCommodity}>
@@ -306,7 +308,49 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
 
-                <div className="mb-6">
+                <div className="flex flex-row my-2 gap-2 rounded-md">
+                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
+                        <h3>Reserves</h3>
+                        {pReserves.map((r) => {
+                            return (
+                                <ProjectReserves
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name} 
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    estimate_date={r.estimate_date}
+                                    grade={r.grade}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
+                            )
+                        })}
+                    </div>
+                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
+                        <h3>Productions</h3>
+                        {pProduction.map((r) => {
+                            return (
+                                <ProjectProductions
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name}
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    start_date={r.start_date}
+                                    end_date={r.end_date}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
+                            )
+                        })}
+                    </div>
+                </div>
+
+
+                <div className="mb-6"> {/* Attachments */}
                     <details className="group [&_summary::-webkit-details-marker]:hidden">
                         <summary
                             className="flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200">
@@ -412,45 +456,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </details>
                 </div>
 
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <h2>Companies</h2>
-                    <div className="flex flex-row items-start gap-2">
-                    <form action={AddProjectCompany}>
-                        <fieldset className="bg-gray-100 rounded-lg border-none flex flex-col"><legend>Link Company to Project</legend>
-                        <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
-                        <select id="company_id" defaultValue="" required name="company_id">
-                        <option  value="" disabled >Select your option</option>
-                            {filtered_companies.map((company:any) => {
-                            return (
-                            <option key={company.company_id} value={company.company_id}>{company.company_name}</option>
-                            )
-                            })}
-                        </select>
-                        <div className="flex flex-row gap-2">
-                            <button type="submit" className="p-2 my-2 bg-blue-500 text-white rounded-lg w-full">Add</button>
-                            <button type="reset" className="p-2 my-2 bg-gray-500 text-white rounded-lg w-full">Clear</button>
-                        </div>
-                        </fieldset>
-                    </form>
-
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
-                        {project_companies.map((pc) => {
-                            return (
-                                <div key={pc.company_id} className="bg-gray-200 p-3 rounded-lg flex flex-row justify-between gap-2">
-                                    
-                                        <Link href={`/dashboard/companies/${pc.company_id}`} className="text-blue-600 hover:underline">
-                                            <strong>{pc.company_name}</strong>
-                                        </Link>
-                                        <small>
-                                        {pc.asx_code ? `$${pc.asx_code}` : ``}</small>
-                                        <RemoveCompanyRef projectId={p.project_id} companyID={pc.company_id} />
-                                </div>
-                            );
-                        })}
-                    </div>
-                    </div>
-                </div>
 
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                     <h2>Comments</h2>

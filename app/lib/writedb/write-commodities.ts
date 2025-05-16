@@ -70,6 +70,16 @@ export async function AddProjectCommodity(formData: FormData) {
         console.error('Error writing record:', error);
         throw error;
     }
+     try {
+        await sql`
+            UPDATE projects
+            SET approved_status = 'Ready for Review'
+            WHERE project_id = ${project_id};
+        `;
+    } catch (error) {
+        console.error('Error updating approval status:', error);
+        throw error;
+    }
     revalidatePath(`/dashboard/projects/${project_id}`);
     redirect(`/dashboard/projects/${project_id}`);
 }
@@ -104,7 +114,16 @@ export async function updateReserves(formData: FormData) {
         console.error('Error writing record:', error);
         throw error;
     }
-
+    try {
+        await sql`
+            UPDATE projects
+            SET approved_status = 'Ready for Review'
+            WHERE project_id = ${String(UpdateReserves.project_id)};
+        `;
+    } catch (error) {
+        console.error('Error updating project status:', error);
+        throw error;
+    }
     revalidatePath(`/dashboard/projects/${UpdateReserves.project_id}`);
     redirect(`/dashboard/projects/${UpdateReserves.project_id}`);
 }
@@ -138,6 +157,17 @@ export async function updateProduction(formData: FormData) {
         console.error('Error writing record:', error);
         throw error;
     }
+    try {
+        await sql`
+            UPDATE projects
+            SET approved_status = 'Ready for Review'
+            WHERE project_id = ${String(UpdateProduction.project_id)};
+        `;
+    } catch (error) {
+        console.error('Error updating project status:', error);
+        throw error;
+    }
+    
 
     revalidatePath(`/dashboard/projects/${UpdateProduction.project_id}`);
     redirect(`/dashboard/projects/${UpdateProduction.project_id}`);
