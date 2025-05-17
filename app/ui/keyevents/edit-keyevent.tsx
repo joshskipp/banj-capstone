@@ -19,7 +19,8 @@ export default function Form(
                 {/*    ))}*/}
                 {/*</select>*/}
 
-                
+                <label>Event Name</label>
+                <input type='text' id={"event_name"} name={"event_name"} />
 
                 <label>Event Date</label>
                 <input type="date" id="event_date" name="event_date" defaultValue={initalDate} required className={"w-fit"}></input>
@@ -27,7 +28,8 @@ export default function Form(
                 <label>Event Details</label>
                 <textarea id={"event_details"} defaultValue={keyevent.event_details} name={"event_details"}></textarea>
 
-                
+                <label>Source/URL</label>
+                <input type='text' id={"event_source"} name={"event_source"}/>
 
                 
             </fieldset>
