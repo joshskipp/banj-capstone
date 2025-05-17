@@ -9,16 +9,16 @@ export default function Form(
     const initalDate = (keyevent.event_date).toISOString().split('T')[0]
     return (
         <form action={updateEventByID} >
-            <main className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">Editing Event for Project: {keyevent.project_name}
-
-                <fieldset>
-                    <legend>Required</legend>
-                    <div className="flex justify-between items-start mb-6">
+            <main className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">
+                <div className="flex justify-between items-start mb-6">
                         <h2> Editing Event for Project: {keyevent.project_name}</h2>
                         <Link href={"/dashboard/keyevents/"}>
                             <button className={"fluent-default-button"}>Back</button>
                         </Link>
                     </div>
+                    
+                <fieldset>
+                    
 
                     <label>Event Name</label>
                     <input type='text' id={"event_name"} defaultValue={keyevent.event_name} name={"event_name"} />
