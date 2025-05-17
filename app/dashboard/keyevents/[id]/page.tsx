@@ -24,7 +24,14 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="font-semibold text-lg mb-3">Event Details</h3>
+                    <ul className="space-y-2">
+                        <li>{k.event_details}</li>
+                    </ul>
+                </div>
+
                 <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-lg mb-3">Metadata</h3>
                     <ul className="space-y-2 text-sm">
@@ -33,24 +40,15 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         <li><b>Updated at:</b> {k.updated_at.toLocaleString()}</li>
                     </ul>
                 </div>
-
-                <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-3">Event Details</h3>
-                    <ul className="space-y-2">
-                        <li>{k.event_details}</li>
-                    </ul>
-                </div>
             </div>
 
             <hr className="my-3 border-black" />
 
-            <div className="bg-gray-50 p-4 rounded-lg mb-6">
+            <div className="mb-6">
                 <h3 className="font-semibold text-lg mb-3">Source/URL</h3>
-                <p>
-                    <a href={k.event_source} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-                        {k.event_source}
-                    </a>
-                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <p><a href={k.event_source}>{k.event_source}</a></p>
+                </div>
             </div>
         </main>
     );

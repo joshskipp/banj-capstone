@@ -66,8 +66,6 @@ export type KeyEvent = {
 
 export type KeyEventForm = {
     event_id: string,
-    event_name: string,
-    event_source: string,
     event_date: Date,
     event_details: string,
     project_id: string,

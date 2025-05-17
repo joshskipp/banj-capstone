@@ -368,10 +368,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 {key_events[0] != null ? key_events.map((k) => {
                     return (
                         <div key={k.event_id}>
-                            <a href={k.event_name}><p>{k.event_date.toLocaleDateString()} - <strong>{k.event_name}</strong></p></a>
+                            <p>{k.event_date.toLocaleDateString()} - <strong>{k.event_details}</strong></p>
                         </div>
                     )
-                }) : (<p>No key events yet</p>)}
+                }) : (<p>No key events</p>)}
                 <Databox rawData={key_events}/>
             </div>
         </main>
