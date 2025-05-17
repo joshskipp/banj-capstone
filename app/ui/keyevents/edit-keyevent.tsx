@@ -1,3 +1,5 @@
+'use client'
+
 import { updateKeyEvent } from "@/app/lib/writedb/write-keyevents";
 import { KeyEventForm } from "@/app/lib/definitions";
 
