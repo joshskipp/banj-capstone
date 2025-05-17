@@ -26,11 +26,12 @@ export default function Form(
                 <input type="date" id="event_date" name="event_date" defaultValue={initalDate} required className={"w-fit"}></input>
 
                 <label>Event Details</label>
-                <textarea id={"event_details"} defaultValue={keyevent.event_details} name={"event_details"}></textarea>
+                <textarea id={"event_details"} defaultValue={keyevent.event_details} name={"event_details"}>
 
                 <label>Source/URL</label>
                 <input type='text' id={"event_source"} name={"event_source"}/>
-                
+
+                </textarea>
             </fieldset>
 
             <button type="submit" className="fluent-primary-button">Create KeyEvent</button>
