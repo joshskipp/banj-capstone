@@ -220,7 +220,7 @@ export async function fetchFilteredKeyEvents(
     const key_events = await sql`
       SELECT * FROM key_events
       WHERE
-        key_events.event_details ILIKE ${`%${query}%`}
+        key_events.event_name ILIKE ${`%${query}%`}
       ORDER BY key_events.event_date DESC
     `;
 
