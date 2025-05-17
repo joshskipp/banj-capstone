@@ -368,7 +368,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 {key_events[0] != null ? key_events.map((k) => {
                     return (
                         <div key={k.event_id}>
-                            <a href={`/dashboard/keyevents/${k.event_id}`}> {k.event_name}</a>
+                            <a href={k.event_name}><p>{k.event_date.toLocaleDateString()} - <strong>{k.event_name}</strong></p></a>
                         </div>
                     )
                 }) : (<p>No key events yet</p>)}
