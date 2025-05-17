@@ -71,5 +71,7 @@ export type KeyEventForm = {
     event_date: Date,
     event_details: string,
     project_id: string,
+    event_name: string,
+    event_source: string,
     project_name: string,
 }
