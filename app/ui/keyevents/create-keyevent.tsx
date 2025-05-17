@@ -46,7 +46,7 @@ export default function CreateKeyEvent(
                 </select>
             </fieldset>
 
-            <button type="submit" className="fluent-primary-button">Create KeyEvent</button>
+            <button type="submit" className="fluent-primary-button mt-4">Create KeyEvent</button>
         </form>
     )
 }

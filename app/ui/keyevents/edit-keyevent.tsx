@@ -8,7 +8,7 @@ export default function Form(
     const initalDate = (keyevent.event_date).toISOString().split('T')[0]
     return (
         <form action={updateEventByID} >
-            <h2>Editing event for: {keyevent.project_name}</h2>
+            <h2 className="text-xl font-semibold mb-4">Editing Event for Project: {keyevent.project_name}</h2>
             <fieldset>
                 <legend>Required</legend>
                 {/*<input type="hidden" id="user_id" name="user_id" value={user_id} />*/}
@@ -34,7 +34,7 @@ export default function Form(
                 
             </fieldset>
 
-            <button type="submit" className="fluent-primary-button">Edit Key Event</button>
+            <button type="submit" className="fluent-primary-button mt-4">Edit Key Event</button>
         </form>
     )
 }
