@@ -16,7 +16,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
                 <div className="flex space-x-2">
                     <Link href={`/dashboard/companies/${c.company_id}/edit`}>
-                        <Button className="flex items-center bg-white text-black border border-black hover:bg-gray-700 hover:text-white">
+                        <Button className="flex items-center bg-blue-600 text-white hover:bg-blue-700">
                             <PencilSquareIcon className="w-5 h-5 mr-2" />
                             Edit Data
                         </Button>
@@ -50,17 +50,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 </div>
             </div>
 
-            <hr className="my-4 border-gray-300" />
-
-            <div>
-                <h3 className="font-semibold text-lg mb-2">Dev Tools - Raw Data</h3>
-                <textarea
-                    className="w-full bg-gray-100 p-2 rounded text-xs font-mono"
-                    readOnly
-                    rows={10}
-                    value={JSON.stringify(c, null, 2)}
-                />
-            </div>
         </main>
     );
 }
