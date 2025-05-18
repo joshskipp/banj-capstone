@@ -279,6 +279,22 @@ export async function createCommodity(formData: {
   redirect('/dashboard/commodities');
 }
 
+// Archive a project (Replacement of deleteProject)
+export async function archiveProject(projectId: string) {
+  try {
+    await sql`
+      UPDATE projects
+      SET approved_status = 'Archived',
+          updated_at = NOW()
+      WHERE project_id = ${projectId}
+    `;
+  } catch (error) {
+    console.error('Error archiving project:', error);
+    throw new Error('Failed to archive project');
+  }
+
+  revalidatePath('/dashboard/projects');
+
 // Delete an existing project
 // This function is no longer used, but is kept here for reference. 
 export async function deleteProject(id: string) {
@@ -306,4 +322,5 @@ export async function deleteProject(id: string) {
   // Cannot run redirect. Redirect internally throws an error so it should be called outside of try/catch blocks
   revalidatePath('/dashboard/projects')
     //redirect(`/dashboard/projects/${project.project_id}`)
+
 }

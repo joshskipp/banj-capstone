@@ -1,4 +1,5 @@
 import {fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId} from "@/app/lib/data";
+import ArchiveProjectButton from "@/app/ui/projects/archive-project";
 import {notFound} from 'next/navigation';
 import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
 import CreateComment from "@/app/ui/projects/create-comment";
@@ -163,10 +164,16 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         >
                             Review Project
                         </Link>
+
+                        
+                        <ArchiveProjectButton projectId={id} />
+
+
                         )}
 
 
                         {permissions.admin && (
+
                         <Link href={`/dashboard/projects/${id}/audit`}>
                             <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
                                 Activity Log

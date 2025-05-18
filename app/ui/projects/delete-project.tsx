@@ -1,3 +1,5 @@
+// Replaced with 'Archive'
+// This component is responsible for deleting a project. But in the late stage of development is unused. Left here for future reference.
 'use client';
 
 import { useState } from 'react';
