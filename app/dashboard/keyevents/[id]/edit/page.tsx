@@ -7,10 +7,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     const event = {
         event_id: keyEvents.event_id,
-        event_name: keyEvents.event_name,
         event_date: keyEvents.event_date,
         event_details: keyEvents.event_details,
-        event_source: keyEvents.event_source,
         project_id: keyEvents.project_id,
         project_name: keyEvents.project_name,
     }

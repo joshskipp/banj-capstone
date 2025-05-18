@@ -8,8 +8,6 @@ export async function fetchKeyEvents() {
     try {
         const data = await sql`
             SELECT e.event_id,
-                   e.event_name,
-                   e.event_source, 
                    e.event_date,
                    e.project_id,
                    e.event_details,
@@ -45,8 +43,6 @@ export async function fetchKeyEventByID(event_id: string) {
     try {
         const data = await sql`
             SELECT e.event_id,
-                   e.event_name,
-                   e.event_source, 
                    e.event_date,
                    e.project_id,
                    e.event_details,
