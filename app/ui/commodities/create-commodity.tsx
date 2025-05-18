@@ -42,7 +42,7 @@ export default function CreateCommodityForm({ reviewerName, session }: { reviewe
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f8f5f6]">
+    <div className="flex justify-center items-center ">
       <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-[#f8f5f6]">
         <h2 className="text-xl font-bold mb-6">Create New Commodity</h2>
         

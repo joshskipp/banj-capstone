@@ -1,5 +1,4 @@
 import {fetchProjectById, fetchProjectsCommoditites, fetchAttachmentsByProjectId} from "@/app/lib/data";
-
 import ArchiveProjectButton from "@/app/ui/projects/archive-project";
 import {notFound} from 'next/navigation';
 import UploadAttachmentForm from "@/app/ui/projects/upload-attachment";
@@ -8,13 +7,17 @@ import Link from 'next/link';
 import {Button} from "@/app/ui/button";
 import {fetchKeyEventsByProjectID} from "@/app/lib/fetchdb/fetch-keyevents";
 // import {Metadata, ResolvingMetadata} from 'next';
-import {fetchReserves, fetchProductions} from "@/app/lib/fetchdb/fetch-projects";
+import {fetchReserves, fetchProductions, fetchProjectCompanies} from "@/app/lib/fetchdb/fetch-projects";
 import { fetchAllCommodities } from "@/app/lib/fetchdb/fetch-commodities";
 import { auth } from "@/auth"
 import ProjectComments from "@/app/ui/projects/project-comments";
 import { AddProjectCommodity } from "@/app/lib/writedb/write-commodities";
 import ProjectReserves from "@/app/ui/projects/project-reserves";
 import ProjectProductions from "@/app/ui/projects/newProductionsForm";
+import { getPermissions } from "@/app/lib/utils/getPermissions";
+import { fetchAllCompanies } from "@/app/lib/fetchdb/fetch-companies";
+import { AddProjectCompany, RemoveProjectCompany } from "@/app/lib/writedb/write-projects";
+import RemoveCompanyRef from "@/app/ui/projects/removeProjectCompany";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -23,18 +26,26 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     const cp = await fetchProjectsCommoditites(id);
     const attachments = await fetchAttachmentsByProjectId(id);
     const session = await auth();
-
+    const permissions = await getPermissions(session?.user?.id || '');
     if (!p) {
         notFound();
     }
 
     const key_events = await fetchKeyEventsByProjectID(id);
     const commodity_list = await fetchAllCommodities();
-
+    const company_list = await fetchAllCompanies();
+    const project_companies = await fetchProjectCompanies(id);
     // Filter out the full list of commodities, of the current project commodities, to prevent adding duplicate commodities to the project.
     const filtered_commod = commodity_list.filter(commodity => 
         !cp.some(projectCommodity => projectCommodity.commodity_id === commodity.commodity_id)
     );
+
+    const filtered_companies = company_list.filter(company => 
+        !project_companies.some(projectCompany => projectCompany.company_id === company.company_id)
+    );
+    
+
+    //
     
     /**
      * Fetch Project Reserves
@@ -44,10 +55,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
     return (
         <main>
-             {/* Add Review Status Banner */}
+             
             
-            {/* Add Review Status Banner */}
-            {p.approved_status !== 'Approved for External Use' && (
+            {/* Add Review Status Banner - Warning */}
+            {(p.approved_status !== 'Approved for External Use' && p.approved_status !== 'Approved for Internal Use') && (
                 <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
@@ -57,19 +68,20 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm text-red-700">
-                                <strong>Approval Status Warning:</strong> This project is not approved for external use.
+                                <strong>Approval Status Warning:</strong> This project is not approved.
                             </p>
                             <p>
                                 <strong>Reviewer Notes: </strong> 
                                 {/* if review_notes is null Display the following message. */}
                                 {p.review_notes ? p.review_notes : "This Project has not been reviewed at this stage."}
+                                <br></br>This project status is <strong>{p.approved_status} </strong>
                                 
                             </p>
                         </div>
                     </div>
                 </div>
                         )}
-
+                {/*  Add Review Status Banner - Under Review */}
             {p.approved_status === 'Under review' && (
                 <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
                     <div className="flex">
@@ -86,8 +98,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
             )}
-
-            {p.approved_status === 'Approved for External Use' && (
+            
+                {/* Add Review Status Banner - Approved */} 
+            {(p.approved_status === 'Approved for External Use' || p.approved_status === 'Approved for Internal Use') && (
                 <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
@@ -97,7 +110,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm text-green-700">
-                                <strong>Approval Status:</strong> This project is <strong>approved for external use.</strong>
+                                <strong>Approval Status:</strong> This project is <strong>{p.approved_status}</strong>
                             </p>
                             <p>
                                 <strong>Reviewer Notes: </strong> 
@@ -109,8 +122,27 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
             )}
-
-            {/* EDITS/ DELETE and Review*/}
+    
+                {/* Add Review Status Banner  - Archived*/}    
+            {p.approved_status === 'Archived' && (
+                <div className="bg-gray-100 border-l-4 border-gray-500 p-4 mb-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                                <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                    </div>
+                                    <div className="ml-3">
+                                        <p className="text-sm text-gray-700">
+                                            <strong>Approval Status:</strong> This project is <strong>{p.approved_status}</strong>
+                                        </p>
+                                    </div>  
+                    </div>
+                </div>
+            )}
+                                    
+                                        
+            {/* Buttons */}
             <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md"> {/* Main container */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
@@ -125,20 +157,29 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             Edit Project
                         </Link>
 
+                        {permissions.reviewer && (
                         <Link
                             href={`/dashboard/projects/review/${id}`}
                             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
                         >
                             Review Project
                         </Link>
+
                         
                         <ArchiveProjectButton projectId={id} />
+
+
+                        )}
+
+
+                        {permissions.admin && (
 
                         <Link href={`/dashboard/projects/${id}/audit`}>
                             <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
                                 Activity Log
                             </Button>
                         </Link>
+                        )}
                     </div>
 
                 </div>
@@ -152,11 +193,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Product:</b> {p.product}</li>
                             <li><b>Latitude:</b> {p.latitude}</li>
                             <li><b>Longitude:</b> {p.longitude}</li>
-                            <li><b>Primary Commodity:</b> {p.primary_commodity}</li>
-                            <li><b>Secondary Commodity:</b> {p.secondary_commodity}</li>
+                            <li><b>Primary Commodity:</b> {cp.map((c) => { return (<span key={c.commodity_id}>{c.isecondary ? `${c.commodity_name}` : <></>}</span>)})}</li>
+                            <li><b>Secondary Commodity:</b> {cp.map((c) => { return (<span key={c.commodity_id}>{c.issecondary ? `${c.commodity_name}` : <></>}</span>)})}</li>
                             <li><b>Project Status:</b> {p.project_status}</li>
                             <li><b>Approval Status:</b> {p.approved_status}</li>
-                            <li><b>Company:</b> <strong>Not Yet Implemented</strong></li>
+                            <li><b>Company:</b> {project_companies.map((c) => { return (<p>{c.company_name}</p>)})} </li>
                         </ul>
                     </div>
 
@@ -175,9 +216,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Created at:</b> {p.created_at?.toLocaleString()}</li>
                             <li><b>Created by:</b> {p.created_by || 'Error No creator?'}</li>
                             <li><b>Updated at:</b> {p.updated_at?.toLocaleString()}</li>
-                            <li><b>Approved by:</b> {p.approved_by || 'Not approved'}</li>
-                            <li><b>Last Approval:</b> {p.approved_at?.toLocaleString()}</li>
-                            <li><b>Last Updated By: </b> {p.updated_by || 'Never Updated'}</li>
+                            <li><b>Last Approved by:</b> {p.approved_by || 'Not approved'}</li>
+                            <li><b>Last Approval at:</b> {p.approved_at?.toLocaleString()}</li>
+                            <li><b>Last Edit By: </b> {p.updated_by || 'Never Updated'}</li>
                             <li><b>Review By: </b> {p.reviewed_by || 'Never Reviewed'}</li>
                         </ul>
                     </div>
@@ -185,51 +226,52 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
                 <hr className="my-3 border-black"/>
 
-
-                <div className="flex flex-row my-2 gap-2 rounded-md">
-                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
-                        <h3>Reserves</h3>
-                        {pReserves.map((r) => {
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h2>Companies</h2>
+                    <div className="flex flex-row items-start gap-2">
+                    <form action={AddProjectCompany}>
+                        <fieldset className="bg-gray-100 rounded-lg border-none flex flex-col"><legend>Link Company to Project</legend>
+                        <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
+                        <select id="company_id" defaultValue="" required name="company_id">
+                        <option  value="" disabled >Select your option</option>
+                            {filtered_companies.map((company:any) => {
                             return (
-                                <ProjectReserves
-                                    key={r.commodity_id}
-                                    project_id={r.project_id}
-                                    commodity_id={r.commodity_id}
-                                    commodity_name={r.commodity_name} 
-                                    tonnage={r.tonnage}
-                                    units_of_measurement={r.units_of_measurement}
-                                    estimate_date={r.estimate_date}
-                                    grade={r.grade}
-                                    notes={r.notes}
-                                    updated_at={r.updated_at}
-                                />
+                            <option key={company.company_id} value={company.company_id}>{company.company_name}</option>
                             )
+                            })}
+                        </select>
+                        <div className="flex flex-row gap-2">
+                            <button type="submit" className="p-2 my-2 bg-blue-500 text-white rounded-lg w-full">Add</button>
+                            <button type="reset" className="p-2 my-2 bg-gray-500 text-white rounded-lg w-full">Clear</button>
+                        </div>
+                        </fieldset>
+                    </form>
+
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                        {project_companies.map((pc) => {
+                            return (
+                                <div key={pc.company_id} className="bg-gray-200 p-3 rounded-lg flex flex-row justify-between gap-2">
+                                    
+                                        <Link href={`/dashboard/companies/${pc.company_id}`} className="text-blue-600 hover:underline">
+                                            <strong>{pc.company_name}</strong>
+                                        </Link>
+                                        <small>
+                                        {pc.asx_code ? `$${pc.asx_code}` : ``}</small>
+                                        <RemoveCompanyRef projectId={p.project_id} companyID={pc.company_id} />
+                                </div>
+                            );
                         })}
                     </div>
-                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
-                        <h3>Productions</h3>
-                        {pProduction.map((r) => {
-                            return (
-                                <ProjectProductions
-                                    key={r.commodity_id}
-                                    project_id={r.project_id}
-                                    commodity_id={r.commodity_id}
-                                    commodity_name={r.commodity_name}
-                                    tonnage={r.tonnage}
-                                    units_of_measurement={r.units_of_measurement}
-                                    start_date={r.start_date}
-                                    end_date={r.end_date}
-                                    notes={r.notes}
-                                    updated_at={r.updated_at}
-                                />
-                            )
-                        })}
                     </div>
                 </div>
 
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+
+                    <p><strong>Note:  Changes to the Projects Commodities will reset the review status.</strong></p>
+                </div>
 
                 <div className="mb-6 flex flex-row items-start gap-2">
-
                     <form action={AddProjectCommodity}>
                         <fieldset className="bg-gray-50 rounded-lg border-none flex flex-col"><legend>Add Commoditity to Project</legend>
                         <input id="project_id" name="project_id" required readOnly hidden value={p.project_id}></input>
@@ -273,7 +315,49 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     </div>
                 </div>
 
-                <div className="mb-6">
+                <div className="flex flex-row my-2 gap-2 rounded-md">
+                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
+                        <h3>Reserves</h3>
+                        {pReserves.map((r) => {
+                            return (
+                                <ProjectReserves
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name} 
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    estimate_date={r.estimate_date}
+                                    grade={r.grade}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
+                            )
+                        })}
+                    </div>
+                    <div className="w-1/2 p-3 bg-gray-200 rounded-md">
+                        <h3>Productions</h3>
+                        {pProduction.map((r) => {
+                            return (
+                                <ProjectProductions
+                                    key={r.commodity_id}
+                                    project_id={r.project_id}
+                                    commodity_id={r.commodity_id}
+                                    commodity_name={r.commodity_name}
+                                    tonnage={r.tonnage}
+                                    units_of_measurement={r.units_of_measurement}
+                                    start_date={r.start_date}
+                                    end_date={r.end_date}
+                                    notes={r.notes}
+                                    updated_at={r.updated_at}
+                                />
+                            )
+                        })}
+                    </div>
+                </div>
+
+
+                <div className="mb-6"> {/* Attachments */}
                     <details className="group [&_summary::-webkit-details-marker]:hidden">
                         <summary
                             className="flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200">
@@ -378,6 +462,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                         </div>
                     </details>
                 </div>
+
 
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                     <h2>Comments</h2>

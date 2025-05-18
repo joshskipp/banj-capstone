@@ -12,15 +12,15 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 //   'Zinc', 'Lead', 'Uranium', 'Lithium', 'Cobalt'
 // ];
 
-const PRODUCT_OPTIONS = [
-  'Graphite concentrate',
-  'Silica sand',
-  'Concentrate',
-  'HPA equivalent',
-  'Vanadium pentoxide',
-  'Vanadium pentoxide, molybdenum oxide',
-  'Vanadium pentoxide, high-purity alumina'
-];
+// const PRODUCT_OPTIONS = [
+//   'Graphite concentrate',
+//   'Silica sand',
+//   'Concentrate',
+//   'HPA equivalent',
+//   'Vanadium pentoxide',
+//   'Vanadium pentoxide, molybdenum oxide',
+//   'Vanadium pentoxide, high-purity alumina'
+// ];
 
 const REVIEW_STATUS_OPTIONS = [
   'Update in Progress',
@@ -54,13 +54,13 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
     created_by: reviewerName || 'error-getting-USER',
   });
 
-   // Fetch commodities on component mount
+   // Fetch commodities from the database
    useEffect(() => {
     const loadCommodities = async () => {
       try {
         const commoditiesData = await fetchAllCommodities();
     
-        // Explicitly map each row to the expected format
+        // Format the data to match commodities
         const formatted = commoditiesData.map((row: any) => ({
           commodity_id: row.commodity_id,
           commodity_name: row.commodity_name
@@ -88,7 +88,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f8f5f6]">
+    <div className="flex justify-center items-center ">
       <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-[#f8f5f6]">
         <h2 className="text-xl font-bold mb-6">Create New Project</h2>
         
@@ -150,8 +150,8 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               />
             </div>
           </div>
-{/* Commodities */}
-<div>
+          {/* Commodities */}
+{/* <div>
             <label htmlFor="primary_commodity" className="block mb-1">Primary Commodity*</label>
             <select
               id="primary_commodity"
@@ -188,9 +188,9 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
-          {/* Product */}
+          {/* Product
           <div>
             <label htmlFor="product" className="block mb-1">Product*</label>
             <input
@@ -201,7 +201,7 @@ export default function CreateProjectForm({ reviewerName, session }: { reviewerN
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
-          </div>
+          </div> */}
 
           {/* Project Status */}
           <div>

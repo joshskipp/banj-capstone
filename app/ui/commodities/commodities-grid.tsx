@@ -7,6 +7,9 @@ import { themeQuartz } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, QuickFilterModule, ClientSideRowModelModule } from "ag-grid-community";
 import { fetchAllCommodities } from "@/app/lib/data";
 import { redirect } from "next/navigation";
+import { PlusCircleIcon, MagnifyingGlassIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { Button } from '../button';
+import Link from "next/link";
 
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule, QuickFilterModule]);
 
@@ -40,26 +43,29 @@ const CommoditiesGrid = () => {
 
     const exportToCsv = () => {
         if (gridRef.current?.api) {
-            gridRef.current.api.exportDataAsCsv();
+            const dateTime = new Date().toISOString().replace(/[:.-]/g, '_');
+            const fileName = `commodities_export_${dateTime}.csv`;
+            gridRef.current.api.exportDataAsCsv({ fileName });
         }
     };
 
     return (
         <div style={{ width: "100%", height: "70vh" }}>
-            <button
-                onClick={exportToCsv}
-                style={{
-                    marginBottom: "10px",
-                    padding: "8px 12px",
-                    backgroundColor: "#28a745",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                }}
-            >
-                Export to CSV
-            </button>
+            <div className="mb-4 flex gap-4">
+                <Link href="/dashboard/commodities/new">
+                    <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                        <PlusCircleIcon className="w-5 h-5 text-white" />
+                        Add Commodity
+                    </Button>
+                </Link>
+
+                
+
+                <Button onClick={exportToCsv} className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                    <ArrowDownTrayIcon className="w-5 h-5 text-white" />
+                    Export Commodities
+                </Button>
+            </div>
 
             <div className="ag-theme-quartz" style={{ height: "100%", width: "100%" }}>
                 <AgGridReact
