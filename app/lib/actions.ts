@@ -34,7 +34,6 @@ export async function authenticate(
 
   
 // Create a new project
-// Create a new project
 export async function createProject(formData: {
   project_name: string;
   latitude: string;
@@ -92,7 +91,7 @@ export async function createProject(formData: {
   redirect('/dashboard/projects');
 }
   
-// Update an existing project
+// Edit an existing project
 export async function updateProject(project: {
   project_id: string;
   project_name: string;
@@ -102,6 +101,7 @@ export async function updateProject(project: {
   secondary_commodity: string;
   product: string;
   project_status: string;
+  approved_status: string;
   updated_by: string;
   updated_at: string;
   },user_id: string) {
@@ -135,6 +135,7 @@ export async function updateProject(project: {
           primary_commodity = ${project.primary_commodity},
           secondary_commodity = ${project.secondary_commodity},
           product = ${project.product},
+          approved_status = ${project.approved_status},
           project_status = ${project.project_status},
           updated_by = ${project.updated_by},
           updated_at = NOW()
@@ -159,8 +160,127 @@ export async function updateProject(project: {
 
 }
 
+
+// Attachments
+// Create a new attachment
+export async function createAttachment(prevState: any, formData: FormData) {
+  const project_id = formData.get('project_id') as string;
+  const link_name = formData.get('link_name') as string;
+  const link_url = formData.get('link_url') as string;
+  const file_name = formData.get('file_name') as string;
+  const file_url = formData.get('file_url') as string;
+  const notes = formData.get('notes') as string;
+  const created_by = formData.get('user_id') as string || 'Unknown'; // Replace with actual user ID from session
+  
+  try {
+    await sql`
+    INSERT INTO attachments (project_id, link_name, link_url, file_name, file_url, notes, created_by)
+    VALUES (${project_id}, ${link_name}, ${link_url}, ${file_name}, ${file_url}, ${notes}, ${created_by})
+    `;
+    revalidatePath(`/dashboard/projects/${project_id}`);
+    return { success: true, message: 'Attachment created successfully!' };
+  } catch (error) {
+    console.error('Error creating attachment:', error);
+    return { success: false, message: 'Failed to create attachment' };
+  }
+}
+
+// Delete an attachment
+export async function deleteAttachment(id: string) {
+  
+  try {
+    await sql`
+    DELETE FROM attachments WHERE attachment_id = ${id}
+    `;
+    revalidatePath('/dashboard/projects/');
+    return { success: true, message: 'Attachment deleted successfully!' };
+  } catch (error) {
+    console.error('Error deleting attachment:', error);
+    return { success: false, message: 'Failed to delete attachment' };
+  }
+}
+// Review a project
+// The approved fields are generated, cant claim to understand how this sql works yet. Basically only sets if the user approves a project, doesn't update NOT NULL fields otherwise.
+export async function updateProjectReviewStatus(formData: {
+  project_id: string;
+  approved_status: string;
+  review_notes?: string;
+  reviewed_by?: string;
+  approved_by?: string | null;
+  approved_at?: string | null;
+}) {
+  try {
+    await sql`
+    UPDATE projects
+    SET 
+    approved_status = ${formData.approved_status},
+    review_notes = ${formData.review_notes || null},
+    reviewed_by = ${formData.reviewed_by || null},
+    ${formData.approved_by ? sql`approved_by = ${formData.approved_by},` : sql``}
+    ${formData.approved_at ? sql`approved_at = ${new Date(formData.approved_at).toISOString()},` : sql``}
+    updated_at = NOW()
+    WHERE project_id = ${formData.project_id}
+      `;
+    } catch (error) {
+      console.error('Error updating project review:', error);
+      throw new Error('Failed to update project review');
+    }
+  revalidatePath(`/dashboard/projects/${formData.project_id}`);
+}
+
+// Create a new commodity
+export async function createCommodity(formData: {
+  commodity_name: string;
+  element: string;
+  notes: string;
+  units_of_measure: string;
+  created_by: string;
+}, user_id: string) {
+  try {
+    // Create a new commodity
+    const result = await sql`
+    INSERT INTO commodities (
+      commodity_name, 
+      element,
+      notes,
+      units_of_measure,
+      created_by,     
+      created_at,
+      updated_at,
+      approved_status,  
+      approved_by,      
+      approved_at       
+      )
+      VALUES (
+        ${formData.commodity_name}, 
+        ${formData.element}, 
+        ${formData.notes},
+        ${formData.units_of_measure},
+        ${formData.created_by},
+        NOW(),
+        NOW(),
+        'approved',       
+        null,             
+        NOW()              
+        )
+        RETURNING *
+        `;
+        
+    // Write the audit record
+    // const auditResult = await writeAudit(result, user_id);
+    // console.log('auditResult:', auditResult);
+    
+  } catch (error) {
+    console.error('Error creating commodity:', JSON.stringify(error, null, 2));
+    
+    throw new Error('Failed to create commodity');
+  }
+  revalidatePath('/dashboard/commodities');
+  redirect('/dashboard/commodities');
+}
+
 // Delete an existing project
-// To Be DEBUGGED - try catch creates ussues where the page errors out put the action is still completed (The 'delete' is carried out before the page error)
+// This function is no longer used, but is kept here for reference. 
 export async function deleteProject(id: string) {
   try {
     // Delete related records in the attachments table
@@ -187,68 +307,3 @@ export async function deleteProject(id: string) {
   revalidatePath('/dashboard/projects')
     //redirect(`/dashboard/projects/${project.project_id}`)
 }
-
-// Attachments
-// Create a new attachment
-export async function createAttachment(prevState: any, formData: FormData) {
-  const project_id = formData.get('project_id') as string;
-  const link_name = formData.get('link_name') as string;
-  const link_url = formData.get('link_url') as string;
-  const file_name = formData.get('file_name') as string;
-  const file_url = formData.get('file_url') as string;
-  const notes = formData.get('notes') as string;
-  const created_by = formData.get('user_id') as string || 'Unknown'; // Replace with actual user ID from session
-
-  try {
-    await sql`
-      INSERT INTO attachments (project_id, link_name, link_url, file_name, file_url, notes, created_by)
-      VALUES (${project_id}, ${link_name}, ${link_url}, ${file_name}, ${file_url}, ${notes}, ${created_by})
-    `;
-    revalidatePath(`/dashboard/projects/${project_id}`);
-    return { success: true, message: 'Attachment created successfully!' };
-  } catch (error) {
-    console.error('Error creating attachment:', error);
-    return { success: false, message: 'Failed to create attachment' };
-  }
-}
-
-// Delete an attachment
-export async function deleteAttachment(id: string) {
-  
-  try {
-    await sql`
-      DELETE FROM attachments WHERE attachment_id = ${id}
-    `;
-    revalidatePath('/dashboard/projects/');
-    return { success: true, message: 'Attachment deleted successfully!' };
-  } catch (error) {
-    console.error('Error deleting attachment:', error);
-    return { success: false, message: 'Failed to delete attachment' };
-  }
-}
-// Review a project
-// this function changes approved by which may be a loggic error, perhaps an extra reviewd by field in addition to approved by is needed
-export async function updateProjectReviewStatus(formData: {
-  project_id: string;
-  approved_status: string;
-  review_notes?: string;
-  reviewed_by?: string;
-}) {
-  try {
-      await sql`
-          UPDATE projects
-          SET 
-              approved_status = ${formData.approved_status},
-              review_notes = ${formData.review_notes || null},
-              reviewed_by = ${formData.reviewed_by || null},
-              updated_at = NOW()
-          WHERE project_id = ${formData.project_id}
-      `;
-  } catch (error) {
-      console.error('Error updating project review:', error);
-      throw new Error('Failed to update project review');
-  }
-  revalidatePath(`/dashboard/projects/${formData.project_id}`);
-  // revalidatePath('/dashboard/projects');
-}
-

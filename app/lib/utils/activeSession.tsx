@@ -9,5 +9,6 @@ export async function activeSession() {
 
     if (!session?.user) return null
 
+
     return session.user;
 }

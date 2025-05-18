@@ -5,6 +5,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/app/ui/button";
 import { GetSession } from "@/app/lib/get-session";
+import { activeSession } from "@/app/lib/utils/activeSession";
+import { getPermissions } from "@/app/lib/utils/getPermissions";
+
 
 export default async function Page(props: { params: Promise<{ id: string }>}) {
     const params = await props.params;
@@ -13,10 +16,25 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
     const session = await GetSession();
     const reviewerName = session?.name || 'error-getting-USER'; // Get the reviewer's name from the session
 
+    const currentUser = await activeSession();
+    const permissions = await getPermissions(currentUser?.id || "")
+
     if (!project) {
         notFound();
     }
-
+     if (!permissions?.reviewer) {
+        return (
+            <div className="max-w-3xl mx-auto p-6">
+                <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
+                <p>You do not have permission to view this page.</p>
+                <Link href={`/dashboard/projects/${id}`}>
+                    <Button>
+                        Back to Project
+                    </Button>
+                </Link>
+            </div>
+        );
+    }
     return (
         <div className="max-w-3xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">Review Project: {project.project_name}</h1>

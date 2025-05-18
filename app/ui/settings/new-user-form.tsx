@@ -58,16 +58,16 @@ export default function NewUserForm() {
                         <legend>Permissions</legend>
                         <div className="grid grid-cols-4 gap-1">
                             <div className="flex items-center gap-1.5">
-                                <input type="checkbox" id="review" name="permissions" defaultChecked/>
+                                <input type="checkbox" id="review" name="permissions-review" defaultChecked/>
                                 <label htmlFor="review">Review</label>
                             </div>
 
                             <div className="flex items-center gap-1.5">
-                                <input type="checkbox" id="analyst" name="permissions" defaultChecked/>
+                                <input type="checkbox" id="analyst" name="permissions-analyst" defaultChecked/>
                                 <label htmlFor="analyst">Analyst</label>
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <input type="checkbox" id="admin" name="permissions" />
+                                <input type="checkbox" id="admin" name="permissions-admin" />
                                 <label htmlFor="admin">Admin</label>
                             </div>
                         </div>

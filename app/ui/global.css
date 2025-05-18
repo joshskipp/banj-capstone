@@ -120,3 +120,7 @@ button {
 .fluent-default-button:active {
   background-color: #005ba1;
 }
+
+.ag-header-cell-filtered {
+  background-color: #ea580c;
+}

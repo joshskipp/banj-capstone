@@ -4,23 +4,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateProject } from '@/app/lib/actions';
-import { Button } from "@/app/ui/button"; // Assuming you have this like in create-form
+import { Button } from "@/app/ui/button"; 
 import { PlusCircleIcon } from "@heroicons/react/24/outline"; // Reusing this icon for consistency
+import Link from 'next/link';
 
-const COMMODITY_OPTIONS = [
-  'Gold', 'Silver', 'Copper', 'Iron', 'Nickel',
-  'Zinc', 'Lead', 'Uranium', 'Lithium', 'Cobalt'
-];
-
-const PRODUCT_OPTIONS = [
-  'Graphite concentrate',
-  'Silica sand',
-  'Concentrate',
-  'HPA equivalent',
-  'Vanadium pentoxide',
-  'Vanadium pentoxide, molybdenum oxide',
-  'Vanadium pentoxide, high-purity alumina'
-];
 
 const PROJECT_STATUS_OPTIONS = [
   'Publicly announced',
@@ -28,7 +15,11 @@ const PROJECT_STATUS_OPTIONS = [
   'Committed',
   'Completed'
 ];
+const APPROVED_STATUS_OPTIONS = [
+  { value: 'Update in Progress', label: 'Update in Progress' },
+  { value: 'Ready for review', label: 'Ready for Review' }
 
+];
 export default function EditProjectForm({ project, reviewerName, session }: { 
   project: any, session: any;
   reviewerName: string;
@@ -37,13 +28,15 @@ export default function EditProjectForm({ project, reviewerName, session }: {
   const [formData, setFormData] = useState({
     project_id: '',
     project_name: '',
-    asx_code: '',
+    // asx_code: '',
     latitude: '',
     longitude: '',
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
+
     project_status: 'Publicly announced',
+    approved_status: 'Update in Progress',
     updated_by: reviewerName,
     updated_at: new Date().toISOString()
   });
@@ -55,13 +48,15 @@ export default function EditProjectForm({ project, reviewerName, session }: {
       setFormData({
         project_id: project.project_id,
         project_name: project.project_name || '',
-        asx_code: project.asx_code || '',
+        // asx_code: project.asx_code || '',
         latitude: project.latitude?.toString() || '',
         longitude: project.longitude?.toString() || '',
         primary_commodity: project.primary_commodity || '',
         secondary_commodity: project.secondary_commodity || '',
         product: project.product || '',
         project_status: project.project_status || 'Publicly announced',
+        approved_status: project.approved_status || 'Update in Progress',
+
         updated_by: reviewerName,
         updated_at: new Date().toISOString()
      });
@@ -74,6 +69,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
       console.log("Running function updateProject");
       await updateProject({
         ...formData,
+        approved_status: formData.approved_status,
         updated_by: reviewerName // Pass the editors's name as a prop
       }, user_session.id);
       console.log("Redirect");
@@ -94,7 +90,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f8f5f6]">
+    <div className="flex justify-center items-center ">
       <form onSubmit={handleSubmit} className="p-6 mt-6 border-black rounded-[4px] border-2 max-w-4xl w-full bg-[#f8f5f6]">
         <div className="flex flex-col gap-6">
 
@@ -114,7 +110,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               className="w-full p-2 border rounded"
             />
 
-            <label htmlFor="latitude" className="block mt-4 mb-1">Latitude*</label>
+            <label htmlFor="latitude" className="block mt-4 mb-1">Latitude</label>
             <input
               type="number"
               id="latitude"
@@ -127,7 +123,7 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               className="w-full p-2 border rounded"
             />
 
-            <label htmlFor="longitude" className="block mt-4 mb-1">Longitude*</label>
+            <label htmlFor="longitude" className="block mt-4 mb-1">Longitude</label>
             <input
               type="number"
               id="longitude"
@@ -140,37 +136,8 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               className="w-full p-2 border rounded"
             />
 
-            <label htmlFor="primary_commodity" className="block mt-4 mb-1">Primary Commodity*</label>
-            <select
-              id="primary_commodity"
-              name="primary_commodity"
-              value={formData.primary_commodity}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Select...</option>
-              {COMMODITY_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-
-            <label htmlFor="product" className="block mt-4 mb-1">Product*</label>
-            <select
-              id="product"
-              name="product"
-              value={formData.product}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Select...</option>
-              {PRODUCT_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-
-            <label htmlFor="project_status" className="block mt-4 mb-1">Project Status*</label>
+           
+            <label htmlFor="project_status" className="block mt-4 mb-1">Project Status</label>
             <select
               id="project_status"
               name="project_status"
@@ -183,39 +150,29 @@ export default function EditProjectForm({ project, reviewerName, session }: {
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
-          </fieldset>
 
-          {/* Optional Section */}
-          <fieldset>
-            <legend className="font-semibold mb-4 text-lg">Optional</legend>
-
-            <label htmlFor="asx_code" className="block mb-1">ASX Code</label>
-            <input
-              type="text"
-              id="asx_code"
-              name="asx_code"
-              value={formData.asx_code}
-              onChange={handleChange}
-              maxLength={3}
-              pattern="[A-Za-z]{3}"
-              placeholder="Enter 3-letter ASX code"
-              className="w-full p-2 border rounded"
-            />
-
-            <label htmlFor="secondary_commodity" className="block mt-4 mb-1">Secondary Commodity</label>
+            <label htmlFor="approved_status" className="block mt-4 mb-1">Review Status</label>
             <select
-              id="secondary_commodity"
-              name="secondary_commodity"
-              value={formData.secondary_commodity}
+              id="approved_status"
+              name="approved_status"
+              value={formData.approved_status}
               onChange={handleChange}
               className="w-full p-2 border rounded"
             >
-              <option value="">None</option>
-              {COMMODITY_OPTIONS.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
+              {/* Will change the review status upon edit */}
+              {APPROVED_STATUS_OPTIONS.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
             </select>
+
           </fieldset>
+
+          {/* Optional Section - Removed during development, may be added easily depending on Department needs */}
+          {/* <fieldset>
+            <legend className="font-semibold mb-4 text-lg">Optional</legend>
+          </fieldset> */}
 
           {/* Submit Button */}
           <Button type="submit" className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
@@ -224,7 +181,9 @@ export default function EditProjectForm({ project, reviewerName, session }: {
           </Button>
 
         </div>
+        
       </form>
+    
     </div>
   );
 }
