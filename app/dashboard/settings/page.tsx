@@ -3,10 +3,10 @@ import { CommandLineIcon } from '@heroicons/react/24/outline';
 import NewUserForm from '@/app/ui/settings/new-user-form';
 import CurrentUser from '@/app/ui/settings/current-user';
 import ChangePasswordForm from '@/app/ui/settings/change-password'
-import Link from "next/link";
 import ChangePermissionForm from "@/app/ui/settings/change-permissions";
 import { activeSession } from "@/app/lib/utils/activeSession";
 import { getPermissions } from "@/app/lib/utils/getPermissions";
+
 
 export default async function Page() {
     const allUsers = await fetchAllUsers();
