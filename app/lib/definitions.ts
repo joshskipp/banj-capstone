@@ -62,6 +62,8 @@ export type KeyEvent = {
     created_by: string,
     created_at: Date,
     updated_at: Date,
+    event_name: string,
+    event_source: string,
 }
 
 export type KeyEventForm = {
@@ -69,5 +71,7 @@ export type KeyEventForm = {
     event_date: Date,
     event_details: string,
     project_id: string,
+    event_name: string,
+    event_source: string,
     project_name: string,
 }

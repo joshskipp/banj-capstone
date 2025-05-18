@@ -66,3 +66,37 @@ export async function writeReserves(deets: { project_id: string, user_id: string
     revalidatePath(`/dashboard/projects/${deets.project_id}`);
     redirect(`/dashboard/projects/${deets.project_id}`);
 }
+
+export async function AddProjectCompany (formData: FormData) {
+    const project_id = formData.get('project_id') as string;
+    const company_id = formData.get('company_id') as string;
+    if (!project_id || !company_id) {
+        throw new Error('Missing required fields');
+    }
+
+    try {
+        const result = await sql`
+            Insert into company_projects (project_id, company_id)
+            Values (${project_id}, ${company_id});
+        `;
+        console.log(result);
+    } catch (error) {
+        console.error('Error writing record:', error);
+        throw error;
+    }
+    revalidatePath(`/dashboard/projects/${project_id}`);
+    redirect(`/dashboard/projects/${project_id}`);
+}
+
+export async function RemoveProjectCompany(project_id: string, company_id: string) {
+    console.log(project_id)
+    console.log(company_id)
+    try {
+        await sql `DELETE FROM company_projects WHERE project_id = ${project_id} AND company_id = ${company_id};`; 
+    } catch (error) {
+        console.error('Error writing record:', error);
+        throw error;
+    }
+    revalidatePath(`/dashboard/projects/${project_id}`);
+    redirect(`/dashboard/projects/${project_id}`);
+}

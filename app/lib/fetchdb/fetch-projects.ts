@@ -32,7 +32,12 @@ export async function fetchReserves(project_id: string ) {
  */
 export async function fetchProductions(project_id: string) {
     try {
-        return await sql`SELECT * FROM Productions WHERE project_id = ${project_id}`;
+        return await
+            sql`
+                SELECT p.*, commodities.commodity_name
+                FROM Productions p
+                JOIN commodities on p.commodity_id = commodities.commodity_id
+                WHERE project_id = ${project_id}`;
     } catch (error) {
         console.error("Database Error: " + error + "\n Failed to fetch reserves from database for project: " + project_id);
         throw new Error("Failed to fetch reserves from database for project: " + project_id);
@@ -42,6 +47,19 @@ export async function fetchProductions(project_id: string) {
 export async function fetchAllProjectNamePairs() {
     try {
         return await sql`SELECT project_id, project_name FROM Projects`;
+    } catch (error) {
+        console.error("Database Error: " + error + "\n Failed to fetch projects from database");
+        throw new Error("Failed to fetch projects from database");
+    }
+}
+
+export async function fetchProjectCompanies(project_id: string) {
+    try {
+        return await sql`
+            SELECT c.company_id, c.company_name, c.asx_code
+            FROM companies c
+            JOIN company_projects cp ON c.company_id = cp.company_id
+            WHERE cp.project_id = ${project_id};`
     } catch (error) {
         console.error("Database Error: " + error + "\n Failed to fetch projects from database");
         throw new Error("Failed to fetch projects from database");

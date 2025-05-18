@@ -1,7 +1,6 @@
 import { fetchAllProjects, fetchFilteredProjects  } from "@/app/lib/data"
 import { fetchProjectsPages } from '@/app/lib/data';
 import Search from '@/app/ui/search/search';
-//import Pagination from '@/app/ui/pagination';
 
 
 export default async function Page(props: {
@@ -35,10 +34,13 @@ export default async function Page(props: {
                 
                 {SearchedProjects.map((project, i) => {
                     return (
-                        <div key={project.project_id} className="my-3 p-2 bg-gray-200 rounded-md">
+                        <div key={project.project_id} className="my-3 p-2 bg-gray-200 hover:bg-[#A9A9A9] rounded-md">
                             <strong>{project.project_name}</strong><br />
-                            <small>ID: {project.project_id}</small><br />
-                            Coordinates: {project.latitude}, {project.longitude}
+                            ID: {project.project_id}<br />
+                            Product:{project.product}<br />
+                            Primary Commodity: {project.primary_commodity}<br />
+                            Coordinates: {project.latitude}, {project.longitude}<br />
+                            Status: {project.approved_status}
                             <br />
                             {/* Constructing the link using the project_id */}
                             <a href={`/dashboard/projects/${project.project_id}`}>
@@ -46,9 +48,7 @@ export default async function Page(props: {
                             </a>
                         </div>
                     );
-                })}
-                
-                
+                })}        
             </div>
         </div>
     )
