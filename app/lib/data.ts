@@ -8,7 +8,8 @@ export async function fetchAllProjects() {
   try{
     const
         data = await sql`
-      SELECT * FROM projects`
+      SELECT * FROM projects
+      WHERE approved_status != 'Archived'`
     return data;
   } catch (error) {
       console.error('Database Error:', error);
@@ -42,6 +43,7 @@ export async function fetchAllProjectsData() {
         LEFT JOIN commodities c ON pc.commodity_id = c.commodity_id
         LEFT JOIN company_projects cpr ON p.project_id = cpr.project_id
         LEFT JOIN companies co ON cpr.company_id = co.company_id
+        WHERE p.approved_status != 'Archived'
         GROUP BY p.project_id`
     return data;
   } catch (error) {
