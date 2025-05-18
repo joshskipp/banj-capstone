@@ -1,72 +1,52 @@
 'use client'
 
-import {Button} from "@/app/ui/button";
-import {PlusCircleIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { createCompany } from "@/app/lib/writedb/write-companies";
+import Link from "next/link";
 
 export default function NewCompanyForm() {
     return (
-        <form className="p-3 mt-3 border-black rounded-[4px] border-2" action={createCompany}>
-            <div className="flex flex-col gap-2">
-                <fieldset>
-                    <legend className="required">Required</legend>
-                    <label
-                        className=""
-                        htmlFor="name"
-                    >
-                        Company Name
-                    </label>
+        <form action={createCompany}>
+            <main className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">
+                <div className="flex justify-between items-start mb-6">
+                    <h2>Create New Company</h2>
+                    <Link href="/dashboard/companies">
+                        <button className="fluent-default-button">Back</button>
+                    </Link>
+                </div>
 
-                        <input
-                            className=""
-                            id="name"
-                            type="text"
-                            name="name"
-                            placeholder="Enter Company Name"
-                            required
-                        />
-                </fieldset>
+                <fieldset className="flex flex-col gap-4">
+                    <label htmlFor="name">Company Name</label>
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder="Enter Company Name"
+                        required
+                    />
 
-                <fieldset>
-                    <legend>Optional</legend>
+                    <label htmlFor="asx">ASX Code</label>
+                    <input
+                        id="asx"
+                        type="text"
+                        name="asx"
+                        placeholder="Enter ASX code (optional)"
+                    />
 
-                    <label
-                        className=""
-                        htmlFor="asx"
-                    >
-                        ASX Code
-                    </label>
-
-                        <input
-                            className="peer"
-                            id="asx"
-                            type="text"
-                            name="asx"
-                            placeholder="Enter ASX code (optional)"
-                        />
-
-                    <label
-                        className=""
-                        htmlFor="notes"
-                    >
-                        Notes
-                    </label>
+                    <label htmlFor="notes">Notes</label>
                     <textarea
-                        className="peer w-full"
                         id="notes"
                         name="notes"
                         placeholder="Enter notes (optional)"
                         rows={5}
-                        defaultValue=""
                     />
-
                 </fieldset>
 
-                <Button type="submit" className="-[12rem]">
-                    <PlusCircleIcon className="w-8"/>
-                    Create
-                </Button>
-            </div>
+                <button type="submit" className="fluent-primary-button mt-4 flex items-center gap-2">
+                    <PlusCircleIcon className="w-5 h-5" />
+                    Create Company
+                </button>
+            </main>
         </form>
-    )
+    );
 }
