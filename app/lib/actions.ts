@@ -294,6 +294,8 @@ export async function archiveProject(projectId: string) {
   }
 
   revalidatePath('/dashboard/projects');
+  redirect('/dashboard/projects');
+}
 
 // Delete an existing project
 // This function is no longer used, but is kept here for reference. 

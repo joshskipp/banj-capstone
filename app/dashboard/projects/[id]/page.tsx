@@ -159,26 +159,24 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
                         {permissions.reviewer && (
                         <Link
-                            href={`/dashboard/projects/review/${id}`}
+                          href={`/dashboard/projects/review/${id}`}
                             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
                         >
                             Review Project
                         </Link>
 
-                        
-                        <ArchiveProjectButton projectId={id} />
-
-
                         )}
 
-
                         {permissions.admin && (
-
-                        <Link href={`/dashboard/projects/${id}/audit`}>
+                            
+                            <Link href={`/dashboard/projects/${id}/audit`}>
                             <Button className="bg-gray-800 hover:bg-gray-600 hover:text-white">
                                 Activity Log
                             </Button>
                         </Link>
+                        )}
+                        {permissions.admin && (
+                        <ArchiveProjectButton projectId={id} />
                         )}
                     </div>
 

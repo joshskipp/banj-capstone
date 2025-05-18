@@ -22,6 +22,12 @@ export async function fetchAllArchivedProjects() {
         data = await sql`
       SELECT * FROM projects
       where approved_status = 'Archived';`
+    return data;
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch all projects data.');
+  }
+}
 
 export async function fetchAllProjectsData() {
   try{
