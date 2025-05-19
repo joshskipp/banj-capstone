@@ -191,11 +191,22 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                             <li><b>Product:</b> {p.product}</li>
                             <li><b>Latitude:</b> {p.latitude}</li>
                             <li><b>Longitude:</b> {p.longitude}</li>
-                            <li><b>Primary Commodity:</b> {cp.map((c) => { return (<span key={c.commodity_id}>{c.isecondary ? `${c.commodity_name}` : <></>}</span>)})}</li>
-                            <li><b>Secondary Commodity:</b> {cp.map((c) => { return (<span key={c.commodity_id}>{c.issecondary ? `${c.commodity_name}` : <></>}</span>)})}</li>
+                            {cp.map((cp) => {
+                                    let val: string = "";
+                                    if (cp.isprimary) val = val.concat(val, "Primary");
+                                    if (cp.issecondary) val = val.concat(val, "Secondary");
+                                    val = ` - ${val} Commodity`;
+                                    return (
+                                        <li key={cp.commodity_id}>
+                                                <Link href="#" className="text-blue-600 hover:underline">
+                                                    <strong>{cp.commodity_name}</strong>
+                                                </Link>
+                                                {val}
+                                        </li>
+                                    )})}
                             <li><b>Project Status:</b> {p.project_status}</li>
                             <li><b>Approval Status:</b> {p.approved_status}</li>
-                            <li><b>Company:</b> {project_companies.map((c) => { return (<p>{c.company_name}</p>)})} </li>
+                            <li><b>Company:</b> {project_companies.map((c) => { return (<p key={c.company_id}>{c.company_name}</p>)})} </li>
                         </ul>
                     </div>
 

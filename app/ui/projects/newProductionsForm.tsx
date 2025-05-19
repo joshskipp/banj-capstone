@@ -48,7 +48,7 @@ export default function ProjectProductions(prod: {
     return (
         <div key={prod.commodity_id}>
             <form action={updateProduction}>
-                <div className="grid grid-cols-2 p-[2px] border-[1px] border-gray-600">
+                <div className="grid grid-cols-2 p-2 bg-gray-100 mb-2">
                     <strong className={""}>{formData.commodity_name}</strong>
 
                     <div>
@@ -74,36 +74,25 @@ export default function ProjectProductions(prod: {
                     <input hidden readOnly name="commodity_id" id="commodity_id" defaultValue={formData.commodity_id}></input>
 
                     <label>Tonnage</label>
-                    <input name="tonnage" id="tonnage" readOnly={!isEditing} defaultValue={formData.tonnage} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                    <input name="tonnage" id="tonnage" readOnly={!isEditing} defaultValue={formData.tonnage} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
 
                     <label>Units of Measure</label>
-                    <input name="units_of_measurement" id="units_of_measurement" readOnly={!isEditing} defaultValue={formData.units_of_measurement} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                    <input name="units_of_measurement" id="units_of_measurement" readOnly={!isEditing} defaultValue={formData.units_of_measurement} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
 
                     <label>Start Date</label>
-                    <input type="date" name="start_date" id="start_date" defaultValue={formData.start_date?.toISOString().split('T')[0]} readOnly={!isEditing} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                    <input type="date" name="start_date" id="start_date" defaultValue={formData.start_date?.toISOString().split('T')[0]} readOnly={!isEditing} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
 
                     <label>End Date</label>
-                    <input type="date" name="end_date" id="end_date" defaultValue={formData.end_date?.toISOString().split('T')[0]} readOnly={!isEditing} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                    <input type="date" name="end_date" id="end_date" defaultValue={formData.end_date?.toISOString().split('T')[0]} readOnly={!isEditing} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
 
                     <label className="col-span-2">Notes</label>
-                    <textarea name="notes" id="notes" readOnly={!isEditing} defaultValue={formData.notes} className={`h-24 text-sm col-span-2 ${!isEditing ? "bg-gray-200" : ""}`}></textarea>
+                    <textarea name="notes" id="notes" readOnly={!isEditing} defaultValue={formData.notes} className={`h-24 text-xs col-span-2 ${!isEditing ? "bg-gray-200" : ""}`}></textarea>
 
-                    <label>Last modified:</label>
-                    <p suppressHydrationWarning >{formData.updated_at.toLocaleString()}</p>
+                    <label className="p-2">Last modified:</label>
+                    <p suppressHydrationWarning className="text-xs p-2" >{formData.updated_at.toLocaleString()}</p>
 
                 </div>
             </form>
         </div>
     )
 }
-
-    //const addReserves = writeReserves.bind(null, {project_id: project_id, user_id: user.id});
-//    project_id: string;
-//     commodity_id: string;
-//     commodity_name: string;
-//     tonnage: string;
-//     units_of_measurement: string;
-//     grade: string,
-//     estimate_date: Date,
-//     notes: string,
-//     updated_at: Date

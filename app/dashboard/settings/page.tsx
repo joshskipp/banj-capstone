@@ -1,12 +1,13 @@
 import {fetchAllUsers, fetchUserCount} from "@/app/lib/data";
-import { CommandLineIcon } from '@heroicons/react/24/outline';
+import {CommandLineIcon, MagnifyingGlassIcon} from '@heroicons/react/24/outline';
 import NewUserForm from '@/app/ui/settings/new-user-form';
 import CurrentUser from '@/app/ui/settings/current-user';
 import ChangePasswordForm from '@/app/ui/settings/change-password'
-import Link from "next/link";
 import ChangePermissionForm from "@/app/ui/settings/change-permissions";
 import { activeSession } from "@/app/lib/utils/activeSession";
 import { getPermissions } from "@/app/lib/utils/getPermissions";
+import Link from "next/link";
+import {Button} from "@/app/ui/button";
 
 export default async function Page() {
     const allUsers = await fetchAllUsers();
@@ -62,6 +63,16 @@ export default async function Page() {
                 <div className="flex items-center p-1 pl-2 gap-2 bg-[#214656] text-white">
                     <CommandLineIcon className="w-8"/>
                     <h3>Admin Settings</h3>
+                </div>
+
+                <div className="p-2 flex flex-row gap-4 items-center bg-gray-300">
+                    <h4>View Archived Projects:</h4>
+                    <Link href="/dashboard/archived">
+                        <Button className="flex items-center gap-2 bg-[#1f4656] text-white hover:bg-[#2b6173]">
+                            <MagnifyingGlassIcon className="w-5 h-5 text-white" />
+                            Archived Projects
+                        </Button>
+                    </Link>
                 </div>
 
                 <div className="p-2">

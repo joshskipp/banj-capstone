@@ -60,7 +60,7 @@ export default function ProjectReserves(r: {
     return (
         <div key={r.commodity_id}>
             <form action={updateReserves}>
-            <div className="grid grid-cols-2 p-[2px] border-[1px] border-gray-600">
+            <div className="grid grid-cols-2 p-2 bg-gray-100 mb-2">
                 <strong className={""}>{formData.commodity_name}</strong>
                 <div>
                 {isEditing ? (
@@ -86,22 +86,22 @@ export default function ProjectReserves(r: {
                 <input hidden readOnly name="commodity_id" id="commodity_id" defaultValue={formData.commodity_id}></input>
 
                 <label>Tonnage</label>
-                <input name="tonnage" id="tonnage" readOnly={!isEditing} defaultValue={formData.tonnage} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                <input name="tonnage" id="tonnage" readOnly={!isEditing} defaultValue={formData.tonnage} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
                 
                 <label>Units of Measure</label>
-                <input name="units_of_measurement" id="units_of_measurement" readOnly={!isEditing} defaultValue={formData.units_of_measurement} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                <input name="units_of_measurement" id="units_of_measurement" readOnly={!isEditing} defaultValue={formData.units_of_measurement} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
                 
                 <label>Grade</label>
-                <input name="grade" id="grade" readOnly={!isEditing} defaultValue={formData.grade} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                <input name="grade" id="grade" readOnly={!isEditing} defaultValue={formData.grade} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
                 
                 <label>Estimate Date</label>
-                <input type="date" name="estimate_date" id="estimate_date" defaultValue={formData.estimate_date?.toISOString().split('T')[0]} readOnly={!isEditing} className={`h-6 ${!isEditing ? "bg-gray-200" : ""}`}></input>
+                <input type="date" name="estimate_date" id="estimate_date" defaultValue={formData.estimate_date?.toISOString().split('T')[0]} readOnly={!isEditing} className={`text-xs ${!isEditing ? "bg-gray-200" : ""}`}></input>
                 
                 <label className="col-span-2">Notes</label>
-                <textarea name="notes" id="notes" readOnly={!isEditing} defaultValue={formData.notes} className={`h-24 text-sm col-span-2 ${!isEditing ? "bg-gray-200" : ""}`}></textarea>
+                <textarea name="notes" id="notes" readOnly={!isEditing} defaultValue={formData.notes} className={`h-24 text-xs col-span-2 ${!isEditing ? "bg-gray-200" : ""}`}></textarea>
 
-                <label>Last modified:</label>
-                <p suppressHydrationWarning >{formData.updated_at.toLocaleString()}</p>
+                <label className="p-2">Last modified:</label>
+                <p className="text-xs p-2" suppressHydrationWarning >{formData.updated_at.toLocaleString()}</p>
             </div>
             </form>
         </div>
