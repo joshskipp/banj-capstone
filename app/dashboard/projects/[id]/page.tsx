@@ -433,7 +433,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {key_events.map((k) => (
                                         <div key={k.event_id} className="border p-3 rounded-lg">
-                                            <h4 className="font-medium">{k.event_date.toLocaleDateString()}</h4>
+                                            <h4 className="font-medium">{k.event_name}</h4>
                                             <div className="mt-2 space-y-1">
                                                 <p>
                                                 </p>
@@ -445,8 +445,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                                                 </p>
                                                 {k.event_details && (
                                                     <p className="text-sm">
-                                                        <span className="text-gray-600">Details: </span>
-                                                        {k.event_details.notes}
+                                                        <span className="text-gray-600">Date: </span>
+                                                        {k.event_date.toLocaleDateString()}
                                                     </p>
                                                 )}
                                             </div>
