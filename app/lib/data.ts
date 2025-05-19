@@ -8,7 +8,8 @@ export async function fetchAllProjects() {
   try{
     const
         data = await sql`
-      SELECT * FROM projects`
+      SELECT * FROM projects
+      WHERE approved_status != 'Archived'`
     return data;
   } catch (error) {
       console.error('Database Error:', error);
@@ -33,16 +34,45 @@ export async function fetchAllProjectsData() {
   try{
     const
         data = await sql`
-        SELECT p.*, 
-        string_agg(DISTINCT CASE WHEN pc.isprimary THEN c.commodity_name END, ', ') AS primary_commodities,
-        string_agg(DISTINCT CASE WHEN pc.issecondary THEN c.commodity_name END, ', ') AS secondary_commodities,
-        string_agg(DISTINCT co.company_name, ', ') AS company
-        FROM projects p
-        LEFT JOIN project_commodities pc ON p.project_id = pc.project_id
-        LEFT JOIN commodities c ON pc.commodity_id = c.commodity_id
-        LEFT JOIN company_projects cpr ON p.project_id = cpr.project_id
-        LEFT JOIN companies co ON cpr.company_id = co.company_id
-        GROUP BY p.project_id`
+            SELECT
+                p.*,
+                STRING_AGG(co.company_name, ', ') AS company,
+                STRING_AGG(DISTINCT CASE WHEN pc.isprimary THEN c.commodity_name END, ', ') AS primary_commodities,
+                STRING_AGG(DISTINCT CASE WHEN pc.issecondary THEN c.commodity_name END, ', ') AS secondary_commodities,
+                (
+                    SELECT json_agg(json_build_object(
+                            'commodity', c.commodity_name,
+                            'tonnage', r.tonnage,
+                            'units', r.units_of_measurement,
+                            'grade', r.grade,
+                            'estimate_date', r.estimate_date,
+                            'notes', r.notes
+                                    ))
+                    FROM reserves r
+                             JOIN commodities c ON r.commodity_id = c.commodity_id
+                    WHERE r.project_id = p.project_id
+                ) AS reserves,
+                (
+                    SELECT json_agg(json_build_object(
+                            'commodity', c.commodity_name,
+                            'tonnage', pr.tonnage,
+                            'units_of_measurement', pr.units_of_measurement,
+                            'start_date', pr.start_date,
+                            'end_date', pr.end_date,
+                            'notes', pr.notes
+                                    ))
+                    FROM productions pr
+                             JOIN commodities c ON pr.commodity_id = c.commodity_id
+                    WHERE pr.project_id = p.project_id
+                ) AS productions
+            FROM  projects p
+                      LEFT JOIN project_commodities pc ON p.project_id = pc.project_id
+                      LEFT JOIN commodities c ON pc.commodity_id = c.commodity_id
+                      LEFT JOIN company_projects cop ON p.project_id = cop.project_id
+                      LEFT JOIN companies co ON cop.company_id = co.company_id
+            WHERE p.approved_status != 'Archived'
+            GROUP BY p.project_id;
+            `
     return data;
   } catch (error) {
       console.error('Database Error:', error);
@@ -254,7 +284,10 @@ export async function fetchFilteredKeyEvents(
 export async function fetchKeyEventById(id: string) {
   try {
       const data = await sql`
-          SELECT * FROM key_events WHERE event_id=${id};`
+          SELECT key_events.*, u.name
+                 FROM key_events
+                INNER JOIN Users u on u.id = key_events.created_by::uuid
+                 WHERE event_id=${id};`
       return data;
   } catch (error) {
       console.error('Database Error:', error);

@@ -29,7 +29,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     <h3 className="font-semibold text-lg mb-3">Metadata</h3>
                     <ul className="space-y-2 text-sm">
                         <li><b>Created at:</b> {k.created_at.toLocaleString()}</li>
-                        <li><b>Created by:</b> {k.created_by}</li>
+                        <li><b>Created by:</b> {k.name}</li>
                         <li><b>Updated at:</b> {k.updated_at.toLocaleString()}</li>
                     </ul>
                 </div>

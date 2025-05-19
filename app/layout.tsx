@@ -70,8 +70,7 @@ export default async function RootLayout({
                             <h1 className="text-3xl font-bold text-[#1f4656] border-l-2 border-l-[#7a232a] pl-3">
                                 Prospector
                             </h1>
-                            <VersionBadge/>
-
+                            {/*<VersionBadge/>*/}
                         </div>
 
                     </header>
