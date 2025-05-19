@@ -284,7 +284,10 @@ export async function fetchFilteredKeyEvents(
 export async function fetchKeyEventById(id: string) {
   try {
       const data = await sql`
-          SELECT * FROM key_events WHERE event_id=${id};`
+          SELECT key_events.*, u.name
+                 FROM key_events
+                INNER JOIN Users u on u.id = key_events.created_by::uuid
+                 WHERE event_id=${id};`
       return data;
   } catch (error) {
       console.error('Database Error:', error);

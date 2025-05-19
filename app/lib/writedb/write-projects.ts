@@ -57,7 +57,7 @@ export async function writeReserves(deets: { project_id: string, user_id: string
 
     await sql`
         INSERT INTO reserves
-        (project_id, commodity_id, tonnage, grade, units_of_measurement, estimate_date, notes, approved_status,
+        (project_id, commodity_id, tonnage, grade, units_of_measurement, estimate_date, notes,
          created_by)
         VALUES (${deets.project_id}, ${commodity_id}, ${tonnage}, ${grade}, ${units_of_measurement}, ${estimate_date},
                 ${notes}, 'new', ${deets.user_id})
