@@ -115,7 +115,9 @@ export async function updateProject(project: {
     const longitude = parseFloat(project.longitude);
 
     if (isNaN(latitude) || isNaN(longitude)) {
+      if (latitude == null || longitude == null) {
       throw new Error('Invalid latitude or longitude');
+      }
     }
     console.log('attempting to update project');
     try {

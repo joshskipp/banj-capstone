@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { updateProject } from '@/app/lib/actions';
 import { Button } from "@/app/ui/button"; 
 import { PlusCircleIcon } from "@heroicons/react/24/outline"; // Reusing this icon for consistency
-import Link from 'next/link';
 
 
 const PROJECT_STATUS_OPTIONS = [
@@ -28,13 +27,11 @@ export default function EditProjectForm({ project, reviewerName, session }: {
   const [formData, setFormData] = useState({
     project_id: '',
     project_name: '',
-    // asx_code: '',
     latitude: '',
     longitude: '',
     primary_commodity: '',
     secondary_commodity: '',
     product: '',
-
     project_status: 'Publicly announced',
     approved_status: 'Update in Progress',
     updated_by: reviewerName,
@@ -48,7 +45,6 @@ export default function EditProjectForm({ project, reviewerName, session }: {
       setFormData({
         project_id: project.project_id,
         project_name: project.project_name || '',
-        // asx_code: project.asx_code || '',
         latitude: project.latitude?.toString() || '',
         longitude: project.longitude?.toString() || '',
         primary_commodity: project.primary_commodity || '',
@@ -56,7 +52,6 @@ export default function EditProjectForm({ project, reviewerName, session }: {
         product: project.product || '',
         project_status: project.project_status || 'Publicly announced',
         approved_status: project.approved_status || 'Update in Progress',
-
         updated_by: reviewerName,
         updated_at: new Date().toISOString()
      });
@@ -117,7 +112,6 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               name="latitude"
               value={formData.latitude}
               onChange={handleChange}
-              required
               step="any"
               placeholder="Enter Latitude"
               className="w-full p-2 border rounded"
@@ -130,10 +124,20 @@ export default function EditProjectForm({ project, reviewerName, session }: {
               name="longitude"
               value={formData.longitude}
               onChange={handleChange}
-              required
               step="any"
               placeholder="Enter Longitude"
               className="w-full p-2 border rounded"
+            />
+
+            <label htmlFor="product" className="block mt-4 mb-1">Product</label>
+            <input
+                type="text"
+                id="product"
+                name="product"
+                value={formData.product}
+                onChange={handleChange}
+                placeholder="Enter Product"
+                className="w-full p-2 border rounded"
             />
 
            
