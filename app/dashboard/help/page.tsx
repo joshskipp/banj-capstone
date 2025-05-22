@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+import Link from "next/link";
 
 export default function Page() {
   const [activeSection, setActiveSection] = useState<string>('welcome'); // Tracks the active section
@@ -254,6 +255,7 @@ export default function Page() {
           </div>
         )}
 
+
         {activeSection === 'download' && (
           <div className="w-full p-6">
             Click below to download the User Guide for more detailed information
@@ -261,7 +263,7 @@ export default function Page() {
             <button
               onClick={() => {
                 const element = document.createElement("a");
-                element.href = "/userguide.pdf"; 
+                element.href = "/dashboard/userguide.pdf";
                 element.download = "userguide.pdf"; 
                 document.body.appendChild(element); 
                 element.click();
