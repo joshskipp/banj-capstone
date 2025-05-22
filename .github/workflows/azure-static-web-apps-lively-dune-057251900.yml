@@ -5,11 +5,11 @@ on:
 
   push:
     branches:
-      - preview
+      - main
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - preview
+      - main
 
 jobs:
   build_and_deploy_job:
