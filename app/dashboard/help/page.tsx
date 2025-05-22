@@ -261,8 +261,8 @@ export default function Page() {
             <button
               onClick={() => {
                 const element = document.createElement("a");
-                element.href = "/userguide/prospector-user-guide.pdf"; 
-                element.download = "prospector-user-guide.pdf"; 
+                element.href = "/prospectoruserguide.pdf"; 
+                element.download = "prospectoruserguide.pdf"; 
                 document.body.appendChild(element); 
                 element.click();
                 document.body.removeChild(element); 
