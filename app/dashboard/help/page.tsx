@@ -260,12 +260,12 @@ export default function Page() {
             <div className="mb-4">
             <button
               onClick={() => {
-                const element = document.createElement("a");
-                element.href = "/userguide.pdf"; 
-                element.download = "userguide.pdf"; 
-                document.body.appendChild(element); 
-                element.click();
-                document.body.removeChild(element); 
+                const link = document.createElement("a");
+                link.href = "/public/userguide.pdf"; 
+                link.setAttribute("download", "UserGuide.pdf"); 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
               }}
               className="bg-[#1f4656] hover:bg-[#163340] text-white py-2 px-4 rounded"
             >
