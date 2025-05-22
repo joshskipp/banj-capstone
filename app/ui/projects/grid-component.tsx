@@ -38,6 +38,8 @@ const GridComponent = () => {
         { field: "project_status", maxWidth: 150, headerName: "Status", filter: "agTextColumnFilter", sortable: true },
         { field: "approved_status", maxWidth: 150, headerName: "Approval",filter: "agTextColumnFilter", sortable: true },
         { field: "approved_at", maxWidth: 150, headerName: "Last Approved", filter: "agDateColumnFilter", sortable: true },
+        { field: "reserves", width: 300, headerName: "Reserves", filter: "agTextColumnFilter",sortable: true },
+        { field: "productions", width: 300, headerName: "productions", filter: "agTextColumnFilter",sortable: true },
         { field: "updated_by", maxWidth: 150, headerName: "Last Updated By", filter: "agTextColumnFilter", sortable: true },
         { field: "updated_at", maxWidth: 150, headerName: "Last Updated", filter: "agTextColumnFilter",sortable: true },
         { field: "created_by", maxWidth: 150, headerName: "Created By", filter: "agTextColumnFilter", sortable: true },

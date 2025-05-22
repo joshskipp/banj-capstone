@@ -14,10 +14,9 @@ export async function fetchReserves(project_id: string ) {
 
         return await
             sql`
-                SELECT r.*, commodities.commodity_name, users.name
+                SELECT r.*, commodities.commodity_name
                 FROM Reserves r
                 JOIN commodities on r.commodity_id = commodities.commodity_id
-                JOIN users on r.created_by = CAST(users.id as varchar)
                 WHERE r.project_id = ${project_id}`
     } catch (error) {
         console.error("Database Error: " + error + "\n Failed to fetch reserves from database for project: " + project_id);

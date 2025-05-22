@@ -70,7 +70,7 @@ export async function AddProjectCommodity(formData: FormData) {
         console.error('Error writing record:', error);
         throw error;
     }
-     try {
+    try {
         await sql`
             UPDATE projects
             SET approved_status = 'Ready for Review'
